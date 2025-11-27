@@ -1,0 +1,63 @@
+import crud from '../../api/crud'
+import axios from "axios"
+
+// initial state
+const state = () => ({
+  model: {
+    name: "Attendancepolicies" ,
+    title: "គោលការណ៍វត្តមាន" 
+  },
+  records: [] ,
+  record: null ,
+
+})
+
+// getters
+const getters = {
+  getRecords (state, getters, rootState) {
+    return state.records
+  },
+  getRecord (state, getters, rootState) {
+    return state.record
+  }
+}
+
+// actions
+const actions = {
+  async list ({ state, commit, rootState },params) {
+    return await crud.list(import.meta.env.VITE_API_SERVER+"/"+state.model.name + "?" + new URLSearchParams({
+        search: params.search ,
+        date: params.date ,
+        perPage: params.perPage ,
+        page: params.page
+      }).toString()
+    )
+  },
+  async read ({ state, commit, rootState },params) {
+    return await crud.read(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/"+params.id+'/read')
+  },
+  async update ({ state, commit, rootState },params) {
+    return await crud.update(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/update",params)
+  },
+  async delete ({ state, commit, rootState },params) {
+    return await crud.delete(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/"+params.id+"/delete")
+  }
+}
+
+// mutations
+const mutations = {
+  setRecords (state, records) {
+    state.records = records
+  },
+  setRecord (state, record) {
+    state.record = record
+  }
+}
+
+export default {
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations
+}
