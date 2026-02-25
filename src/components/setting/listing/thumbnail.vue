@@ -45,7 +45,7 @@
                 <div class="font-pvh p-2 m-auto text-xs text-center text-grat-800" >ផ្នែក</div>
               </div>
             </router-link>
-            <router-link to="/tenant" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
+            <!-- <router-link to="/tenant" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
               <div class='w-full dashboard-widget-link' >
                 <div class="w-16 mx-auto my-2 " >
                   <svg class="text-blue-500 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M208 368v104a23.73 23.73 0 0 0 24 24h0a23.73 23.73 0 0 0 24-24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32"></path><path d="M256 368v104a23.73 23.73 0 0 0 24 24h0a23.73 23.73 0 0 0 24-24V368" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32"></path><path d="M183 274a23.73 23.73 0 0 1-29.84 16.18h0a23.72 23.72 0 0 1-16.17-29.84l25-84.28A44.85 44.85 0 0 1 205 144h102a44.85 44.85 0 0 1 43 32.08l25 84.28a23.72 23.72 0 0 1-16.17 29.84h0a23.73 23.73 0 0 1-29.78-16.2" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32"></path><circle cx="256" cy="56" r="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32"></circle><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M208 192l-48 160h192l-48-160"></path></svg>
@@ -85,7 +85,7 @@
                 </div>
                 <div class="font-pvh p-2 m-auto text-xs text-center text-grat-800" >អាហារ និងភេសជ្ជៈ</div>
               </div>
-            </router-link>
+            </router-link> -->
             <router-link to="/holiday" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
               <div class='w-full dashboard-widget-link' >
                 <div class="w-16 mx-auto my-2 " >

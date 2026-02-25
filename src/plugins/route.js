@@ -12,9 +12,10 @@ import QrCheckinAndCheckoutCameraComponent from './../layouts/checkinout/qrcheck
 /**
  * Attendance Components
  */
-import AttendanceCrud from './../components/Attendance/index.vue'
-import AttendanceListCrud from './../components/Attendance/list.vue'
-import AttendanceMonthlyCrud from './../components/Attendance/monthly.vue'
+import AttendanceCrud from './../components/attendance/index.vue'
+import AttendanceListCrud from './../components/attendance/list.vue'
+import AttendanceImportCrud from './../components/attendance/import.vue'
+import AttendanceMonthlyCrud from './../components/attendance/monthly.vue'
 
 /**
  * Attendance Policy Components
@@ -186,7 +187,7 @@ export const getRoutes = () => {
             },
             {
                 name: 'Attendance' ,
-                path: '/Attendance',
+                path: '/attendance',
                 component: AttendanceCrud ,
                 meta: { 
                     transition: 'slide-right' ,
@@ -198,6 +199,11 @@ export const getRoutes = () => {
                         name: "AttendanceList" ,
                         path: '' ,
                         component: AttendanceListCrud
+                    },
+                    {
+                        name: "AttendanceImport" ,
+                        path: 'import' ,
+                        component: AttendanceImportCrud
                     },
                     {
                         name: 'AttendanceMonthly' ,

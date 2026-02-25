@@ -259,7 +259,7 @@ export default {
   },
   setup(props){
 
-    console.log( props.record.salary_rank )
+    // console.log( props.record.salary_rank )
 
     var store = useStore()
     const message = useMessage()
@@ -293,13 +293,13 @@ export default {
     
     const dob = ref( null )
     dob.value = props.record.people.dob != '' && props.record.people.dob != undefined
-    ? (new Date( props.record.people.dob )).getTime()
-    : (new Date()).getTime()
+      ? (new Date( props.record.people.dob )).getTime()
+      : (new Date()).getTime()
 
     const officer_dob = ref( null )
     officer_dob.value = props.record.official_date != '' && props.record.official_date != undefined
-    ? (new Date( props.record.official_date )).getTime()
-    : (new Date()).getTime()
+      ? (new Date( props.record.official_date )).getTime()
+      : (new Date()).getTime()
 
     /**
      * Variables

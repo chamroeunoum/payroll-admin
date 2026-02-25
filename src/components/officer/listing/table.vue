@@ -81,10 +81,11 @@
           <table class="vcb-table" >
             <thead>
               <tr>
-                <th class="w-20" ></th>
+                <!-- <th class="w-20" ></th> -->
                 <th class="text-center w-14 " >ល.រ</th>
                 <th class="text-left w-16 " >កូដ</th>
-                <th class="text-left w-48 " >ឈ្មោះ</th>
+                <th class="text-left " >ឈ្មោះ</th>
+                <th class="text-left " >អង់គ្លេស</th>
                 <th class="text-left w-16 " >ភេទ</th>
                 <th class="text-center w-40 " >ថ្ងៃខែឆ្នាំកំណើត</th>
                 <th class="text-left w-28 " >រៀបការ</th>
@@ -94,7 +95,7 @@
                 <th class="text-left w-28 " >កម្រិតអប់រំ</th>
                 <th class="text-left w-28 " >ជំនាញ</th>
                 <th class="text-left w-28 " >ចូលធ្វើការ</th>
-                <th class="text-left w-48 " >ផ្នែក</th>
+                <th class="text-left " >ផ្នែក</th>
                 <th class="text-left w-40 " >តួនាទី</th>
                 <th class="text-left w-28 " >ប្រាក់ខែ</th>
                 <!-- <th class="text-left w-28 " >ប.ស.ស.</th>
@@ -104,17 +105,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(record, index) in table.records.matched" :key='index' class="item" >
-                <td>
+              <tr v-for="(record, index) in table.records.matched" :key='index' class="item relative" >
+                <!-- <td>
                   <div v-if="record.image != false && record.image != null && record.image != undefined " class="w-12 h-12 image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
                   <div v-if="record.image == false || record.image == null || record.image == undefined " class="w-12 h-12 image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ocmLogoUrl+');' " ></div>
-                </td>
+                </td> -->
                 <td class="text-center text-bold" >{{ $toKhmer( index + 1 ) }}</td>
                 <td class="text-left" >{{ $toKhmer( record.code ) }}</td>
-                <td class="text-left" >{{ ( record.countesy != undefined && record.countesy != null ? record.countesy.name : '' ) }} {{ 
+                <td class="text-left" >{{ 
                   record.people != undefined && record.people != null 
                     ? record.people.lastname + " " + record.people.firstname
-                    : '' }}<br/>{{ 
+                    : '' }}</td>
+                <td class="text-left" >{{ 
                   record.people != undefined && record.people != null 
                     ? record.people.enlastname + " " + record.people.enfirstname
                     : ''
@@ -177,9 +179,10 @@
                   : ''
                 }}</td>
                 <td class="text-left" >{{ $toKhmer( record.workbook_no ) }}</td> -->
-                <td class="relative" >
+                <!-- <td class="relative" >
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
-                </td>
+                </td> -->
+                <!-- <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" /> -->
               </tr>
             </tbody>
           </table>
@@ -683,12 +686,12 @@ export default {
   @apply p-2 m-2 bg-white rounded-lg shadow border border-gray-300 w-4/6 sm:w-2/5 md:w-1/3 lg:w-1/4 xl:w-2/6 ;
 }
 .vcb-table {
-  @apply p-2;
+  @apply p-2 w-full ;
 }
 .vcb-table tr th {
   @apply p-2 border-b border-gray-200 relative ;
 }
 .vcb-table tr td {
-  @apply p-2 relative h-16;
+  @apply p-2 relative border-b border-gray-200;
 }
 </style>

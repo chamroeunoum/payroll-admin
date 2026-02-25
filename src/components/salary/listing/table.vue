@@ -83,24 +83,101 @@
       <Transition name="fade" >
         <div v-if="Array.isArray( table.records.matched ) && table.records.matched.length > 0 " class="vcb-thumbnail mb-12" >
           <table class="vcb-table" >
-            <thead>
+            <thead v-if="table.records.matched.length > 0">
               <tr>
-                <th class="w-20" ></th>
+                <!-- <th class="" 
+                  v-for="(row , rindex) in Object.getOwnPropertyNames( table.records.matched[0] )" >{{ row.split('_').map( (word) => word.charAt(0).toUpperCase() + word.slice(1) ).join(' ') }}</th> -->
+
                 <th class="text-center" >ល.រ</th>
                 <th class="text-left" >កូដ</th>
-                <th class="text-left" >ឈ្មោះ</th>
-                <th class="text-center" >ថ្ងៃខែឆ្នាំចូលធ្វើការ</th>
-                <th class="text-left" >ផ្នែក</th>
-                <th class="text-left" >តួនាទី</th>
-                <th class="text-right" >ប្រាក់ខែគោល</th>
-                <th class="text-right" >ប្រាក់ខែត្រូវទទួល</th>
-                <th class="text-center" >ថ្ងៃខែឆ្នាំទទួលប្រាក់</th>
+                <th class="text-left" >ឈ្មោះខ្មែរ</th>
+                <th class="text-center" >ឈ្មោះអង់គ្លេស</th>
+                <th class="text-left" >ភេទ</th>
+                <th class="text-left " >សញ្ជាតិ</th>
+                <th class="text-left " >ថ្ងៃចូលធ្វើការ</th>
+                <th class="text-left " >ក្រុម/ផ្នែក</th>
+                <th class="text-left " >ប្រាក់ឈ្នួលសុទ្ធ</th>
+                <th class="text-left " >ចំនួនថ្ងៃធ្វើការធម្មតា</th>
+                <th class="text-left " >ចំនួនថ្ងៃអវត្តមាន</th>
+                <th class="text-left " >ប្រាក់តាមចំនួនថ្ងៃធ្វើការធម្មតា</th>
+                <th class="text-left " >ប្រាក់រង្វាន់ធ្វើការទៀងទាត់</th>
+                <th class="text-left " >ប្រាក់សោហ៊ុយធ្វើដំណើរឬស្នាក់នៅ</th>
+                <th class="text-left " >ចំនួនម៉ោងធ្វើការថែមម៉ោង(១៥០%)</th>
+                <th class="text-left " >ប្រាក់ធ្វើការម៉ោងបន្ថែម(១៥០%)</th>
+                <th class="text-left " >ប្រាក់ថ្លៃបាយធ្វើការម៉ោងបន្ថែម</th>
+                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់ប្រចាំឆ្នាំ</th>
+                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់ឈឺ</th>
+                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់មាតុភាព</th>
+                <th class="text-left " >ប្រាក់ឈប់សម្រាបកមាតុភាព</th>
+                <th class="text-left " >ចំនួនម៉ោងធ្វើការថ្ងៃឈប់សម្រាក់ប្រចាំសប្ដាហ៍</th>
+                <th class="text-left " >ប្រាក់ធ្វើការថ្ងៃឈប់សម្រាកប្រចាំសប្ដាហ៍</th>
+                <th class="text-left " >ចំនួនម៉ោងធ្វើការថ្ងៃបុណ្យ</th>
+                <th class="text-left " >ប្រាក់ធ្វើការថ្ងៃបុណ្យ</th>
+                <th class="text-left " >ប្រាក់រង្វាន់ផ្សេងៗ</th>
+                <th class="text-left " >ប្រាក់ឧបត្ថមទារកដ្ឋាន</th>
+                <th class="text-left " >ប្រាក់ទូទាត់ថ្ងៃឈប់សម្រាកប្រចាំឆ្នាំ</th>
+                <th class="text-left " >ប្រាក់រង្វាន់អតីតភាពការងារ</th>
+                <th class="text-left " >បំណាច់អតីតភាពការងាររំលឹកឆ្នាំចាស់</th>
+                <th class="text-left " >បំណាច់អតីតភាពការងារទូទាត់ក្នុងឆ្នាំថ្មី</th>
+                <th class="text-left " >ប្រាក់កែតម្រូវ</th>
+                <th class="text-right" >ប្រាក់បៀវត្សដុល</th>
+                <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ(ដុល្លារ)</th>
+                <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ(រៀល)</th>
+                <th class="text-right" >ប្រាក់កាត់ទុករបបសន្តិសុខសង្គម</th>
+                <th class="text-right" >ប្រាក់បានខ្ចី</th>
+                <th class="text-right" >ប្រាក់កាត់លើកំហុស</th>
+                <th class="text-right" >ប្រាក់ប្រើប្រាស់ទឹកភ្លើង</th>
+                <th class="text-right" >ប្រាក់បៀរវត្សជាក់ស្ដែង</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(record, index) in table.records.matched" :key='index' class="item" >
-                <td>
+              <tr v-for="(record, index) in salaries" :key='index' class="item" >
+                <td class="text-center w-12 " >{{ ( index + 1 ) }}</td>
+                <td class="text-center w-24 " >{{ record.officer.code }}</td>
+                <td class="text-center w-40 " >{{ record.officer.people.lastname + ' ' + record.officer.people.firstname }}</td>
+                <td class="text-center w-60 " >{{ record.officer.people.enlastname + ' ' + record.officer.people.enfirstname }}</td>
+                <td class="text-center" >{{ record.officer.people.gender }}</td>
+                <td class="text-center" >{{ record.officer.people.nationality }}</td>
+                <td class="text-center" >{{ 
+                  record.officer.official_date != undefined && record.officer.official_date != null 
+                  ? $toKhmer( dateFormat( new Date( record.officer.official_date ) , 'dd-mm-yyyy' ) ) 
+                  : ''
+                }}</td>
+                <td class="text-center" >{{ record.officer.department.name + '/' + record.officer.position.name }}</td>
+                <td class="text-center" >{{ record.officer.salary_rank }}</td>
+                <td class="text-center" >{{ record.total_absent_days }}</td>
+                <td class="text-center" >{{ record.total_worked_days }}</td>
+                <td class="text-center" >{{ record.pay_base_worked_time }}</td>
+                <td class="text-center" >{{ record.attendance_bonus_pay }}</td>
+                <td class="text-center" >{{ record.trip_pay }}</td>
+                <td class="text-center" >{{ record.overtime }}</td>
+                <td class="text-center" >{{ record.ot_pay }}</td>
+                <td class="text-center" >{{ record.dinner_pay }}</td>
+                <td class="text-center" >{{ record.total_al_days }}</td>
+                <td class="text-center" >{{ record.total_sk_days }}</td>
+                <td class="text-center" >{{ record.total_ml_days }}</td>
+                <td class="text-center" >{{ record.maternity_pay }}</td>
+                <td class="text-center" >{{ record.sunday_worked_time }}</td>
+                <td class="text-center" >{{ record.weekend_pay }}</td>
+                <td class="text-center" >{{ record.holiday_worked_time }}</td>
+                <td class="text-center" >{{ record.holiday_pay }}</td>
+                <td class="text-center" >{{ record.reward_pay }}</td>
+                <td class="text-center" >{{ record.bonus_daycare }}</td>
+                <td class="text-center" >{{ record.al_pay }}</td>
+                <td class="text-center" >{{ record.senority }}</td>
+                <td class="text-center" >{{ record.recall_newwork_senority }}</td>
+                <td class="text-center" >{{ record.newwork_senority }}</td>
+                <td class="text-center" >{{ record.adjustment_increment + record.adjustment_deduction }}</td>
+                <td class="text-center" >{{ record.gross_salary }}</td>
+                <td class="text-center" >{{ record.taxable_salary }}</td>
+                <td class="text-center" >{{ record.taxable_salary * record.exchange_rate }}</td>
+                <td class="text-center" >{{ record.nssf }}</td>
+                <td class="text-center" >{{ record.borrow }}</td>
+                <td class="text-center" >{{ record.mistake }}</td>
+                <td class="text-center" >{{ record.utility }}</td>
+                <td class="text-center" >{{ record.net_salary }}</td>
+                <!-- <td>
                   <div v-if="record.image != false && record.image != null && record.image != undefined " class="w-12 h-12 image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
                   <div v-if="record.image == false || record.image == null || record.image == undefined " class="w-12 h-12 image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ocmLogoUrl+');' " ></div>
                 </td>
@@ -146,20 +223,20 @@
                   record.date != undefined && record.date != null 
                   ? $toKhmer( dateFormat( new Date( record.date ) , 'dd-mm-yyyy' ) ) 
                   : ''
-                }}</td>
+                }}</td> -->
                 <td class="relative w-16" >
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
                 </td>
               </tr>
             </tbody>
-            <tfoot>
+            <!-- <tfoot>
               <tr class="bg-gray-200" >
                 <th colspan="7" class="text-right" >សរុប</th>
                 <th class="text-right" >{{ $toKhmer( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.officer.salary ) , 0 ) ) }}</th>
                 <th class="text-right" >{{ $toKhmer( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.basic_salary ) , 0 ) ) }}</th>
                 <th colspan="2"></th>
               </tr>
-            </tfoot>
+            </tfoot> -->
           </table>
           <!-- <div v-for="(record, index) in table.records.matched" :key='index' class="item" >
             <div class="content" >
@@ -387,6 +464,7 @@ export default {
     /**
      * Functions
      */
+    const salaries = ref([])
     function getRecords(){
       /**
        * Clear time interval after calling
@@ -405,6 +483,9 @@ export default {
       }).then(res => {
         table.records.all = table.records.matched = res.data.records
         table.pagination = res.data.pagination
+        if( table.records.matched.length > 0 ){
+          salaries.value = table.records.matched[0].salaries
+        }
         
         var paginationNumberList = 10
         if( ( table.pagination.page - ( parseInt( paginationNumberList / 2 ) + 1 ) ) < 1 ){
@@ -610,6 +691,7 @@ export default {
       model ,
       table ,
       ocmLogoUrl ,
+      salaries,
       /**
        * Table
        */
@@ -667,11 +749,11 @@ export default {
 </script>
 <style type="text/css" scoped >
 .vcb-thumbnail {
-  @apply flex flex-wrap justify-center;
+  @apply flex flex-wrap ;
 }
-.vcb-thumbnail .item {
+/* .vcb-thumbnail .item {
   @apply xl:w-1/5 lg:w-1/4 md:w-1/3 sm:w-1/3 w-1/2 p-2 ;
-}
+} */
 .vcb-thumbnail .item .content {
   @apply border rounded-lg hover:shadow duration-500 p-4 pt-8 relative hover:scale-105 transform-gpu bg-white hover:bg-yellow-100;
 }

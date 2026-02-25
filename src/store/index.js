@@ -8,8 +8,8 @@ import people from './modules/people'
 import position from './modules/position'
 import countesy from './modules/countesy'
 import error from './modules/error'
-import Attendance from './modules/Attendance'
-import Attendancepolicy from './modules/Attendancepolicy'
+import attendance from './modules/attendance'
+import attendancepolicy from './modules/attendancepolicy'
 import generalsetting from './modules/setting'
 import salary from './modules/salary'
 import salaryadjustment from './modules/salaryadjustment'
@@ -36,8 +36,8 @@ export default createStore({
   modules: {
     // product ,
     auth,
-    Attendance ,
-    Attendancepolicy ,
+    attendance ,
+    attendancepolicy ,
     user,
     officer,
     people ,

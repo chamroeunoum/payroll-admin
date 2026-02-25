@@ -24,8 +24,9 @@
           <input type="text" @keypress.enter="filterRecords(false)" v-model="table.search" class="bg-gray-100 px-2 h-9 my-1 w-full rounded border border-gray-200 focus:border-blue-600 hover:border-blue-600 " placeholder="ស្វែងរក" />
           <svg class="absolute w-6 h-6 right-1 top-2 text-gray-400 hover:text-blue-700 cursor-pointer" @click="filterRecords(false)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M8.5 3a5.5 5.5 0 0 1 4.227 9.02l4.127 4.126a.5.5 0 0 1-.638.765l-.07-.057l-4.126-4.127A5.5 5.5 0 1 1 8.5 3zm0 1a4.5 4.5 0 1 0 0 9a4.5 4.5 0 0 0 0-9z" fill="currentColor"></path></g></svg>
         </div>
-        <div class="mt-1 mr-2">
-          <n-date-picker v-model:value="AttendanceDate" type="date" @update:value="filterRecords(false)"/>
+        <div class="mt-1 mr-2 flex flex-row">
+          <n-date-picker v-model:value="attendanceDate" type="date" @update:value="filterRecords(false)" class="mx-1 h-9" />
+          <router-link to="/attendance/import" class="border border-blue-500 rounded px-4 py-2 h-9 text-blue-500 " >បញ្ចូលវត្តមាន</router-link>
         </div>
       </div>
       <!-- Filter panel of crud -->
@@ -38,40 +39,65 @@
           <table class="vcb-table " >
             <thead>
               <tr>
-                <th>ល.រ</th>
-                <th>កូដ</th>
+                <th class="w-14" >ល.រ</th>
+                <th class="w-16" >កូដ</th>
                 <th>ឈ្មោះ</th>
-                <th>តួនាទី</th>
-                <th>ផ្នែក</th>
-                <th>វត្តមាន</th>
+                <th class="w-52" >តួនាទី</th>
+                <th class="w-52" >ផ្នែក</th>
+                <th class="w-52" >វត្តមាន</th>
                 <th class="w-24" >ប្រតិបត្តិការ</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(record, index) in table.records.matched" :key='index' :class=" 'item ' +
-               ( record.Attendance_calculation.Attendance.Attendance_type == 'IT' ? ' text-blue-600 ' : '' ) +
-               ( record.Attendance_calculation.Attendance.Attendance_type == 'AB' ? ' text-red-600 ' : '' ) +
-               ( AttendanceTypes.includes( record.Attendance_calculation.Attendance.Attendance_type ) ? ' text-yellow-600 ' : '' ) 
+              <tr v-for="(record, index) in table.records.matched" :key='index' :class=" 'item hover:bg-yellow-200 duratoin-300 ' +
+               ( record.attendance_calculation.attendance.attendance_type.code == 'IT' ? ' text-blue-600 ' : '' ) +
+               ( record.attendance_calculation.attendance.attendance_type.code == 'AB' ? ' text-red-600 ' : '' ) +
+               ( attendanceTypes.includes( record.attendance_calculation.attendance.attendance_type.code ) ? ' text-yellow-600 ' : '' ) 
               " >
                 <td>{{ $toKhmer( index + 1 ) }}</td>
                 <td>{{ record.code }}</td>
                 <td>{{ record.people.lastname + ' ' + record.people.firstname }}</td>
                 <td>{{ record.position != undefined ? record.position.name : '' }}</td>
-                <td>{{ record.organization != undefined ? record.organization.name : '' }}</td>
+                <td>{{ record.department != undefined ? record.department.name : '' }}{{ record.section != undefined ? ' - ' + record.section.name : '' }}</td>
                 <td>{{ 
-                ( record.Attendance_calculation.Attendance.Attendance_type == "AB" ? 'AB' : (
-                  record.Attendance_calculation.calculation.checktimes.length > 0
-                    ? 'ចូល ' + $toKhmer( record.Attendance_calculation.calculation.checktimes[0].in.checktime ) + ' - ' 
-                    : ''
+                  ( 
+                    record.attendance_calculation.attendance.attendance_type.code == "AB" ? 'AB ' : (
+                      record.attendance_calculation.calculation.checktimes.length > 0
+                        ? record.attendance_calculation.calculation.checktimes[0].in.checktime
+                        : ''
+                    )
+                  ) +
+                  ( 
+                    ( record.attendance_calculation.attendance.attendance_type.code == "AB" || record.attendance_calculation.attendance.attendance_type.code == "SN" || record.attendance_calculation.attendance.attendance_type.code == "SA" || record.attendance_calculation.attendance.attendance_type.code == "HL" ) && ( record.attendance_calculation != undefined && record.attendance_calculation.calculation != undefined && record.attendance_calculation.calculation.total > 0 )
+                      ? (
+                        ( 
+                          record.attendance_calculation.calculation.total / 60 > 0 
+                            ? parseInt( record.attendance_calculation.calculation.total / 60 ) + ' ម៉ោង ' 
+                            : '' 
+                        ) +
+                        ( 
+                          record.attendance_calculation.calculation.total % 60 > 0 
+                            ? parseInt( record.attendance_calculation.calculation.total % 60 ) + ' នាទី ' 
+                            : '' 
+                        )
+                     )
+                      : '' 
+                  ) +
+                  ( 
+                    [ "AB" , 'PR' ].includes( record.attendance_calculation.attendance.attendance_type.code ) 
+                      ? '' 
+                      : ' ' + record.attendance_calculation.attendance.attendance_type.code 
+                  ) +
+                  ( 
+                    record.attendance_calculation.calculation.total > 0 
+                      ? ' - WH' + record.attendance_calculation.calculation.total 
+                      : '' 
+                  ) + 
+                  ( 
+                    record.attendance_calculation.calculation.overtime > 0 
+                      ? ' - OT' + record.attendance_calculation.calculation.overtime 
+                      : '' 
                   )
-                ) +
-                ( ( record.Attendance_calculation.Attendance.Attendance_type == "AB" || record.Attendance_calculation.Attendance.Attendance_type == "SN" || record.Attendance_calculation.Attendance.Attendance_type == "SA" || record.Attendance_calculation.Attendance.Attendance_type == "HL" ) && ( record.Attendance_calculation != undefined && record.Attendance_calculation.calculation != undefined && record.Attendance_calculation.calculation.total > 0 )
-                  ? (
-                    ( record.Attendance_calculation.calculation.total / 60 > 0 ? parseInt( record.Attendance_calculation.calculation.total / 60 ) + ' ម៉ោង ' : '' ) +
-                    ( record.Attendance_calculation.calculation.total % 60 > 0 ? parseInt( record.Attendance_calculation.calculation.total % 60 ) + ' នាទី ' : '' )
-                  )
-                  : '' ) +
-                ( record.Attendance_calculation.Attendance.Attendance_type != "AB" ? record.Attendance_calculation.Attendance.Attendance_type : '' )
                 }}</td>
                 <td class="relative ">
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
@@ -131,36 +157,64 @@
       </Transition>
     </div>
     <!-- Pagination of crud -->
-    <div class="fixed left-0 right-0 bottom-1 flex flex-wrap" >
-      <!-- This pagination is for the media side with from Medium up -->
-      <div class="vcb-table-pagination bg-blue-300 mx-auto">
-        <!-- Information -->
-        <div class="vcb-table-pagination-info" >{{ table.pagination.totalRecords > 0 ? table.pagination.totalRecords + " នាក់" : "" }}</div>
-          <div class="vcb-table-pagination-info" >{{ table.pagination.totalPages > 0 ? " ចែកជា " + table.pagination.totalPages + " ទំព័រ" : "" }}</div>
-        <!-- First -->
-        <!-- Pages (7) -->
-        <div v-for="(page, index) in table.pagination.buttons" :key="index" :class=" (table.pagination.page == page ? ' vcb-pagination-page-active ' : ' vcb-pagination-page ' )" @click="table.pagination.page == page ? false : goTo(page) " >{{ page }}</div>
-        <!-- Previous -->          
-        <div v-if="table.pagination.page > 1 " class="vcb-pagination-page " v-html='"<"' @click="previous()" ></div>
-        <n-tooltip v-if="table.pagination.page <= 1 "  trigger="hover">
-          <template #trigger>
-            <div class="vcb-pagination-page border-gray-200 text-gray-200 " v-html='"<"' ></div>
-          </template>
-          អ្នកកំពុងស្ថិតនៅទំព័រដើមបង្អស់ហើយ។
-        </n-tooltip>
-        <!-- Next -->
-        <div v-if="table.pagination.page < table.pagination.totalPages " class="vcb-pagination-page " v-html='">"' @click="next()" ></div>
-        <n-tooltip v-if="table.pagination.page >= table.pagination.totalPages " trigger="hover">
-          <template #trigger>
-            <div class="vcb-pagination-page border-gray-200 text-gray-200 " v-html='">"' ></div>
-          </template>
-          អ្នកកំពុងស្ថិតនៅទំព័រចុងក្រោយហើយ។
-        </n-tooltip>
-        <!-- Last -->
-        <!-- Go to -->
-        <!-- Total per page -->
-      </div>
-    </div>
+    <!-- Pagination of crud -->
+      <Transition name="slide-fade" >
+        <div v-if="table.pagination.totalPages > 1 " class="fixed left-0 right-0 bottom-1 flex flex-wrap" >
+          <div class="vcb-table-pagination bg-blue-300 mx-auto">
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-popselect 
+                  trigger="click"
+                  v-model:value="table.pagination.perPage"
+                  :options="[
+                    { label: 5 , value: 5 } ,
+                    { label: 10 , value: 10 } ,
+                    { label: 20 , value: 20 } ,
+                    { label: 30 , value: 30 } ,
+                    { label: 40 , value: 40 } ,
+                    { label: 50 , value: 50 } ,
+                    { label: 100 , value: 100 } ,
+                    { label: 200 , value: 200 } ,
+                    { label: 500 , value: 500 } ,
+                  ]"
+                  size="small"
+                  scrollable
+                  @update:value="goTo(1)"
+                >
+                  <div class="cursor-pointer font-pvh rounded-full p-2 px-4 border border-gray-200 text-blue-600" >{{ $toKhmer( table.pagination.perPage ) }}</div>
+                </n-popselect>
+              </template>
+              ចំនួនព័ត៌មានបង្ហាញម្ដង
+            </n-tooltip>
+            <!-- <n-tooltip trigger="hover">
+              <template #trigger>
+                <div class="vcb-table-pagination-info font-pvh " >{{ table.pagination.totalRecords > 0 ? $toKhmer( table.pagination.totalRecords ) + " ព័ត៌មាន" : "" }}</div>
+              </template>
+              ចំនួនព័ត៌មានសរុប
+            </n-tooltip> -->
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <div class="vcb-table-pagination-info font-pvh " >{{ table.pagination.totalPages > 0 ? $toKhmer( table.pagination.totalPages ) + " ទំព័រ" : "" }}</div>
+              </template>
+              ចំនួនទំព័រសរុប
+            </n-tooltip>
+            <div v-for="(page, index) in table.pagination.buttons" :key="index" :class=" (table.pagination.page == page ? ' vcb-pagination-page-active ' : ' vcb-pagination-page ' )" @click="table.pagination.page == page ? false : goTo(page) " >
+              <n-tooltip trigger="hover">
+                <template #trigger>
+                  <div class="leading-8 text-md font-pvh " >{{ $toKhmer( page ) }} </div>
+                </template>
+                ទំព័រទី {{ $toKhmer( page ) }}
+              </n-tooltip>
+            </div>
+            <Transition name="slide-fade" >
+              <div v-if="table.pagination.page > 1 " class="vcb-pagination-page " v-html='"<"' @click="previous()" ></div>
+            </Transition>
+            <Transition name="slide-fade" >
+              <div v-if="table.pagination.page < table.pagination.totalPages " class="vcb-pagination-page " v-html='">"' @click="next()" ></div>
+            </Transition>
+          </div>
+        </div>
+      </Transition>
   </div>
 </template>
 <script>
@@ -189,8 +243,8 @@ export default {
     const message = useMessage()
     const router = useRouter()
     const notify = useNotification()
-    const AttendanceDate = ref( null )
-    AttendanceDate.value = (new Date()).getTime()
+    const attendanceDate = ref( null )
+    attendanceDate.value = (new Date()).getTime()
     const daysOfWeek = reactive([
       {
         name: {
@@ -289,6 +343,7 @@ export default {
      */    
     var model = reactive( {
       name: "Attendance" ,
+      module: 'attendance' ,
       title: "វត្តមានប្រចាំថ្ងៃ"
     })
     var table = reactive( {
@@ -351,11 +406,13 @@ export default {
       /**
        * Clear time interval after calling
        */
+      console.log( attendanceDate.value )
+      console.log( dateFormat( new Date(attendanceDate.value) , "yyyy-mm-dd" ) )
       window.clearTimeout()
       table.loading = true
-      store.dispatch(model.name+'/attendances',{
+      store.dispatch(model.module+'/attendances',{
         search: table.search ,
-        date: AttendanceDate.value != null && parseInt( AttendanceDate.value ) > 0 ? dateFormat( new Date(AttendanceDate.value) , "yyyy-mm-dd" ) : dateFormat( new Date() , "yyyy-mm-dd" ) ,
+        date: attendanceDate.value != null && parseInt( attendanceDate.value ) > 0 ? dateFormat( new Date(attendanceDate.value) , "yyyy-mm-dd" ) : dateFormat( new Date() , "yyyy-mm-dd" ) ,
         perPage: table.pagination.perPage ,
         page: table.pagination.page
       }).then(res => {
@@ -453,10 +510,10 @@ export default {
     }
   
     function callFengshui(){
-      store.dispatch('Attendance/requestFengshui')
+      store.dispatch('attendance/requestFengshui')
     }
 
-    const AttendanceTypes = ref([
+    const attendanceTypes = ref([
       'SK' , 'OL' , 'AL' , 'ML' , 'SP'
     ]);
 
@@ -473,8 +530,8 @@ export default {
        */
       model ,
       table ,
-      AttendanceDate ,
-      AttendanceTypes ,
+      attendanceDate ,
+      attendanceTypes ,
       /**
        * Table
        */
@@ -506,12 +563,15 @@ export default {
 
 <style type="text/css" scoped >
 .vcb-table thead tr {
-  @apply bg-gray-200 ;
+  @apply bg-gray-200  ;
 }
 .vcb-table thead tr th {
-  @apply p-1 ;
+  @apply p-1 text-left ;
 }
 .vcb-table tbody tr td {
-  @apply p-1 ;
+  @apply p-1 text-left ;
+}
+.vcb-table tbody tr {
+  @apply border-b border-gray-200 ;
 }
 </style>

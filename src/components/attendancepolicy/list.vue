@@ -54,9 +54,9 @@
             </thead>
             <tbody>
               <tr v-for="(record, index) in table.records.matched" :key='index' :class=" 'item ' +
-               ( record.Attendance_calculation.Attendance.Attendance_type == 'IT' ? ' text-blue-600 ' : '' ) +
-               ( record.Attendance_calculation.Attendance.Attendance_type == 'AB' ? ' text-red-600 ' : '' ) +
-               ( AttendanceTypes.includes( record.Attendance_calculation.Attendance.Attendance_type ) ? ' text-yellow-600 ' : '' ) 
+               ( record.attendance_calculation.Attendance.Attendance_type == 'IT' ? ' text-blue-600 ' : '' ) +
+               ( record.attendance_calculation.Attendance.Attendance_type == 'AB' ? ' text-red-600 ' : '' ) +
+               ( AttendanceTypes.includes( record.attendance_calculation.Attendance.Attendance_type ) ? ' text-yellow-600 ' : '' ) 
               " >
                 <td>{{ $toKhmer( index + 1 ) }}</td>
                 <td>{{ record.code }}</td>
@@ -64,19 +64,19 @@
                 <td>{{ record.position != undefined ? record.position.name : '' }}</td>
                 <td>{{ record.organization != undefined ? record.organization.name : '' }}</td>
                 <td>{{ 
-                ( record.Attendance_calculation.Attendance.Attendance_type == "AB" ? 'AB' : (
-                  record.Attendance_calculation.calculation.checktimes.length > 0
-                    ? 'ចូល ' + $toKhmer( record.Attendance_calculation.calculation.checktimes[0].in.checktime ) + ' - ' 
+                ( record.attendance_calculation.Attendance.Attendance_type == "AB" ? 'AB' : (
+                  record.attendance_calculation.calculation.checktimes.length > 0
+                    ? 'ចូល ' + $toKhmer( record.attendance_calculation.calculation.checktimes[0].in.checktime ) + ' - ' 
                     : ''
                   )
                 ) +
-                ( ( record.Attendance_calculation.Attendance.Attendance_type == "AB" || record.Attendance_calculation.Attendance.Attendance_type == "SN" || record.Attendance_calculation.Attendance.Attendance_type == "SA" || record.Attendance_calculation.Attendance.Attendance_type == "HL" ) && ( record.Attendance_calculation != undefined && record.Attendance_calculation.calculation != undefined && record.Attendance_calculation.calculation.total > 0 )
+                ( ( record.attendance_calculation.Attendance.Attendance_type == "AB" || record.attendance_calculation.Attendance.Attendance_type == "SN" || record.attendance_calculation.Attendance.Attendance_type == "SA" || record.attendance_calculation.Attendance.Attendance_type == "HL" ) && ( record.attendance_calculation != undefined && record.attendance_calculation.calculation != undefined && record.attendance_calculation.calculation.total > 0 )
                   ? (
-                    ( record.Attendance_calculation.calculation.total / 60 > 0 ? parseInt( record.Attendance_calculation.calculation.total / 60 ) + ' ម៉ោង ' : '' ) +
-                    ( record.Attendance_calculation.calculation.total % 60 > 0 ? parseInt( record.Attendance_calculation.calculation.total % 60 ) + ' នាទី ' : '' )
+                    ( record.attendance_calculation.calculation.total / 60 > 0 ? parseInt( record.attendance_calculation.calculation.total / 60 ) + ' ម៉ោង ' : '' ) +
+                    ( record.attendance_calculation.calculation.total % 60 > 0 ? parseInt( record.attendance_calculation.calculation.total % 60 ) + ' នាទី ' : '' )
                   )
                   : '' ) +
-                ( record.Attendance_calculation.Attendance.Attendance_type != "AB" ? record.Attendance_calculation.Attendance.Attendance_type : '' )
+                ( record.attendance_calculation.Attendance.Attendance_type != "AB" ? record.attendance_calculation.Attendance.Attendance_type : '' )
                 }}</td>
                 <td class="relative ">
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
