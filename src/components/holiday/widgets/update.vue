@@ -25,7 +25,7 @@
                   ref="formRef"
                 >
                   <n-form-item label="ឈ្មោះ" class="w-1/3 p-1" >
-                    <n-input v-model:value="record.title" placeholder="ឈ្មោះ" :min="0" />
+                    <n-input v-model:value="record.name" placeholder="ឈ្មោះ" :min="0" />
                   </n-form-item>
                   <n-form-item label="ថ្ងៃខែឆ្នាំឈប់សម្រាក" class="w-1/2 p-1" >
                     <n-date-picker v-model:value="date" type="date" format="dd-MM-yyyy" placeholder="ថ្ងៃខែឆ្នាំឈប់សម្រាក" class="w-full" />
@@ -73,7 +73,7 @@ export default {
       default: () => {
         return reactive({
           id: 0 ,
-          title: '' ,
+          name: '' ,
           desp: '' ,
           date: ''
         })
@@ -114,7 +114,7 @@ export default {
     }
 
     function save(){
-      if( props.record.title.length <= 0 ){
+      if( props.record.name.length <= 0 ){
         notify.warning({
           'title' : 'ពិនិត្យព័ត៌មាន' ,
           'description' : 'ថ្លៃឈ្នួល មិនអាចតូចជាងសូន្យបានឡើយ។' ,
@@ -133,7 +133,7 @@ export default {
 
       store.dispatch( props.model.name+'/update',{
         id: props.record.id ,
-        title: props.record.title ,
+        name: props.record.name ,
         date: date.value != null && parseInt( date.value ) > 0 ? dateFormat( new Date(date.value) , "yyyy-mm-dd" ) : dateFormat( new Date() , "yyyy-mm-dd" ) ,
         desp: props.record.desp
       }).then( res => {

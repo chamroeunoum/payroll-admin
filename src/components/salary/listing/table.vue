@@ -13,7 +13,7 @@
         <!-- <div class="mt-1 ml-2 flex flex-wrap">
           <n-tooltip trigger="hover">
             <template #trigger>
-              <svg class="ml-1 w-7 h-7 p-1 mt-1 bg-white rounded-full border border-gray-300 cursor-pointer hover:text-green-500 duration-300" @click="toggleFilter()" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M18 28h-4a2 2 0 0 1-2-2v-7.59L4.59 11A2 2 0 0 1 4 9.59V6a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v3.59a2 2 0 0 1-.59 1.41L20 18.41V26a2 2 0 0 1-2 2zM6 6v3.59l8 8V26h4v-8.41l8-8V6z" fill="currentColor"></path></svg>
+              <svg class="ml-1 w-7 h-7 p-1 mt-1 bg-white rounded-full border border-gray-300 cursor-pointer hover:text-green-700 duration-300" @click="toggleFilter()" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M18 28h-4a2 2 0 0 1-2-2v-7.59L4.59 11A2 2 0 0 1 4 9.59V6a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v3.59a2 2 0 0 1-.59 1.41L20 18.41V26a2 2 0 0 1-2 2zM6 6v3.59l8 8V26h4v-8.41l8-8V6z" fill="currentColor"></path></svg>
             </template>
             សម្រង់ទិន្នន័យ
           </n-tooltip>
@@ -31,12 +31,12 @@
         </div> -->
         <div class="mt-1 mr-2 flex flex-wrap leading-9 ">
           <n-date-picker type="date" v-model:value="date" clearable placeholder="សូមជ្រើសរើសថ្ងៃខែឆ្នាំ" class="mx-1 " />
-          <n-button @click="generateSalary" class="mr-2" >គណនាប្រាក់ខែ</n-button>
+          <n-button @click="generateSalaries" class="mr-2" >គណនាប្រាក់ខែ</n-button>
           ច្រោះតាមខែ <n-date-picker type="month" v-model:value="filterMonth" clearable placeholder="សូមជ្រើសរើសខែ" class="mx-1 " @update:value="filterByMonth" />
           ច្រោះតាមឆ្នាំ <n-date-picker type="year" v-model:value="filterYear" clearable placeholder="សូមជ្រើសរើសឆ្នាំ" class="mx-1 " @update:value="filterByYear" />
           <!-- <n-tooltip trigger="hover">
             <template #trigger>
-              <div @click="showCreateModal()" class="flex cursor-pointer hover:text-green-500 duration-300 ml-2 leading-8" >
+              <div @click="showCreateModal()" class="flex cursor-pointer hover:text-green-700 duration-300 ml-2 leading-8" >
                 <svg class="w-8 h-8 mr-1 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path><path d="M12 9v6"></path></g></svg>
                 មន្ត្រីមានអត្តលេខ
               </div>
@@ -45,7 +45,7 @@
           </n-tooltip>
           <n-tooltip trigger="hover">
             <template #trigger>
-              <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-500 duration-300 ml-2 leading-8" >
+              <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-700 duration-300 ml-2 leading-8" >
                 <svg class="w-8 h-8 mr-1 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path><path d="M12 9v6"></path></g></svg>
                 មន្ត្រីគ្មានអត្តលេខ
               </div>
@@ -54,7 +54,7 @@
           </n-tooltip> -->
           <!-- <n-tooltip trigger="hover">
             <template #trigger>
-              <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-500 duration-300 ml-2 leading-8" >
+              <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-700 duration-300 ml-2 leading-8" >
                 <svg class="w-8 h-8 mr-1 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path><path d="M12 9v6"></path></g></svg>
               </div>
             </template>
@@ -63,14 +63,14 @@
           <n-tooltip trigger="hover">
             <template #trigger>
               <router-link to="/setting" >
-                <svg class="w-8 h-8 mx-1 cursor-pointer hover:text-green-500 duration-300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M1.91 7.383a8.491 8.491 0 0 1 1.78-3.08a.5.5 0 0 1 .54-.135l1.918.686a1 1 0 0 0 1.32-.762l.366-2.006a.5.5 0 0 1 .388-.4a8.532 8.532 0 0 1 3.555 0a.5.5 0 0 1 .387.4l.367 2.006a1 1 0 0 0 1.32.762l1.918-.686a.5.5 0 0 1 .54.136a8.491 8.491 0 0 1 1.78 3.079a.5.5 0 0 1-.152.535l-1.555 1.32a1 1 0 0 0 0 1.524l1.555 1.32a.5.5 0 0 1 .152.535a8.491 8.491 0 0 1-1.78 3.08a.5.5 0 0 1-.54.135l-1.918-.686a1 1 0 0 0-1.32.762l-.367 2.007a.5.5 0 0 1-.387.399a8.53 8.53 0 0 1-3.555 0a.5.5 0 0 1-.388-.4l-.365-2.006a1 1 0 0 0-1.32-.762l-1.919.686a.5.5 0 0 1-.54-.136a8.49 8.49 0 0 1-1.78-3.079a.5.5 0 0 1 .153-.535l1.554-1.32a1 1 0 0 0 0-1.524l-1.554-1.32a.5.5 0 0 1-.153-.535zm1.061-.006l1.294 1.098a2 2 0 0 1 0 3.05L2.97 12.623c.292.782.714 1.51 1.245 2.152l1.596-.57a2 2 0 0 1 2.64 1.525l.305 1.668a7.556 7.556 0 0 0 2.485 0l.305-1.67a1.998 1.998 0 0 1 2.64-1.524l1.597.571a7.492 7.492 0 0 0 1.245-2.152l-1.294-1.098a1.998 1.998 0 0 1 0-3.05l1.294-1.098a7.491 7.491 0 0 0-1.245-2.152l-1.596.57a2 2 0 0 1-2.64-1.524l-.306-1.669a7.555 7.555 0 0 0-2.485 0l-.304 1.669a2 2 0 0 1-2.641 1.525l-1.596-.571a7.491 7.491 0 0 0-1.245 2.152zM7.5 10a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0zm1 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 0 0-3 0z" fill="currentColor"></path></g></svg>
+                <svg class="w-8 h-8 mx-1 cursor-pointer hover:text-green-700 duration-300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M1.91 7.383a8.491 8.491 0 0 1 1.78-3.08a.5.5 0 0 1 .54-.135l1.918.686a1 1 0 0 0 1.32-.762l.366-2.006a.5.5 0 0 1 .388-.4a8.532 8.532 0 0 1 3.555 0a.5.5 0 0 1 .387.4l.367 2.006a1 1 0 0 0 1.32.762l1.918-.686a.5.5 0 0 1 .54.136a8.491 8.491 0 0 1 1.78 3.079a.5.5 0 0 1-.152.535l-1.555 1.32a1 1 0 0 0 0 1.524l1.555 1.32a.5.5 0 0 1 .152.535a8.491 8.491 0 0 1-1.78 3.08a.5.5 0 0 1-.54.135l-1.918-.686a1 1 0 0 0-1.32.762l-.367 2.007a.5.5 0 0 1-.387.399a8.53 8.53 0 0 1-3.555 0a.5.5 0 0 1-.388-.4l-.365-2.006a1 1 0 0 0-1.32-.762l-1.919.686a.5.5 0 0 1-.54-.136a8.49 8.49 0 0 1-1.78-3.079a.5.5 0 0 1 .153-.535l1.554-1.32a1 1 0 0 0 0-1.524l-1.554-1.32a.5.5 0 0 1-.153-.535zm1.061-.006l1.294 1.098a2 2 0 0 1 0 3.05L2.97 12.623c.292.782.714 1.51 1.245 2.152l1.596-.57a2 2 0 0 1 2.64 1.525l.305 1.668a7.556 7.556 0 0 0 2.485 0l.305-1.67a1.998 1.998 0 0 1 2.64-1.524l1.597.571a7.492 7.492 0 0 0 1.245-2.152l-1.294-1.098a1.998 1.998 0 0 1 0-3.05l1.294-1.098a7.491 7.491 0 0 0-1.245-2.152l-1.596.57a2 2 0 0 1-2.64-1.524l-.306-1.669a7.555 7.555 0 0 0-2.485 0l-.304 1.669a2 2 0 0 1-2.641 1.525l-1.596-.571a7.491 7.491 0 0 0-1.245 2.152zM7.5 10a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0zm1 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 0 0-3 0z" fill="currentColor"></path></g></svg>
               </router-link>
             </template>
             ត្រឡប់ទៅ ការកំណត់
           </n-tooltip> -->
           <!-- <n-tooltip trigger="hover">
             <template #trigger>
-              <svg class="mx-1 w-7 h-7 p-1 bg-white rounded-full border border-gray-300 cursor-pointer hover:text-green-500 duration-300" @click="$router.push('/people/export')" 
+              <svg class="mx-1 w-7 h-7 p-1 bg-white rounded-full border border-gray-300 cursor-pointer hover:text-green-700 duration-300" @click="$router.push('/people/export')" 
               xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024"><path d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0 0 42 42h216v494zM514.1 580.1l-61.8-102.4c-2.2-3.6-6.1-5.8-10.3-5.8h-38.4c-2.3 0-4.5.6-6.4 1.9c-5.6 3.5-7.3 10.9-3.7 16.6l82.3 130.4l-83.4 132.8a12.04 12.04 0 0 0 10.2 18.4h34.5c4.2 0 8-2.2 10.2-5.7L510 664.8l62.3 101.4c2.2 3.6 6.1 5.7 10.2 5.7H620c2.3 0 4.5-.7 6.5-1.9c5.6-3.6 7.2-11 3.6-16.6l-84-130.4l85.3-132.5a12.04 12.04 0 0 0-10.1-18.5h-35.7c-4.2 0-8.1 2.2-10.3 5.8l-61.2 102.3z" fill="currentColor"></path></svg>
             </template>
             នាំចេញទិន្នន័យ
@@ -83,24 +83,119 @@
       <Transition name="fade" >
         <div v-if="Array.isArray( table.records.matched ) && table.records.matched.length > 0 " class="vcb-thumbnail mb-12" >
           <table class="vcb-table" >
-            <thead>
+            <thead v-if="table.records.matched.length > 0">
               <tr>
-                <th class="w-20" ></th>
+                <!-- <th class="" 
+                  v-for="(row , rindex) in Object.getOwnPropertyNames( table.records.matched[0] )" >{{ row.split('_').map( (word) => word.charAt(0).toUpperCase() + word.slice(1) ).join(' ') }}</th> -->
+
                 <th class="text-center" >ល.រ</th>
                 <th class="text-left" >កូដ</th>
-                <th class="text-left" >ឈ្មោះ</th>
-                <th class="text-center" >ថ្ងៃខែឆ្នាំចូលធ្វើការ</th>
-                <th class="text-left" >ផ្នែក</th>
-                <th class="text-left" >តួនាទី</th>
-                <th class="text-right" >ប្រាក់ខែគោល</th>
-                <th class="text-right" >ប្រាក់ខែត្រូវទទួល</th>
-                <th class="text-center" >ថ្ងៃខែឆ្នាំទទួលប្រាក់</th>
+                <th class="text-left" >ឈ្មោះខ្មែរ</th>
+                <th class="text-center" >ឈ្មោះអង់គ្លេស</th>
+                <th class="text-left" >ភេទ</th>
+                <th class="text-left " >សញ្ជាតិ</th>
+                <th class="text-left " >ថ្ងៃចូលធ្វើការ</th>
+                <th class="text-left " >ក្រុម/ផ្នែក</th>
+                <th class="text-left " >ប្រាក់ឈ្នួលសុទ្ធ</th>
+                <th class="text-left " >ចំនួនថ្ងៃធ្វើការធម្មតា</th>
+                <th class="text-left " >ចំនួនថ្ងៃអវត្តមាន</th>
+                <th class="text-left " >ប្រាក់តាមចំនួនថ្ងៃធ្វើការធម្មតា</th>
+                <th class="text-left " >ប្រាក់រង្វាន់ធ្វើការទៀងទាត់</th>
+                <th class="text-left " >ប្រាក់សោហ៊ុយធ្វើដំណើរឬស្នាក់នៅ</th>
+                <th class="text-left " >ចំនួនម៉ោងធ្វើការថែមម៉ោង(១៥០%)</th>
+                <th class="text-left " >ប្រាក់ធ្វើការម៉ោងបន្ថែម(១៥០%)</th>
+                <th class="text-left " >ប្រាក់ថ្លៃបាយធ្វើការម៉ោងបន្ថែម</th>
+                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់ប្រចាំឆ្នាំ</th>
+                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់ឈឺ</th>
+                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់មាតុភាព</th>
+                <th class="text-left " >ប្រាក់ឈប់សម្រាបកមាតុភាព</th>
+                <th class="text-left " >ចំនួនម៉ោងធ្វើការថ្ងៃឈប់សម្រាក់ប្រចាំសប្ដាហ៍</th>
+                <th class="text-left " >ប្រាក់ធ្វើការថ្ងៃឈប់សម្រាកប្រចាំសប្ដាហ៍</th>
+                <th class="text-left " >ចំនួនម៉ោងធ្វើការថ្ងៃបុណ្យ</th>
+                <th class="text-left " >ប្រាក់ធ្វើការថ្ងៃបុណ្យ</th>
+                <th class="text-left " >ប្រាក់រង្វាន់ផ្សេងៗ</th>
+                <th class="text-left " >ប្រាក់ឧបត្ថមទារកដ្ឋាន</th>
+                <th class="text-left " >ប្រាក់ទូទាត់ថ្ងៃឈប់សម្រាកប្រចាំឆ្នាំ</th>
+                <th class="text-left " >ប្រាក់រង្វាន់អតីតភាពការងារ</th>
+                <th class="text-left " >បំណាច់អតីតភាពការងាររំលឹកឆ្នាំចាស់</th>
+                <th class="text-left " >បំណាច់អតីតភាពការងារទូទាត់ក្នុងឆ្នាំថ្មី</th>
+                <th class="text-left " >ប្រាក់កែតម្រូវ</th>
+                <th class="text-right" >ប្រាក់បៀវត្សដុល</th>
+                <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ(ដុល្លារ)</th>
+                <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ(រៀល)</th>
+                <th class="text-right" >ប្រាក់កាត់ទុករបបសន្តិសុខសង្គម</th>
+                <th class="text-right" >ប្រាក់បានខ្ចី</th>
+                <th class="text-right" >ប្រាក់កាត់លើកំហុស</th>
+                <th class="text-right" >ប្រាក់ប្រើប្រាស់ទឹកភ្លើង</th>
+                <th class="text-right" >ប្រាក់បៀរវត្សជាក់ស្ដែង</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(record, index) in table.records.matched" :key='index' class="item" >
-                <td>
+              <tr v-for="(record, index) in salaries" :key='index' class="item" >
+                <td class="text-center w-12 " >{{ ( index + 1 ) }}</td>
+                <td class="text-center w-24 " >{{ record.officer.code }}</td>
+                <td class="text-center w-40 " >{{ record.officer.people.lastname + ' ' + record.officer.people.firstname }}</td>
+                <td class="text-center w-60 " >{{ record.officer.people.enlastname + ' ' + record.officer.people.enfirstname }}</td>
+                <td class="text-center" >{{ record.officer.people.gender }}</td>
+                <td class="text-center" >{{ record.officer.people.nationality }}</td>
+                <td class="text-center" >{{ 
+                  record.officer.official_date != undefined && record.officer.official_date != null 
+                  ? $toKhmer( dateFormat( new Date( record.officer.official_date ) , 'dd-mm-yyyy' ) ) 
+                  : ''
+                }}</td>
+                <td class="text-center" >{{ 
+                (
+                    record.officer.category != undefined && record.officer.category != null
+                      ? record.officer.category.name
+                      : ''
+                  )+
+                  (
+                    record.officer.department != undefined && record.officer.department != null
+                      ? ', ' + record.officer.department.name
+                      : ''
+                  )+
+                  (
+                    record.officer.section != undefined && record.officer.section != null
+                      ? ', ' + record.officer.section.name
+                      : ''
+                  )
+                }}
+                </td>
+                <td class="text-center text-blue-500" >{{ formatCurrency( record.officer.salary_rank ) }}</td>
+                <td class="text-center text-blue-600" >{{ record.total_worked_days }}</td>
+                <td class="text-center text-red-500" >{{ record.total_absent_days }}</td>
+                <!-- <td class="text-center" >{{ record.pay_base_worked_time }}</td> -->
+                <td class="text-center text-green-700" >{{ formatCurrency( record.regular_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.attendance_bonus_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.trip_pay ) }}</td>
+                <td class="text-center" >{{ record.overtime }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.ot_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.dinner_pay ) }}</td>
+                <td class="text-center" >{{ record.total_al_days }}</td>
+                <td class="text-center" >{{ record.total_sk_days }}</td>
+                <td class="text-center" >{{ record.total_ml_days }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.maternity_pay ) }}</td>
+                <td class="text-center" >{{ record.sunday_worked_time }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.weekend_pay ) }}</td>
+                <td class="text-center" >{{ record.holiday_worked_time }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.holiday_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.reward_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ record.bonus_daycare }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.al_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ record.senority }}</td>
+                <td class="text-center text-green-700" >{{ record.recall_newwork_senority }}</td>
+                <td class="text-center text-green-700" >{{ record.newwork_senority }}</td>
+                <td class="text-center text-green-700" >{{ record.adjustment_increment + record.adjustment_deduction }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.gross_salary ) }}</td>
+                <td class="text-center text-blue-500" >{{ formatCurrency( record.taxable_salary ) }}</td>
+                <td class="text-center text-blue-500" >{{ formatCurrency( record.taxable_salary * record.exchange_rate ) }}</td>
+                <td class="text-center text-red-500" >{{ formatCurrency( record.nssf ) }}</td>
+                <td class="text-center text-red-500" >{{ formatCurrency( record.borrow ) }}</td>
+                <td class="text-center text-red-500" >{{ formatCurrency( record.mistake ) }}</td>
+                <td class="text-center text-red-500" >{{ formatCurrency( record.utility ) }}</td>
+                <td class="text-center text-blue-500" >{{ formatCurrency( record.net_salary ) }}</td>
+                <!-- <td>
                   <div v-if="record.image != false && record.image != null && record.image != undefined " class="w-12 h-12 image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
                   <div v-if="record.image == false || record.image == null || record.image == undefined " class="w-12 h-12 image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ocmLogoUrl+');' " ></div>
                 </td>
@@ -146,20 +241,20 @@
                   record.date != undefined && record.date != null 
                   ? $toKhmer( dateFormat( new Date( record.date ) , 'dd-mm-yyyy' ) ) 
                   : ''
-                }}</td>
+                }}</td> -->
                 <td class="relative w-16" >
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
                 </td>
               </tr>
             </tbody>
-            <tfoot>
+            <!-- <tfoot>
               <tr class="bg-gray-200" >
                 <th colspan="7" class="text-right" >សរុប</th>
                 <th class="text-right" >{{ $toKhmer( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.officer.salary ) , 0 ) ) }}</th>
                 <th class="text-right" >{{ $toKhmer( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.basic_salary ) , 0 ) ) }}</th>
                 <th colspan="2"></th>
               </tr>
-            </tfoot>
+            </tfoot> -->
           </table>
           <!-- <div v-for="(record, index) in table.records.matched" :key='index' class="item" >
             <div class="content" >
@@ -265,7 +360,7 @@
     <!-- Filter panel of crud -->
     <Transition name="slide-fade" >
       <div v-if="filter" class="vcb-filters-panel">
-        <svg @click="toggleFilter()" class="absolute bg-white rounded-full shadow p-2 right-2 top-2 w-10 h-10 border border-gray-200 cursor-pointer hover:text-green-500 duration-300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M18 28h-4a2 2 0 0 1-2-2v-7.59L4.59 11A2 2 0 0 1 4 9.59V6a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v3.59a2 2 0 0 1-.59 1.41L20 18.41V26a2 2 0 0 1-2 2zM6 6v3.59l8 8V26h4v-8.41l8-8V6z" fill="currentColor"></path></svg>
+        <svg @click="toggleFilter()" class="absolute bg-white rounded-full shadow p-2 right-2 top-2 w-10 h-10 border border-gray-200 cursor-pointer hover:text-green-700 duration-300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M18 28h-4a2 2 0 0 1-2-2v-7.59L4.59 11A2 2 0 0 1 4 9.59V6a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v3.59a2 2 0 0 1-.59 1.41L20 18.41V26a2 2 0 0 1-2 2zM6 6v3.59l8 8V26h4v-8.41l8-8V6z" fill="currentColor"></path></svg>
         <div class="filter-title font-moul" >សូមជ្រើសរើសលក្ខណ សម្រង់ទិន្នន័យ៖</div>
         <div class="filter-actions" >
           <div class="filter-action" >
@@ -387,6 +482,7 @@ export default {
     /**
      * Functions
      */
+    const salaries = ref([])
     function getRecords(){
       /**
        * Clear time interval after calling
@@ -405,6 +501,9 @@ export default {
       }).then(res => {
         table.records.all = table.records.matched = res.data.records
         table.pagination = res.data.pagination
+        if( table.records.matched.length > 0 ){
+          salaries.value = table.records.matched[0].salaries
+        }
         
         var paginationNumberList = 10
         if( ( table.pagination.page - ( parseInt( paginationNumberList / 2 ) + 1 ) ) < 1 ){
@@ -585,14 +684,18 @@ export default {
     }
 
     const date = ref( new Date().getTime() )
-    function generateSalary(){
-      store.dispatch('salary/generateSalary',{ date: dateFormat( new Date( date.value ) , 'dd-mm-yyyy' ) } ).then( res => {
+    function generateSalaries(){
+      store.dispatch('salary/generateSalaries',{ date: dateFormat( new Date( date.value ) , 'dd-mm-yyyy' ) } ).then( res => {
         console.log( res.data )
         filterMonth.value = new Date( date.value ).getTime()
         filterByMonth()
       }).catch( err => {
         console.log( err )
       })
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat().format( amount )
     }
     /**
      * Initial the data
@@ -610,6 +713,7 @@ export default {
       model ,
       table ,
       ocmLogoUrl ,
+      salaries,
       /**
        * Table
        */
@@ -659,7 +763,8 @@ export default {
       filterByMonth ,
       filterByYear ,
       date ,
-      generateSalary
+      generateSalaries, 
+      formatCurrency
     }
   }
 }
@@ -667,11 +772,11 @@ export default {
 </script>
 <style type="text/css" scoped >
 .vcb-thumbnail {
-  @apply flex flex-wrap justify-center;
+  @apply flex flex-wrap ;
 }
-.vcb-thumbnail .item {
+/* .vcb-thumbnail .item {
   @apply xl:w-1/5 lg:w-1/4 md:w-1/3 sm:w-1/3 w-1/2 p-2 ;
-}
+} */
 .vcb-thumbnail .item .content {
   @apply border rounded-lg hover:shadow duration-500 p-4 pt-8 relative hover:scale-105 transform-gpu bg-white hover:bg-yellow-100;
 }

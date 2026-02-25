@@ -92,6 +92,7 @@
                           v-model:value="record.people.pob" 
                           type="textarea" show-count maxlength="5000" />
                         </n-form-item-row>
+                        
                       </n-form>
                       <div class="w-1/2 h-8"></div>  
                     </div>
@@ -192,6 +193,150 @@
                   </div>
                 </div>
               </n-tab-pane>
+              <n-tab-pane name="emergency-contact" tab="ទំនាក់ទំនងក្នុងករណីមានអាសន្ន">
+                <div class=" mx-auto p-4 flex-wrap">
+                  <div class="crud-form-panel w-full flex flex-wrap ">
+                    <n-form v-if="record!=null" 
+                      class="w-full text-left font-btb text-lg flex flex-wrap" 
+                      :label-width="80"
+                      :model="record"
+                      :rules="rules"
+                      size="large"
+                      ref="formRef"
+                    >
+                      <n-form-item label="គោត្តនាម" class="w-1/2 p-1" >
+                        <n-input v-model:value="record.people.emergency_lastname" placeholder="គោត្តនាម" />
+                      </n-form-item>
+                      <n-form-item label="នាម" class="w-1/2 p-1" >
+                        <n-input v-model:value="record.people.emergency_firstname" placeholder="នាម" />
+                      </n-form-item>
+                      <n-form-item label="ភេទ" class="w-1/2 p-1" >
+                        <n-radio-group v-model:value="record.people.emergency_gender" class="w-full" >
+                          <n-space>
+                            <n-radio
+                            v-for="status in [{label:'ប្រុស',value:1},{label:'ស្រី',value:0},{label:'ផ្សេងៗ',value:2}]"
+                            :key="status.value"
+                            :value="status.value"
+                            :label="status.label"
+                            />
+                          </n-space>
+                        </n-radio-group>
+                      </n-form-item>
+                      <n-form-item label="ទំនាក់ទំនងត្រូវជា" class="w-1/2 p-1" >
+                        <n-input v-model:value="record.people.emergency_relationship" placeholder="ទំនាក់ទំនងត្រូវជា" />
+                      </n-form-item>
+                      <n-form-item label="មុខរបរ" class="w-1/2 p-1" >
+                        <n-input v-model:value="record.people.emergency_profession" placeholder="មុខរបរ" />
+                      </n-form-item>
+                      <n-form-item label="ទូរសព្ទ" class="w-1/2 p-1" >
+                        <n-input v-model:value="record.people.emergency_phone" placeholder="ទូរសព្ទ" />
+                      </n-form-item>
+                      <n-form-item label="អ៉ីមែល" class="w-full p-1" >
+                        <n-input v-model:value="record.people.emergency_email" placeholder="អ៉ីមែល" />
+                      </n-form-item>
+                      <n-form-item label="អាសយដ្ឋាន" class="w-full p-1" >
+                        <n-input v-model:value="record.people.emergency_address" placeholder="អាសយដ្ឋាន" />
+                      </n-form-item>
+                    </n-form>
+                  </div>
+                </div>
+              </n-tab-pane>
+              <n-tab-pane name="user-attendance-setting" tab="កំណត់គោលនយោបាយវត្តមាន">
+                <div class="py-4" >
+                  <div class=" mx-auto p-4 flex-wrap">
+                    <div class="crud-form-panel w-full flex flex-wrap ">
+                      <n-form v-if="record!=null" 
+                        class="w-full text-left font-btb text-lg flex flex-wrap" 
+                        :label-width="80"
+                        :model="record"
+                        :rules="rules"
+                        size="large"
+                        ref="formRef"
+                      >
+                        <n-form-item
+                          class="w-full"
+                          label="ការបញ្ជាក់ការលាឈប់ពីការងារ"
+                        >
+                          <n-radio-group v-model:value="record.is_working" >
+                            <n-space>
+                              <n-radio :value="1" >នៅធ្វើការ</n-radio>
+                              <n-radio :value="0" >បានលាឈប់</n-radio>
+                            </n-space>
+                          </n-radio-group>
+                        </n-form-item>
+                        <n-form-item
+                          class="w-full"
+                          label="ការថែមម៉ោង"
+                        >
+                          <n-radio-group v-model:value="record.allowed_ot" :disabled=" record.is_working != 1 " >
+                            <n-space>
+                              <n-radio :value="1" >អនុញ្ញាត</n-radio>
+                              <n-radio :value="0" >មិនអនុញ្ញាត</n-radio>
+                            </n-space>
+                          </n-radio-group>
+                        </n-form-item>
+                        <n-form-item
+                          class="w-1/2"
+                          label="ការរាប់វត្តមាន"
+                        >
+                          <n-radio-group v-model:value="record.attn_mode_ignore" :disabled=" record.is_working != 1 " >
+                            <n-space>
+                              <n-radio :value="0" >មិនររាប់វត្តមានបុគ្គលិក</n-radio>
+                              <n-radio :value="1" >រាប់វត្តមានបុគ្គលិក</n-radio>
+                            </n-space>
+                          </n-radio-group>
+                        </n-form-item>
+                        <n-form-item
+                          class="w-full"
+                          label="ការបិទនិងបើកគោលនយោបាយវត្តមានសម្រាប់បុគ្គលិក"
+                        >
+                          <n-radio-group v-model:value="record.attn_active" :disabled=" record.is_working != 1 " >
+                            <n-space>
+                              <n-radio :value="0" >ប្រើប្រាស់គោលនយោបាយរួមរបស់ប្រព័ន្ធ</n-radio>
+                              <n-radio :value="1" >ប្រើប្រាស់គោលនយោបាយផ្ទាល់ខ្លួន</n-radio>
+                            </n-space>
+                          </n-radio-group>
+                        </n-form-item>
+                        <n-form-item label="ចំនួននាទីដែលមិនរាប់បញ្ចូលជាការមកយឺត ឬ ចេញមុន" class="w-1/2 p-1" >
+                          <n-input-number :min="0" :step="0.1" v-model:value="record.attn_undertime_ignore_minute" placeholder="ចំនួននាទីដែលមិនរាប់បញ្ចូលជាការមកយឺត ឬ ចេញមុន" 
+                          :disabled=" record.is_working != 1 || record.attn_active != 1 " 
+                          />
+                        </n-form-item>
+                        <n-form-item label="គោលការណ៍បន្ថែមប្រាក់ឧបត្ថមធ្វើការទៀងទាត់" class="w-1/2 p-1" >
+                          <n-input-number :min="0" :step="0.1" v-model:value="record.attn_bonus" placeholder="គោលការណ៍បន្ថែមប្រាក់ឧបត្ថមធ្វើការទៀងទាត់" 
+                          :disabled=" record.is_working != 1 || record.attn_active != 1 " 
+                          />
+                        </n-form-item>
+                        <n-form-item label="ការរាប់ការធ្វើការងារថែមម៉ោង" class="w-1/2 p-1" >
+                          <n-input-number :min="0" :step="0.1" v-model:value="record.attn_min_minute_overtime" placeholder="បន្ទាប់ធ្វើការបានចាប់ពី ៣០ នាទី" 
+                          :disabled=" record.is_working != 1 || record.attn_active != 1 " 
+                          />
+                        </n-form-item>
+                        <n-form-item label="ភាគរយគិតសម្រាប់ការធ្វើការថ្ងៃធម្មតា" class="w-1/2 p-1" >
+                          <n-input-number :min="0" :step=".1" v-model:value="record.attn_ot_percentage" placeholder="ភាគរយគិតសម្រាប់ការធ្វើការថ្ងៃបុណ្យ" 
+                          :disabled=" record.is_working != 1 || record.attn_active != 1 " 
+                          />
+                        </n-form-item>
+                        <n-form-item label="ភាគរយគិតសម្រាប់ការធ្វើការថ្ងៃចុងសប្ដាហ៍ (សំដៅថ្ងៃសម្រាប់ចុងសប្ដាហ៍អាចជាថ្ងៃ សៅរ៍ ឬ អាទិត្យ)" class="w-1/2 p-1" >
+                          <n-input-number :min="0" :step=".1" v-model:value="record.attn_ot_weekend_percentage" placeholder="ភាគរយគិតសម្រាប់ការធ្វើការថ្ងៃចុងសប្ដាហ៍" 
+                          :disabled=" record.is_working != 1 || record.attn_active != 1 " 
+                          />
+                        </n-form-item>
+                        <n-form-item label="ភាគរយគិតសម្រាប់ការធ្វើការថ្ងៃបុណ្យ" class="w-1/2 p-1" >
+                          <n-input-number :min="0" :step=".1" v-model:value="record.attn_ot_holiday_percentage" placeholder="ភាគរយគិតសម្រាប់ការធ្វើការថ្ងៃបុណ្យ" 
+                          :disabled=" record.is_working != 1 || record.attn_active != 1 " 
+                          />
+                        </n-form-item>
+                        <n-form-item label="ចំនួនថ្ងៃធ្វើការក្នុងរយះពេល១ខែ" class="w-1/2 p-1" >
+                          <n-input-number :min="0" :step=".1" v-model:value="record.total_days_per_month" placeholder="ចំនួនថ្ងៃធ្វើការក្នុងរយះពេល១ខែ" 
+                          :disabled=" record.is_working != 1 || record.attn_active != 1 " 
+                          />
+                        </n-form-item>
+                      </n-form>
+                    </div>
+                  </div>
+                </div>
+              </n-tab-pane>
             </n-tabs>
           </div>
           <!-- End form edit account -->
@@ -259,7 +404,7 @@ export default {
   },
   setup(props){
 
-    console.log( props.record.salary_rank )
+    console.log( props.record )
 
     var store = useStore()
     const message = useMessage()
@@ -293,13 +438,13 @@ export default {
     
     const dob = ref( null )
     dob.value = props.record.people.dob != '' && props.record.people.dob != undefined
-    ? (new Date( props.record.people.dob )).getTime()
-    : (new Date()).getTime()
+      ? (new Date( props.record.people.dob )).getTime()
+      : (new Date()).getTime()
 
     const officer_dob = ref( null )
     officer_dob.value = props.record.official_date != '' && props.record.official_date != undefined
-    ? (new Date( props.record.official_date )).getTime()
-    : (new Date()).getTime()
+      ? (new Date( props.record.official_date )).getTime()
+      : (new Date()).getTime()
 
     /**
      * Variables
@@ -368,8 +513,29 @@ export default {
             'passport' : props.record.people.passport ,
             'marry_status' : props.record.people.marry_status ,
             'address' : props.record.people.address ,
-            'pob' : props.record.people.pob
-          }
+            'pob' : props.record.people.pob ,
+            // Emergency 
+            'emergency_lastname' : props.record.people.emergency_lastname ,
+            'emergency_firstname' : props.record.people.emergency_firstname ,
+            'emergency_gender' : props.record.people.emergency_gender ,
+            'emergency_relationship' : props.record.people.emergency_relationship ,
+            'emergency_profession' : props.record.people.emergency_profession ,
+            'emergency_address' : props.record.people.emergency_address ,
+            'emergency_phone' : props.record.people.emergency_phone ,
+            'emergency_email' : props.record.people.emergency_email
+          } ,
+          // Attendance Settings
+          'attn_active' : props.record.attn_active ,
+          'attn_mode_ignore' : props.record.attn_mode_ignore ,
+          'allowed_ot' : props.record.allowed_ot ,
+          'total_days_per_month' : props.record.total_days_per_month ,
+          'attn_ot_percentage' : props.record.attn_ot_percentage ,
+          'attn_ot_weekend_percentage' : props.record.attn_ot_weekend_percentage ,
+          'attn_ot_holiday_percentage' : props.record.attn_ot_holiday_percentage ,
+          'attn_min_minute_overtime' : props.record.attn_min_minute_overtime ,
+          'attn_undertime_ignore_minute' : props.record.attn_undertime_ignore_minute ,
+          'attn_bonus' : props.record.attn_bonus ,
+          'is_working' : props.record.is_working
         }
       // {
       //   id: props.record.id ,

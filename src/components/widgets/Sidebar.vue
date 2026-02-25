@@ -120,6 +120,17 @@ export default {
           ]
       },
       {
+        url: '/attendance' ,
+        icon: 'CoPresentOutlined' ,
+        svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M16 8h14v2H16z" fill="currentColor"></path><path d="M6 10.59L3.41 8L2 9.41l4 4l8-8L12.59 4L6 10.59z" fill="currentColor"></path><path d="M16 22h14v2H16z" fill="currentColor"></path><path d="M6 24.59L3.41 22L2 23.41l4 4l8-8L12.59 18L6 24.59z" fill="currentColor"></path></svg>' ,
+        name: 'វត្តមាន',
+        roles: [
+          1, // Super
+          2, // Administrator
+          // 3, // backend
+        ]
+      },
+      {
         url: '/officer' ,
         icon: 'ContactCard32Regular' ,
         svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><g fill="none"><path d="M18 13a1 1 0 0 1 1-1h6a1 1 0 0 1 0 2h-6a1 1 0 0 1-1-1zm1 4a1 1 0 1 0 0 2h6a1 1 0 0 0 0-2h-6zm-6-4a2 2 0 1 1-4 0a2 2 0 0 1 4 0zm-6 4.5A1.5 1.5 0 0 1 8.5 16h5a1.5 1.5 0 0 1 1.5 1.5s0 3.5-4 3.5s-4-3.5-4-3.5zM2 7.25A3.25 3.25 0 0 1 5.25 4h21.5A3.25 3.25 0 0 1 30 7.25v17.5A3.25 3.25 0 0 1 26.75 28H5.25A3.25 3.25 0 0 1 2 24.75V7.25zM5.25 6C4.56 6 4 6.56 4 7.25v17.5c0 .69.56 1.25 1.25 1.25h21.5c.69 0 1.25-.56 1.25-1.25V7.25C28 6.56 27.44 6 26.75 6H5.25z" fill="currentColor"></path></g></svg>' ,
@@ -174,28 +185,28 @@ export default {
             //     // 3, // backend
             //   ]
             // },
-            {
-              url: '/position' ,
-              icon: 'Organization20Regular' ,
-              svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M28.07 21L22 15l6.07-6l1.43 1.41L24.86 15l4.64 4.59L28.07 21z" fill="currentColor"></path><path d="M22 30h-2v-5a5 5 0 0 0-5-5H9a5 5 0 0 0-5 5v5H2v-5a7 7 0 0 1 7-7h6a7 7 0 0 1 7 7z" fill="currentColor"></path><path d="M12 4a5 5 0 1 1-5 5a5 5 0 0 1 5-5m0-2a7 7 0 1 0 7 7a7 7 0 0 0-7-7z" fill="currentColor"></path></svg>' ,
-              name: 'តួនាទី',
-              roles: [
-                1, // Super
-                2, // Administrator
-                // 3, // backend
-              ]
-            },
-            {
-              url: '/organization' ,
-              icon: 'Organization20Regular' ,
-              svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M9 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H10v1a5 5 0 0 1 5 5v1h1a2 2 0 0 1 2 2v4a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-4a2 2 0 0 1 2-2h1v-1a5.002 5.002 0 0 1 4-4.9V2.5zm7 9.5h-1.5a.5.5 0 0 1-.5-.5V10a4 4 0 0 0-8 0v1.5a.5.5 0 0 1-.5.5H4a1 1 0 0 0-1 1v4h5v-2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2h5v-4a1 1 0 0 0-1-1zM6 13.5a.5.5 0 0 0-1 0v2a.5.5 0 0 0 1 0v-2zm9 0a.5.5 0 0 0-1 0v2a.5.5 0 0 0 1 0v-2zM8.5 9a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 1 0v-2a.5.5 0 0 0-.5-.5zm3.5.5a.5.5 0 0 0-1 0v2a.5.5 0 0 0 1 0v-2zM9 17h2v-2H9v2z" fill="currentColor"></path></g></svg>' ,
-              name: 'ផ្នែក',
-              roles: [
-                1, // Super
-                2, // Administrator
-                // 3, // backend
-              ]
-            },
+            // {
+            //   url: '/position' ,
+            //   icon: 'Organization20Regular' ,
+            //   svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M28.07 21L22 15l6.07-6l1.43 1.41L24.86 15l4.64 4.59L28.07 21z" fill="currentColor"></path><path d="M22 30h-2v-5a5 5 0 0 0-5-5H9a5 5 0 0 0-5 5v5H2v-5a7 7 0 0 1 7-7h6a7 7 0 0 1 7 7z" fill="currentColor"></path><path d="M12 4a5 5 0 1 1-5 5a5 5 0 0 1 5-5m0-2a7 7 0 1 0 7 7a7 7 0 0 0-7-7z" fill="currentColor"></path></svg>' ,
+            //   name: 'តួនាទី',
+            //   roles: [
+            //     1, // Super
+            //     2, // Administrator
+            //     // 3, // backend
+            //   ]
+            // },
+            // {
+            //   url: '/organization' ,
+            //   icon: 'Organization20Regular' ,
+            //   svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M9 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H10v1a5 5 0 0 1 5 5v1h1a2 2 0 0 1 2 2v4a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-4a2 2 0 0 1 2-2h1v-1a5.002 5.002 0 0 1 4-4.9V2.5zm7 9.5h-1.5a.5.5 0 0 1-.5-.5V10a4 4 0 0 0-8 0v1.5a.5.5 0 0 1-.5.5H4a1 1 0 0 0-1 1v4h5v-2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2h5v-4a1 1 0 0 0-1-1zM6 13.5a.5.5 0 0 0-1 0v2a.5.5 0 0 0 1 0v-2zm9 0a.5.5 0 0 0-1 0v2a.5.5 0 0 0 1 0v-2zM8.5 9a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 1 0v-2a.5.5 0 0 0-.5-.5zm3.5.5a.5.5 0 0 0-1 0v2a.5.5 0 0 0 1 0v-2zM9 17h2v-2H9v2z" fill="currentColor"></path></g></svg>' ,
+            //   name: 'ផ្នែក',
+            //   roles: [
+            //     1, // Super
+            //     2, // Administrator
+            //     // 3, // backend
+            //   ]
+            // },
             {
               url: '/holiday' ,
               icon: 'Organization20Regular' ,
@@ -207,17 +218,17 @@ export default {
                 // 3, // backend
               ]
             },
-            {
-              url: '/salaryadjustment' ,
-              icon: 'Organization20Regular' ,
-              svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none"><path d="M10.5 7a3 3 0 1 0 0 6a3 3 0 0 0 0-6zM9 10a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0zM2 6.25A2.25 2.25 0 0 1 4.25 4h12.5A2.25 2.25 0 0 1 19 6.25V11h-1.5V8.5h-.75a2.25 2.25 0 0 1-2.25-2.25V5.5h-8v.75A2.25 2.25 0 0 1 4.25 8.5H3.5v3h.75a2.25 2.25 0 0 1 2.25 2.25v.75H14V16H4.25A2.25 2.25 0 0 1 2 13.75v-7.5zm2.25-.75a.75.75 0 0 0-.75.75V7h.75A.75.75 0 0 0 5 6.25V5.5h-.75zM17.5 7v-.75a.75.75 0 0 0-.75-.75H16v.75c0 .414.336.75.75.75h.75zm-14 6.75c0 .414.336.75.75.75H5v-.75a.75.75 0 0 0-.75-.75H3.5v.75zm.901 3.75H14V19H7c-1.11 0-2.08-.603-2.599-1.5zM22 11V9c0-1.11-.603-2.08-1.5-2.599V11H22zm-5.5 1a1.5 1.5 0 0 0-1.5 1.5v8a1.5 1.5 0 0 0 1.5 1.5h5a1.5 1.5 0 0 0 1.5-1.5v-8a1.5 1.5 0 0 0-1.5-1.5h-5zm.5 4.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm-3 2h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm-3 2h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zM16.5 14a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-1z" fill="currentColor"></path></g></svg>' ,
-              name: 'គោលការណ៍ប្រាក់ខែ',
-              roles: [
-                1, // Super
-                2, // Administrator
-                3, // backend
-              ]
-            },
+            // {
+            //   url: '/salaryadjustment' ,
+            //   icon: 'Organization20Regular' ,
+            //   svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none"><path d="M10.5 7a3 3 0 1 0 0 6a3 3 0 0 0 0-6zM9 10a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0zM2 6.25A2.25 2.25 0 0 1 4.25 4h12.5A2.25 2.25 0 0 1 19 6.25V11h-1.5V8.5h-.75a2.25 2.25 0 0 1-2.25-2.25V5.5h-8v.75A2.25 2.25 0 0 1 4.25 8.5H3.5v3h.75a2.25 2.25 0 0 1 2.25 2.25v.75H14V16H4.25A2.25 2.25 0 0 1 2 13.75v-7.5zm2.25-.75a.75.75 0 0 0-.75.75V7h.75A.75.75 0 0 0 5 6.25V5.5h-.75zM17.5 7v-.75a.75.75 0 0 0-.75-.75H16v.75c0 .414.336.75.75.75h.75zm-14 6.75c0 .414.336.75.75.75H5v-.75a.75.75 0 0 0-.75-.75H3.5v.75zm.901 3.75H14V19H7c-1.11 0-2.08-.603-2.599-1.5zM22 11V9c0-1.11-.603-2.08-1.5-2.599V11H22zm-5.5 1a1.5 1.5 0 0 0-1.5 1.5v8a1.5 1.5 0 0 0 1.5 1.5h5a1.5 1.5 0 0 0 1.5-1.5v-8a1.5 1.5 0 0 0-1.5-1.5h-5zm.5 4.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm-3 2h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm-3 2h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zM16.5 14a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-1z" fill="currentColor"></path></g></svg>' ,
+            //   name: 'គោលការណ៍ប្រាក់ខែ',
+            //   roles: [
+            //     1, // Super
+            //     2, // Administrator
+            //     3, // backend
+            //   ]
+            // },
             {
               url: '/generalsetting' ,
               icon: 'CalendarSettings16Regular' ,
@@ -229,17 +240,17 @@ export default {
                 3, // backend
               ]
             },
-            {
-              url: '/Attendancepolicy' ,
-              icon: 'Door' ,
-              svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 12v.01"></path><path d="M3 21h18"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></g></svg>' ,
-              name: 'គោលការណ៍វត្តមាន',
-              roles: [
-                1, // Super
-                2, // Administrator
-                3, // backend
-              ]
-            },
+            // {
+            //   url: '/Attendancepolicy' ,
+            //   icon: 'Door' ,
+            //   svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 12v.01"></path><path d="M3 21h18"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></g></svg>' ,
+            //   name: 'គោលការណ៍វត្តមាន',
+            //   roles: [
+            //     1, // Super
+            //     2, // Administrator
+            //     3, // backend
+            //   ]
+            // },
           ]
       },
     ])

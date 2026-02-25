@@ -23,6 +23,12 @@
         </n-tooltip>
         <n-tooltip trigger="hover">
           <template #trigger>
+            <svg class="action text-green-700" @click="goToSalaryPreview" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none"><path d="M7 7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V7zm2-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 .5-.5V7a.5.5 0 0 0-.5-.5H9zm-.75 8a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5zm1.25 2.75a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0zm6.25-2.75a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5zM17 17.25a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0zm-5-2.75a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5zm1.25 2.75a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0zM7.25 2A3.25 3.25 0 0 0 4 5.25v13.5A3.25 3.25 0 0 0 7.25 22h9.5A3.25 3.25 0 0 0 20 18.75V5.25A3.25 3.25 0 0 0 16.75 2h-9.5zM5.5 5.25c0-.966.784-1.75 1.75-1.75h9.5c.966 0 1.75.784 1.75 1.75v13.5a1.75 1.75 0 0 1-1.75 1.75h-9.5a1.75 1.75 0 0 1-1.75-1.75V5.25z" fill="currentColor"></path></g></svg>
+          </template>
+          ពិនិត្យការគណនាប្រាក់ខែ
+        </n-tooltip>
+        <n-tooltip trigger="hover">
+          <template #trigger>
             <svg class="action text-red-500" @click="deleteAccount(record)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352" fill="currentColor"></path><path d="M192 112V72h0a23.93 23.93 0 0 1 24-24h80a23.93 23.93 0 0 1 24 24h0v40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M256 176v224"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M184 176l8 224"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M328 176l-8 224"></path></svg>              
           </template>
           លុបព័ត៌មាននេះ
@@ -61,6 +67,7 @@ import { useDialog, useMessage, useNotification } from 'naive-ui'
 import UpdateForm from '../../widgets/update.vue'
 import DetailForm from '../../widgets/detail.vue'
 import ProfileForm from '../../widgets/profile.vue'
+import dateFormat from 'dateformat'
 /**
  * CRUD component form
  */
@@ -87,6 +94,7 @@ export default {
     const dialog = useDialog()
     const message = useMessage()
     const notify = useNotification()
+    const router = useRouter()
     
     const show = ref(false)
     function toggleActions(){
@@ -153,6 +161,21 @@ export default {
       show.value = false
     }
 
+    function goToSalaryPreview(){
+      router.push({ name: "OfficerSalaryPreview" , params: { id : props.record.id } })
+    }
+
+    // const date = ref( new Date().getTime() )
+    // const officer_id = ref(null)
+    // function generateSalary(){
+    //   store.dispatch('officer/generateSalary',{ date: dateFormat( new Date( date.value ) , 'dd-mm-yyyy' ) , officer_id : props.record.id } ).then( res => {
+    //     console.log( res.data )
+    //     filterMonth.value = new Date( date.value ).getTime()
+    //   }).catch( err => {
+    //     console.log( err )
+    //   })
+    // }
+
     function deleteAccount(record){
       show.value = false
       dialog.warning({
@@ -206,6 +229,8 @@ export default {
        */
       deleteAccount ,
       toggleActions ,
+      // generateSalary ,
+      goToSalaryPreview ,
       show ,
       closeActions ,
       closeUpdate ,
@@ -232,12 +257,12 @@ export default {
   @apply flex flex-wrap justify-center absolute w-96 top-0 right-0 bottom-0;
 }
 .vcb-thumbnail .actions .action-toggle {
-  @apply absolute top-5 right-1 w-8 h-8 p-0 rounded-full cursor-pointer ;
+  @apply absolute top-1 right-1 w-5 h-5 p-0 rounded-full cursor-pointer ;
 }
 .vcb-thumbnail .actions .panel {
   @apply bg-white/95 absolute w-full top-0 bottom-0 flex flex-wrap content-center justify-center p-2 rounded-l;
 }
 .vcb-thumbnail .actions .action {
-  @apply cursor-pointer w-10 m-1 p-1 bg-white border border-gray-200 rounded ;
+  @apply cursor-pointer w-6 m-1 p-1 bg-white border border-gray-200 rounded ;
 }
 </style>

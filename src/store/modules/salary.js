@@ -39,8 +39,8 @@ const actions = {
   async read ({ state, commit, rootState },params) {
     return await crud.read(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/"+params.id+'/read')
   },
-  async generateSalary ({ state, commit, rootState },params) {
-    return await crud.create(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/generatesalary",params)
+  async generateSalaries ({ state, commit, rootState },params) {
+    return await crud.create(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/generatesalaries",params)
   },
   async upload({ state, commit, rootState },formData) {    
     return await crud.upload(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/upload",formData)

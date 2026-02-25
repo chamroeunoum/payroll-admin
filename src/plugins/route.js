@@ -12,9 +12,10 @@ import QrCheckinAndCheckoutCameraComponent from './../layouts/checkinout/qrcheck
 /**
  * Attendance Components
  */
-import AttendanceCrud from './../components/Attendance/index.vue'
-import AttendanceListCrud from './../components/Attendance/list.vue'
-import AttendanceMonthlyCrud from './../components/Attendance/monthly.vue'
+import AttendanceCrud from './../components/attendance/index.vue'
+import AttendanceListCrud from './../components/attendance/list.vue'
+import AttendanceImportCrud from './../components/attendance/import.vue'
+import AttendanceMonthlyCrud from './../components/attendance/monthly.vue'
 
 /**
  * Attendance Policy Components
@@ -41,6 +42,7 @@ import ProfileInformation from './../components/user/profile/profile.vue'
 import OfficerCrud from './../components/officer/index.vue'
 import OfficerThumbnailCrud from './../components/officer/listing/thumbnail.vue'
 import OfficerTableCrud from './../components/officer/listing/table.vue'
+import OfficerSalaryPreview from './../components/officer/listing/salarypreview.vue'
 
 /**
  * Officer Salary Components
@@ -186,7 +188,7 @@ export const getRoutes = () => {
             },
             {
                 name: 'Attendance' ,
-                path: '/Attendance',
+                path: '/attendance',
                 component: AttendanceCrud ,
                 meta: { 
                     transition: 'slide-right' ,
@@ -198,6 +200,11 @@ export const getRoutes = () => {
                         name: "AttendanceList" ,
                         path: '' ,
                         component: AttendanceListCrud
+                    },
+                    {
+                        name: "AttendanceImport" ,
+                        path: 'import' ,
+                        component: AttendanceImportCrud
                     },
                     {
                         name: 'AttendanceMonthly' ,
@@ -259,6 +266,16 @@ export const getRoutes = () => {
                         path: 'thumbnail/:ids' ,
                         component: OfficerThumbnailCrud
                     },
+                    {
+                        name: "OfficerSalaryPreview" ,
+                        path: 'salary/:id/preview' ,
+                        component: OfficerSalaryPreview
+                    },
+                    // {
+                    //     name: "OfficerImportCrud" ,
+                    //     path: 'import' ,
+                    //     component: OfficerImportCrud
+                    // },                    
                     // {
                     //     name: "PeopleExportCrud" ,
                     //     path: 'export' ,

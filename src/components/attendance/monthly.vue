@@ -25,10 +25,10 @@
           <svg class="absolute right-1 top-2 text-gray-400 hover:text-blue-700 cursor-pointer" @click="filterRecords(false)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M8.5 3a5.5 5.5 0 0 1 4.227 9.02l4.127 4.126a.5.5 0 0 1-.638.765l-.07-.057l-4.126-4.127A5.5 5.5 0 1 1 8.5 3zm0 1a4.5 4.5 0 1 0 0 9a4.5 4.5 0 0 0 0-9z" fill="currentColor"></path></g></svg>
         </div>
         <div class="mt-1 mr-2">
-          <n-date-picker v-model:value="AttendanceDate" type="month" @update:value="filterRecords(false)"/>
+          <n-date-picker v-model:value="attendanceDate" type="month" @update:value="filterRecords(false)"/>
         </div>
         <div class="mt-1 mr-2">
-          <n-button type="default" @click="$router.push('/Attendance')" >
+          <n-button type="default" @click="$router.push('/attendance')" >
             បញ្ជីវត្តមាន
           </n-button>
         </div>
@@ -44,47 +44,47 @@
             <div class="report-title font-moul text-center w-full mt-4 text-xl" >របាយការណ៍វត្តមានប្រចាំខែ</div>
             <div class="report-title font-tacteing text-center w-full h-10 leading-10 my-4" style="font-size: 5rem; " >6</div>
             <div v-if="user!=null" class="report-title font-moul text-left w-1/2 pl-2" >ឈ្មោះ ៖ &ensp;&ensp;{{ user.lastname }}&ensp;{{ user.firstname }}</div>
-            <div v-if="AttendanceDate!=null" class="report-title font-moul text-right w-1/2 pr-2" >កាលបរិច្ឆែទ ៖ &ensp;&ensp;{{ $toKhmer( dateFormat( new Date( AttendanceDate ) , 'mm - yyyy' ) ) }}</div>
+            <div v-if="attendanceDate!=null" class="report-title font-moul text-right w-1/2 pr-2" >កាលបរិច្ឆែទ ៖ &ensp;&ensp;{{ $toKhmer( dateFormat( new Date( attendanceDate ) , 'mm - yyyy' ) ) }}</div>
             <!-- <div class="w-full p-4 mt-4 flex flex-wrap justify-center" > -->
               <!-- <div class="shadow rounded-md h-24 flex flex-wrap " >
-                <div class=" p-4 border border-gray-200 m-2 " v-for="(type , index) in AttendanceTotalByTypes" :key="index" >
+                <div class=" p-4 border border-gray-200 m-2 " v-for="(type , index) in attendanceTotalByTypes" :key="index" >
                   <div class="w-full font-moul" >{{ $toKhmer( type.value ) }}</div>
-                  <div class="w-full mt-2" >{{ AttendanceTypeLabels.find( t => t.key == type.key ).label }}</div>
+                  <div class="w-full mt-2" >{{ attendanceTypeLabels.find( t => t.key == type.key ).label }}</div>
                 </div>
               </div> -->
-              <!-- <div class=" p-4 border border-gray-200 m-2 rounded-md min-w-16 " v-for="(type , index) in AttendanceTotalByTypes" :key="index" >
+              <!-- <div class=" p-4 border border-gray-200 m-2 rounded-md min-w-16 " v-for="(type , index) in attendanceTotalByTypes" :key="index" >
                 <div class="w-full font-moul" >{{ $toKhmer( type.value ) }}</div>
-                <div class="w-full mt-2" >{{ AttendanceTypeLabels.find( t => t.key == type.key ).label }}</div>
+                <div class="w-full mt-2" >{{ attendanceTypeLabels.find( t => t.key == type.key ).label }}</div>
               </div> -->
               <!-- <div class="w-1/2 flex flex-wrap justify-center">
-                <div class=" p-4 border border-gray-200 m-2 rounded-md min-w-16 " v-for="(type , index) in AttendanceTotalByTypes.filter( (t) => t.key == 'A' || t.key == 'PM' || t.key == 'SL' || t.key == 'OL' || t.key == 'ML' || t.key == 'AL'   )" :key="index" >
+                <div class=" p-4 border border-gray-200 m-2 rounded-md min-w-16 " v-for="(type , index) in attendanceTotalByTypes.filter( (t) => t.key == 'A' || t.key == 'PM' || t.key == 'SL' || t.key == 'OL' || t.key == 'ML' || t.key == 'AL'   )" :key="index" >
                   <div class="w-full font-moul" >{{ $toKhmer( type.value ) }}</div>
-                  <div class="w-full mt-2" >{{ AttendanceTypeLabels.find( t => t.key == type.key ).label }}</div>
+                  <div class="w-full mt-2" >{{ attendanceTypeLabels.find( t => t.key == type.key ).label }}</div>
                 </div>
               </div>
               <div class="w-1/2 flex flex-wrap justify-center">
-                <div class=" p-4 border border-gray-200 m-2 rounded-md min-w-16 " v-for="(type , index) in AttendanceTotalByTypes.filter( (t) => t.key == 'P' || t.key == 'PE' || t.key == 'PL' || t.key == 'SN' || t.key == 'ST' || t.key == 'HL'   )" :key="index" >
+                <div class=" p-4 border border-gray-200 m-2 rounded-md min-w-16 " v-for="(type , index) in attendanceTotalByTypes.filter( (t) => t.key == 'P' || t.key == 'PE' || t.key == 'PL' || t.key == 'SN' || t.key == 'ST' || t.key == 'HL'   )" :key="index" >
                   <div class="w-full font-moul" >{{ $toKhmer( type.value ) }}</div>
-                  <div class="w-full mt-2" >{{ AttendanceTypeLabels.find( t => t.key == type.key ).label }}</div>
+                  <div class="w-full mt-2" >{{ attendanceTypeLabels.find( t => t.key == type.key ).label }}</div>
                 </div>
               </div> -->
             <!-- </div> -->
-            <div class="Attendance-list w-full my-8 mt-12" >
-              <div class="Attendance-header flex bg-gray-100 h-14 leading-10 py-2" >
-                <div class="Attendance-header-row w-40 font-moul pt-3" >ថ្ងៃ</div>
-                <div class="Attendance-header-row flex-grow font-moul pt-3" >ការចុះវត្តមាន</div>
-                <div class="Attendance-header-row w-60 font-moul pt-3" >សរុបរយះពេលបំពេញការងារ</div>
-                <!-- <div class="Attendance-header-row w-60 font-moul" >រយះពេលដែល លើស / ខ្វះ</div> -->
+            <div class="attendance-list w-full my-8 mt-12" >
+              <div class="attendance-header flex bg-gray-100 h-14 leading-10 py-2" >
+                <div class="attendance-header-row w-40 font-moul pt-3" >ថ្ងៃ</div>
+                <div class="attendance-header-row flex-grow font-moul pt-3" >ការចុះវត្តមាន</div>
+                <div class="attendance-header-row w-60 font-moul pt-3" >សរុបរយះពេលបំពេញការងារ</div>
+                <!-- <div class="attendance-header-row w-60 font-moul" >រយះពេលដែល លើស / ខ្វះ</div> -->
               </div>
-              <div v-for="(Attendance, index) in table.records.matched" :key='index' :class="'flex Attendance-row w-full border-b border-gray-100 ' 
-                + ( Attendance.Attendance_type == 'HL'? ' bg-green-50 ' : '' )
-                + ( Attendance.Attendance_type == 'SN' ? ' bg-red-50 ' : '' ) " >
-                <div class="day-number w-40 p-1 pt-2 font-kantumruy" :style="'color: ' + ( getDayOfWeek(Attendance.day_of_week).color.hexa ) + '; '" >
-                  <div class="font-bold">{{ $toKhmer( dateFormat( new Date( Attendance.date ) , 'dd' ) ) }}</div>
-                  <div class="font-bold">{{ getDayOfWeek(Attendance.day_of_week).name.kh }}</div>
+              <div v-for="(attendance, index) in table.records.matched" :key='index' :class="'flex attendance-row w-full border-b border-gray-100 ' 
+                + ( attendance.attendance_type == 'HL'? ' bg-green-50 ' : '' )
+                + ( attendance.attendance_type == 'SN' ? ' bg-red-50 ' : '' ) " >
+                <div class="day-number w-40 p-1 pt-2 font-kantumruy" :style="'color: ' + ( getDayOfWeek(attendance.day_of_week).color.hexa ) + '; '" >
+                  <div class="font-bold">{{ $toKhmer( dateFormat( new Date( attendance.date ) , 'dd' ) ) }}</div>
+                  <div class="font-bold">{{ getDayOfWeek(attendance.day_of_week).name.kh }}</div>
                 </div>
                 <div class="flex-grow p-1" >
-                  <table v-if="( ['P','IT','EA','LA','HL','SN','SA'].find( t => t == Attendance.Attendance_type ) ) != undefined" class="w-full" >
+                  <table v-if="( ['P','PR','IT','EA','LA','HL','SU','SA'].find( t => t == attendance.attendance_type ) ) != undefined" class="w-full" >
                     <thead>
                       <tr class="" >
                         <td class="font-kantumruy py-1 text-left font-bold">ចូល</td>
@@ -93,7 +93,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(ct , ctIndex) in Attendance.calculateTime.checktimes" :key="ctIndex">
+                      <tr v-for="(ct , ctIndex) in attendance.calculateTime.checktimes" :key="ctIndex">
                         <td class=" text-left flex flex-wrap " >
                           <div class="mr-1" >{{ $toKhmer( ct.in.checktime ) }}</div>
                           <svg v-if="ct.in != null && ct.in.lat != '' && ct.in.lat != null && ct.in.long != '' && ct.in.long != null " @click=" openMap( ct.in.lat , ct.in.lng )" class="mx-1 text-blue-500 w-4 h-4 cursor-pointer " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 48 48"><g fill="none"><path d="M24.005 15.5a6 6 0 1 0 0 12a6 6 0 0 0 0-12zm-3.5 6a3.5 3.5 0 1 1 7 0a3.5 3.5 0 0 1-7 0zM37 32L26.912 42.71a4 4 0 0 1-5.824 0L11 32h.038l-.017-.02l-.021-.025A16.922 16.922 0 0 1 7 21c0-9.389 7.611-17 17-17s17 7.611 17 17a16.922 16.922 0 0 1-4 10.955l-.021.025l-.017.02H37zm-1.943-1.619A14.433 14.433 0 0 0 38.5 21c0-8.008-6.492-14.5-14.5-14.5S9.5 12.992 9.5 21c0 3.58 1.294 6.852 3.443 9.381l.308.363l9.657 10.251a1.5 1.5 0 0 0 2.184 0l9.657-10.251l.308-.363z" fill="currentColor"></path></g></svg>
@@ -105,21 +105,26 @@
                           <svg v-if="ct.out != null && ct.out.photo == true" @click="openPicture(ct.out)" class="mx-1 inline-block text-blue-500 w-4 h-4 cursor-pointer " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M19 14a3 3 0 1 0-3-3a3 3 0 0 0 3 3zm0-4a1 1 0 1 1-1 1a1 1 0 0 1 1-1z" fill="currentColor"></path><path d="M26 4H6a2 2 0 0 0-2 2v20a2 2 0 0 0 2 2h20a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 22H6v-6l5-5l5.59 5.59a2 2 0 0 0 2.82 0L21 19l5 5zm0-4.83l-3.59-3.59a2 2 0 0 0-2.82 0L18 19.17l-5.59-5.59a2 2 0 0 0-2.82 0L6 17.17V6h20z" fill="currentColor"></path></svg>
                         </td>
                         <td class=" text-right" >{{ $toKhmer( ct.spenttime ) }}</td>
-                        <!-- <td class=" py-1 text-right font-bold" >{{ ct.workedTime }}</td> -->
                       </tr>
                     </tbody>
                   </table>
-                  <div v-if="( ['AB','OL','SK','SP','ML','AL'].find( t => t == Attendance.Attendance_type ) ) != undefined" class=" flex flex-wrap w-full" >
+                  <div v-if="( ['AB','OL','SK','SP','ML','AL'].find( t => t == attendance.attendance_type ) ) != undefined" class=" flex flex-wrap w-full" >
                     <div class="text-md font-btb-black mt-1" >
-                      {{ AttendanceTypeLabels.find( m => m.key == Attendance.Attendance_type ).label }}
+                      {{ attendanceTypeLabels.find( m => m.key == attendance.attendance_type ).label }}
                     </div>
                   </div>
                 </div>
-                <div v-if="( ['P','IT','EA','LA','HL','SN','SA'].find( t => t == Attendance.Attendance_type ) ) != undefined" class=" w-60 p-4 pt-2 font-bold text-lg" >{{ $toKhmer( Attendance.calculateTime.checktimes.reduce( ( sum , checktime ) => sum + parseFloat( checktime.spenttime ) , 0 ) ) }}</div>
-                <!-- <div :class="'w-60 p-4 font-bold  text-xl ' + ( ( Attendance.calculateTime.total.total - Attendance.calculateTime.total.duration ) > 0 ? ' text-green-600 ' : ' text-red-600 ' )" >{{ parseInt( Attendance.calculateTime.total.workedTime ) - parseInt( Attendance.calculateTime.total.duration ) }}</div> -->
+                <div v-if="( ['PR','IT','EA','LA','HL','SU','SA'].find( t => t == attendance.attendance_type ) ) != undefined" class=" w-60 p-4 pt-2 font-bold text-lg" >
+                  {{
+                //  $toKhmer( attendance.calculateTime.checktimes.reduce( ( sum , checktime ) => sum + parseFloat( checktime.spenttime ) , 0 ) ) 
+                  $toKhmer( attendance.calculateTime.total )
+                  }}<br/><div class="text-green-700" >{{ 
+                    $toKhmer( attendance.calculateTime.overtime ) 
+                }}</div></div>
+                <!-- <div :class="'w-60 p-4 font-bold  text-xl ' + ( ( attendance.calculateTime.total.total - attendance.calculateTime.total.duration ) > 0 ? ' text-green-600 ' : ' text-red-600 ' )" >{{ parseInt( attendance.calculateTime.total.workedTime ) - parseInt( attendance.calculateTime.total.duration ) }}</div> -->
               </div>
               <div class="text-right flex flex-row-reverse" >
-                <div class="p-4 w-60 font-bold font-moul text-center leading-5 " >{{ $toKhmer( table.records.matched.reduce( ( sum , Attendance ) => sum + ( Attendance.calculateTime.checktimes.reduce( ( sm , ct ) => sm + ct.spenttime , 0 ) ) , 0 ) ) }} នាទី <br/> {{ $toKhmer( parseInt( table.records.matched.reduce( ( sum , Attendance ) => sum + ( Attendance.calculateTime.checktimes.reduce( ( sm , ct ) => sm + ct.spenttime , 0 ) ) , 0 ) / 60 ) ) + " ម៉ោង" }} {{ $toKhmer( parseInt( table.records.matched.reduce( ( sum , Attendance ) => sum + ( Attendance.calculateTime.checktimes.reduce( ( sm , ct ) => sm + ct.spenttime , 0 ) ) , 0 ) % 60 ) ) + " នាទី" }}</div>
+                <div class="p-4 w-60 font-bold font-moul text-center leading-5 " >{{ $toKhmer( table.records.matched.reduce( ( sum , attendance ) => sum + ( attendance.calculateTime.checktimes.reduce( ( sm , ct ) => sm + ct.spenttime , 0 ) ) , 0 ) ) }} នាទី <br/> {{ $toKhmer( parseInt( table.records.matched.reduce( ( sum , attendance ) => sum + ( attendance.calculateTime.checktimes.reduce( ( sm , ct ) => sm + ct.spenttime , 0 ) ) , 0 ) / 60 ) ) + " ម៉ោង" }} {{ $toKhmer( parseInt( table.records.matched.reduce( ( sum , attendance ) => sum + ( attendance.calculateTime.checktimes.reduce( ( sm , ct ) => sm + ct.spenttime , 0 ) ) , 0 ) % 60 ) ) + " នាទី" }}</div>
                 <div class="flex-grow p-4 w-60 font-bold font-moul " >សរុប</div>
               </div>
             </div>
@@ -131,14 +136,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(type , index) in AttendanceTotalByTypes" :key="index" class=" text-left leading-6 " >
+                  <tr v-for="(type , index) in attendanceTotalByTypes" :key="index" class=" text-left leading-6 " >
                     <td class="" style="padding: 3px; " >{{ $toKhmer( index + 1 ) + '.' }}</td>
-                    <td class="" >{{ AttendanceTypeLabels.find( t => t.key == type.key ).label }}</td>
+                    <td class="" >{{ attendanceTypeLabels.find( t => t.key == type.key ).label }}</td>
                     <td class="text-right pr-1" >{{ $toKhmer( type.value ) }}</td>
                   </tr>
                   <tr class=" text-left leading-6 bg-gray-200 " >
                     <td colspan="2" class="p-1" ></td>
-                    <td colspan="1" class="text-right font-bold p-1" >{{ $toKhmer( AttendanceTotalByTypes.reduce( (sum , type ) => sum + type.value , 0 ) ) }}</td>
+                    <td colspan="1" class="text-right font-bold p-1" >{{ $toKhmer( attendanceTotalByTypes.reduce( (sum , type ) => sum + type.value , 0 ) ) }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -189,8 +194,8 @@ export default {
     const router = useRouter()
     const notify = useNotification()
     const user = ref(null)
-    const AttendanceDate = ref( null )
-    AttendanceDate.value = route.params.date != '' && route.params.date != undefined
+    const attendanceDate = ref( null )
+    attendanceDate.value = route.params.date != '' && route.params.date != undefined
     ? (new Date( route.params.date )).getTime()
     : (new Date()).getTime()
 
@@ -292,6 +297,7 @@ export default {
      */    
     var model = reactive( {
       name: "Attendance" ,
+      module: 'attendance' ,
       title: "វត្តមានប្រចាំខែ"
     })
     var table = reactive( {
@@ -304,11 +310,11 @@ export default {
       columns: {
         searchable: {
           date: '' ,
-          Attendance_type : ''
+          attendance_type : ''
         },
         format: {
           date: '' ,
-          Attendance_type: 'A' ,
+          attendance_type: 'A' ,
           ot_hours: 0 ,
           ot_minutes: 0 ,
           worked_hours: 0 ,
@@ -351,27 +357,27 @@ export default {
      * Functions
      */
     function getRecords(){
-      console.log( dateFormat( new Date(AttendanceDate.value) , "yyyy-mm-dd" ) )
+      // console.log( dateFormat( new Date(attendanceDate.value) , "yyyy-mm-dd" ) )
       /**
        * Clear time interval after calling
        */
       window.clearTimeout()
       table.loading = true
-      store.dispatch(model.name+'/userattendances',{
+      store.dispatch(model.module+'/userattendances',{
         userId: route.params.userId ,
-        date: AttendanceDate.value != null && parseInt( AttendanceDate.value ) > 0 ? dateFormat( new Date(AttendanceDate.value) , "yyyy-mm-dd" ) : dateFormat( new Date() , "yyyy-mm-dd" ) ,
+        date: attendanceDate.value != null && parseInt( attendanceDate.value ) > 0 ? dateFormat( new Date(attendanceDate.value) , "yyyy-mm-dd" ) : dateFormat( new Date() , "yyyy-mm-dd" ) ,
       }).then(res => {
         table.records.all = table.records.matched = res.data.records
         user.value = res.data.user
-        AttendanceTotalByTypes.value = []
-        for( const [ k, v ] of Object.entries( res.data.total_Attendance_by_types ) ){
+        attendanceTotalByTypes.value = []
+        for( const [ k, v ] of Object.entries( res.data.total_attendance_by_types ) ){
           if( parseInt( v ) > 0 ){
-            AttendanceTotalByTypes.value.push({
+            attendanceTotalByTypes.value.push({
               key: k , value : v
             })
           }
         }
-        console.log( AttendanceTotalByTypes.value )
+        
         closeTableLoading()
       }).catch( err => {
         console.log( err )
@@ -448,7 +454,7 @@ export default {
     }
 
     function openPicture( record ){
-      store.dispatch('Attendance/readPhoto',{ id : record.id }).then( res => {
+      store.dispatch('attendance/readPhoto',{ id : record.id }).then( res => {
         console.log(  )
         // Replace this with your Base64-encoded image data
         const base64Image = res.data.base64 
@@ -474,8 +480,8 @@ export default {
       })
     }
 
-    const AttendanceTotalByTypes = ref()
-    const AttendanceTypeLabels = ref([
+    const attendanceTotalByTypes = ref()
+    const attendanceTypeLabels = ref([
       {
         key : 'AB' ,
         label : 'អវត្តមាន' 
@@ -539,7 +545,7 @@ export default {
       model ,
       table ,
       user ,
-      AttendanceDate ,
+      attendanceDate ,
       /**
        * Table
        */
@@ -564,8 +570,8 @@ export default {
       dateFormat ,
       openMap ,
       openPicture ,
-      AttendanceTypeLabels ,
-      AttendanceTotalByTypes
+      attendanceTypeLabels ,
+      attendanceTotalByTypes
     }
   }
 }

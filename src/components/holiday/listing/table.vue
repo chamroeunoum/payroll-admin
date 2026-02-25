@@ -61,7 +61,7 @@
                   <div v-if="record.image == false || record.image == null || record.image == undefined " class="image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ orgLogoUrl +');' " ></div>
                 </td> -->
                 <td class="" >{{ $toKhmer( index + 1 ) }}</td>
-                <td class="text-left leading-6 tracking-wider" >{{ record.title }}</td>
+                <td class="text-left leading-6 tracking-wider" >{{ record.name }}</td>
                 <td class="text-left" >
                   <div class="w-full text-center leading-6 tracking-wider" >{{ $toKhmer( dateFormat( new Date( record.date ) , 'dd-mm-yyyy' ) ) }}</div>
                 </td>
