@@ -25,7 +25,7 @@
                   ref="formRef"
                 >
                   <n-form-item label="ឈ្មោះ" class="w-1/3 p-1" >
-                    <n-input v-model:value="record.title" placeholder="ឈ្មោះ" :min="0" />
+                    <n-input v-model:value="record.name" placeholder="ឈ្មោះ" :min="0" />
                   </n-form-item>
                   <n-form-item label="ថ្ងៃខែឆ្នាំឈប់សម្រាក" class="w-1/2 p-1" >
                     <n-date-picker v-model:value="date" type="date" format="dd-MM-yyyy" placeholder="ថ្ងៃខែឆ្នាំឈប់សម្រាក" class="w-full" />
@@ -89,7 +89,7 @@ export default {
      */    
     const record = reactive({
       id: 0 ,
-      title: '' ,
+      name: '' ,
       desp: '' ,
       date: ''
     })
@@ -98,14 +98,14 @@ export default {
      */
     function clearRecord(){
       record.id = 0 
-      record.title = '' 
+      record.name = '' 
       record.date = ''
       record.desp = ''
       date.value = (new Date()).getTime()
     }
 
     function create(){
-      if( record.title.length <= 0 ){
+      if( record.name.length <= 0 ){
         notify.warning({
           'title' : 'ពិនិត្យព័ត៌មាន' ,
           'description' : 'សូមបញ្ចូលឈ្មោះ។' ,
@@ -125,7 +125,7 @@ export default {
       record.date = date.value != null && parseInt( date.value ) > 0 ? dateFormat( new Date(date.value) , "yyyy-mm-dd" ) : dateFormat( new Date() , "yyyy-mm-dd" )
 
       store.dispatch( props.model.name+'/create',{
-        title: record.title ,
+        name: record.name ,
         date: record.date ,
         desp: record.desp
       }).then( res => {
