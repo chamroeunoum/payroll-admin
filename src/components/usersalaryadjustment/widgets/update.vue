@@ -403,9 +403,6 @@ export default {
     // }
   },
   setup(props){
-
-    console.log( props.record )
-
     var store = useStore()
     const message = useMessage()
     const notify = useNotification()

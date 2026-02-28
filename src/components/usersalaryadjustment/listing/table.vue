@@ -82,35 +82,18 @@
           <table class="vcb-table" >
             <thead>
               <tr>
-                <!-- <th class="w-20" ></th> -->
                 <th class="text-center w-14 " >ល.រ</th>
                 <th class="text-left w-16 " >កូដ</th>
                 <th class="text-left " >ឈ្មោះ</th>
                 <th class="text-left " >អង់គ្លេស</th>
                 <th class="text-left w-16 " >ភេទ</th>
                 <th class="text-center w-40 " >ថ្ងៃខែឆ្នាំកំណើត</th>
-                <th class="text-left w-28 " >រៀបការ</th>
-                <th class="text-left w-28 " >ចំនួនកូន</th>
-                <th class="text-left w-28 " >ទូរសព្ទ</th>
-                <th class="text-left w-28 " >អត្តសញ្ញាណបណ្ណ</th>
-                <th class="text-left w-28 " >កម្រិតអប់រំ</th>
-                <th class="text-left w-28 " >ជំនាញ</th>
-                <th class="text-left w-28 " >ចូលធ្វើការ</th>
-                <th class="text-left " >ផ្នែក</th>
-                <th class="text-left w-40 " >តួនាទី</th>
-                <th class="text-left w-28 " >ប្រាក់ខែ</th>
-                <!-- <th class="text-left w-28 " >ប.ស.ស.</th>
-                <th class="text-left w-28 " >សៀវភៅការងារ</th>             -->
-                
+                <th v-for="( salaryPolicy, index ) in salaryPolicies" :key="index" :class=" ' text-center w-40 ' + ( salaryPolicy.type == 'deduction' ? ' text-red-700 ' : ' text-green-600 ' ) " >{{ salaryPolicy.title }}</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(record, index) in table.records.matched" :key='index' class="item relative" >
-                <!-- <td>
-                  <div v-if="record.image != false && record.image != null && record.image != undefined " class="w-12 h-12 image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
-                  <div v-if="record.image == false || record.image == null || record.image == undefined " class="w-12 h-12 image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ocmLogoUrl+');' " ></div>
-                </td> -->
                 <td class="text-center text-bold" >{{ $toKhmer( index + 1 ) }}</td>
                 <td class="text-left" >{{ $toKhmer( record.code ) }}</td>
                 <td class="text-left" >{{ 
@@ -132,84 +115,15 @@
                   ? $toKhmer( dateFormat( new Date( record.people.dob ) , 'dd-mm-yyyy' ) ) 
                   : ''
                 }}</td>
-                <td class="text-left " >{{  
-                  record.people.marry_status == 'married'
-                    ? 'ការរួច'
-                    : (
-                      record.people.marry_status == 'single'
-                        ? 'នៅលីវ' 
-                        : 'មេមាយ/ពោះមាយ'
-                    )
-                }}</td>
-                <td class="text-left" >{{  parseInt( record.people.kids ) > 0 ? $toKhmer( record.people.kids ) : '' }}</td>
-                <td class="text-left" >{{  $toKhmer( record.people.mobile_phone ) }}</td>
-                <td class="text-left" >{{  $toKhmer( record.people.nid ) }}</td>
-                <td class="text-left" >{{  record.people.degree }}</td>
-                <td class="text-left" >{{  record.people.major }}</td>
-                <td class="text-center" >{{ 
-                  record.official_date != undefined && record.official_date != null 
-                  ? $toKhmer( dateFormat( new Date( record.official_date ) , 'dd-mm-yyyy' ) ) 
-                  : ''
-                }}</td>
-                <td class="text-left" >{{ 
-                (
-                    record.category != undefined && record.category != null
-                      ? record.category.name
-                      : ''
-                  )+
-                  (
-                    record.department != undefined && record.department != null
-                      ? ', ' + record.department.name
-                      : ''
-                  )+
-                  (
-                    record.section != undefined && record.section != null
-                      ? ', ' + record.section.name
-                      : ''
-                  )
-                }}</td>
-                <td class="text-left" >{{ 
-                  record.position != undefined && record.position != null
-                  ? record.position.name
-                  : ''
-                }}</td>
-                <td class="text-left" >{{  $toKhmer( record.salary_rank ) }}</td>
-                <!-- <td class="text-center" >{{ 
-                  record.people.nssf_no != undefined && record.people.nssf_no != null 
-                  ? $toKhmer( record.people.nssf_no )
-                  : ''
-                }}</td>
-                <td class="text-left" >{{ $toKhmer( record.workbook_no ) }}</td> -->
+                <td v-for="( salaryPolicy, index ) in salaryPolicies" :key="index" class="text-center" >
+                  <n-input-number v-model:value="record[salaryPolicy.code]" clearable :default-value="0" @blur="updateUserSalaryAdjustment(record , salaryPolicy )" placeholder="សូមបញ្ចូលតួលេខ" :class=" ( salaryPolicy.type == 'deduction' ? ' text-red-700 ' : ' text-green-600 ' ) " />
+                </td>
                 <td class="relative" >
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
                 </td>
-                <!-- <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" /> -->
               </tr>
             </tbody>
           </table>
-          <!-- <div v-for="(record, index) in table.records.matched" :key='index' class="item" >
-            <div class="content" >
-              <div v-if="record.image != false && record.image != null && record.image != undefined " class="image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
-              <div v-if="record.image == false || record.image == null || record.image == undefined " class="image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ocmLogoUrl+');' " ></div>
-              <div class="flex flex-wrap " >
-                <div class="w-full py-2" >
-                  <div v-if="record.countesy != undefined && record.countesy != null " class="w-full text-center font-moul mr-2" >{{  record.countesy.name }}</div>
-                  <div v-if="record.people != undefined && record.people != null " class="w-full text-center font-moul leading-6 tracking-wider" >{{ record.people.lastname + " " + record.people.firstname }}<br/>{{ record.people.enlastname + " " + record.people.enfirstname }}</div>
-                </div>
-                <div class="w-full flex flex-wrap justify-between text-gray-600" >
-                  <div v-if=" ( record.position != undefined && record.position != null ) || ( record.dob != undefined && record.dob != null ) " class="w-1/2 text-left text-vcb-xs my-1 leading-5 tracking-wider" >
-                    {{ $toKhmer( dateFormat( new Date( record.people.dob ) , 'dd-mm-yyyy' ) ) }}<br/>
-                    {{ record.position.name }}
-                  </div>
-                  <div v-if="record.organization != undefined && record.organization != null " class="w-1/2 text-right text-vcb-xs my-1  leading-5 tracking-wide" v-html=" record.organization.name " ></div>
-                </div>
-                <div v-if="record.card != null && record.card != undefined && record.card.id > 0" class="absolute left-1 top-1 text-vcb-xs text-left font-bold leading-6 tracking-wider  text-gray-500 " >{{ $toKhmer( record.card.number ) }}</div>
-                <div v-if="record.card == null || record.card == undefined && ( record.organization != undefined && record.organization != null ) " class="absolute left-1 top-1 text-vcb-xs text-left font-bold leading-6 tracking-wider  text-blue-500 " v-html=" $toKhmer( ( record.organization != undefined && record.organization != null ? record.organization.prefix + '-' : '' ) + ( record.id + '' ).padStart( 4 , '0' ) )" ></div>
-                <div v-if="record.code != null && record.code != undefined " class="absolute left-1 top-5 text-vcb-xs text-left font-bold leading-6 tracking-wider text-green-700 " v-html=" $toKhmer( record.code )" ></div>
-              </div>
-              <thumbnail-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
-            </div>
-          </div> -->
         </div>
       </Transition>
       <!-- Loading -->
@@ -352,9 +266,15 @@ export default {
      * Variables
      */    
     const model = reactive( {
+      name: "usersalaryadjustment" ,
+      module: "usersalaryadjustments" ,
+      title: "គោលការប្រែប្រួលប្រាក់ខែប្រចាំខែ"
+    })
+
+    const officerModel = reactive({
       name: "officer" ,
       module: "officers" ,
-      title: "បុគ្គលិក"
+      title: "មន្ត្រី"
     })
     const table = reactive( {
       loading: false ,
@@ -425,7 +345,7 @@ export default {
        */
       window.clearTimeout()
       table.loading = true
-      store.dispatch(model.name+'/list',{
+      store.dispatch( officerModel.name+'/list',{
         search: table.search ,
         perPage: table.pagination.perPage ,
         page: table.pagination.page ,
@@ -436,6 +356,8 @@ export default {
         table.records.all = table.records.matched = res.data.records
         table.pagination = res.data.pagination
         
+        getSalaryAdjustments()
+
         var paginationNumberList = 10
         if( ( table.pagination.page - ( parseInt( paginationNumberList / 2 ) + 1 ) ) < 1 ){
           table.pagination.start = 1
@@ -596,6 +518,35 @@ export default {
     function toggleFilter(){
       filter.value = !filter.value
     }
+
+    const salaryPolicies = ref([])
+    function getSalaryAdjustments(){
+      /**
+       * Clear time interval after calling
+       */
+      store.dispatch('salarypolicy/list',{
+        search: '' ,
+        perPage: 200 ,
+        page: 1
+      }).then(res => {
+        salaryPolicies.value = res.data.records
+        if( salaryPolicies.value.length > 0 ){
+          table.records.matched = table.records.all = table.records.all.map( o => {
+            salaryPolicies.value.map( s => {
+              o[s.code] = 0
+            })
+            return o
+          })
+          console.log( table.records.matched )
+        }
+      }).catch( err => {
+        console.log( err )
+      })
+    }
+
+    function updateUserSalaryAdjustment( officer , salaryPolicy ){
+      console.log( officer[ salaryPolicy.code ] )
+    }
     /**
      * Initial the data
      */
@@ -612,6 +563,7 @@ export default {
       model ,
       table ,
       ocmLogoUrl ,
+      salaryPolicies ,
       /**
        * Table
        */
@@ -655,7 +607,8 @@ export default {
       optionOrganizations ,
       selectedOrganizations ,
       getKhmer ,
-      dateFormat
+      dateFormat ,
+      updateUserSalaryAdjustment
     }
   }
 }
