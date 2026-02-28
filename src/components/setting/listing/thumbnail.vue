@@ -21,14 +21,14 @@
                 <div class="font-pvh p-2 m-auto text-xs text-center text-grat-800" >គណនី</div>
               </div>
             </router-link>
-            <router-link to="/officer" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
+            <!-- <router-link to="/officer" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
               <div class='w-full dashboard-widget-link' >
                 <div class="w-16 mx-auto my-2 " >
                   <svg class="text-blue-500 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><g fill="none"><path d="M18 13a1 1 0 0 1 1-1h6a1 1 0 0 1 0 2h-6a1 1 0 0 1-1-1zm1 4a1 1 0 1 0 0 2h6a1 1 0 0 0 0-2h-6zm-6-4a2 2 0 1 1-4 0a2 2 0 0 1 4 0zm-6 4.5A1.5 1.5 0 0 1 8.5 16h5a1.5 1.5 0 0 1 1.5 1.5s0 3.5-4 3.5s-4-3.5-4-3.5zM2 7.25A3.25 3.25 0 0 1 5.25 4h21.5A3.25 3.25 0 0 1 30 7.25v17.5A3.25 3.25 0 0 1 26.75 28H5.25A3.25 3.25 0 0 1 2 24.75V7.25zM5.25 6C4.56 6 4 6.56 4 7.25v17.5c0 .69.56 1.25 1.25 1.25h21.5c.69 0 1.25-.56 1.25-1.25V7.25C28 6.56 27.44 6 26.75 6H5.25z" fill="currentColor"></path></g></svg>
                 </div>
                 <div class="font-pvh p-2 m-auto text-xs text-center text-grat-800" >បុគ្គលិក</div>
               </div>
-            </router-link>
+            </router-link> -->
             <router-link to="/position" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
               <div class='w-full dashboard-widget-link' >
                 <div class="w-16 mx-auto my-2 " >
@@ -94,15 +94,15 @@
                 <div class="font-pvh p-2 m-auto text-xs text-center text-grat-800" >ថ្ងៃឈប់សម្រាក់ប្រចាំឆ្នាំ</div>
               </div>
             </router-link>
-            <router-link to="/salaryadjustment" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
+            <!-- <router-link to="/salaryadjustment" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
               <div class='w-full dashboard-widget-link' >
                 <div class="w-16 mx-auto my-2 " >
                   <svg class="text-blue-500 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none"><path d="M10.5 7a3 3 0 1 0 0 6a3 3 0 0 0 0-6zM9 10a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0zM2 6.25A2.25 2.25 0 0 1 4.25 4h12.5A2.25 2.25 0 0 1 19 6.25V11h-1.5V8.5h-.75a2.25 2.25 0 0 1-2.25-2.25V5.5h-8v.75A2.25 2.25 0 0 1 4.25 8.5H3.5v3h.75a2.25 2.25 0 0 1 2.25 2.25v.75H14V16H4.25A2.25 2.25 0 0 1 2 13.75v-7.5zm2.25-.75a.75.75 0 0 0-.75.75V7h.75A.75.75 0 0 0 5 6.25V5.5h-.75zM17.5 7v-.75a.75.75 0 0 0-.75-.75H16v.75c0 .414.336.75.75.75h.75zm-14 6.75c0 .414.336.75.75.75H5v-.75a.75.75 0 0 0-.75-.75H3.5v.75zm.901 3.75H14V19H7c-1.11 0-2.08-.603-2.599-1.5zM22 11V9c0-1.11-.603-2.08-1.5-2.599V11H22zm-5.5 1a1.5 1.5 0 0 0-1.5 1.5v8a1.5 1.5 0 0 0 1.5 1.5h5a1.5 1.5 0 0 0 1.5-1.5v-8a1.5 1.5 0 0 0-1.5-1.5h-5zm.5 4.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm-3 2h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm-3 2h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zM16.5 14a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-1z" fill="currentColor"></path></g></svg>
                 </div>
                 <div class="font-pvh p-2 m-auto text-xs text-center text-grat-800" >គោលការណ៍សម្របសម្រួលប្រាក់ខែ</div>
               </div>
-            </router-link>
-            <router-link to="/Attendancepolicy" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
+            </router-link> -->
+            <!-- <router-link to="/Attendancepolicy" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
               <div class='w-full dashboard-widget-link' >
                 <div class="w-16 mx-auto my-2 " >
                   <svg class="text-blue-500 " 
@@ -110,8 +110,8 @@
                 </div>
                 <div class="font-pvh p-2 m-auto text-xs text-center text-grat-800" >គោលការណ៍វត្តមាន</div>
               </div>
-            </router-link>
-            <router-link to="/salaryadjustment" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
+            </router-link> -->
+            <!-- <router-link to="/salaryadjustment" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
               <div class='w-full dashboard-widget-link' >
                 <div class="w-16 mx-auto my-2 " >
                   <svg class="text-blue-500 " 
@@ -119,7 +119,7 @@
                 </div>
                 <div class="font-pvh p-2 m-auto text-xs text-center text-grat-800" >គោលការណ៍ប្រាក់ខែ</div>
               </div>
-            </router-link>
+            </router-link> -->
             <router-link to="/generalsetting" class="bg-gray-50 shadow py-4 px-8 hover:scale-110 transform-gpu duration-300 text-center p-2 m-4  cursor-pointer hover:bg-gray-50 hover:bg-opacity-10 rounded-lg" >
               <div class='w-full dashboard-widget-link' >
                 <div class="w-16 mx-auto my-2 " >
