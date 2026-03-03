@@ -565,9 +565,6 @@ export default {
 .vcb-table thead tr {
   @apply bg-gray-200  ;
 }
-.vcb-table thead tr:hover {
-  @apply bg-yellow-100 ;
-}
 .vcb-table thead tr th {
   @apply p-1 text-left ;
 }

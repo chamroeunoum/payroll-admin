@@ -206,9 +206,9 @@ export default {
      * Variables
      */    
     const model = reactive( {
-      name: "contract" ,
-      module: "contracts" ,
-      title: "កិច្ចសន្យា"
+      name: "salarypolicy" ,
+      module: "salarypolicies" ,
+      title: "ការកំណត់គោលការប្រាក់ខែ"
     })
     const table = reactive( {
       loading: false ,

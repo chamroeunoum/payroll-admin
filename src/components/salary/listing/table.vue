@@ -780,9 +780,6 @@ export default {
 .vcb-thumbnail .item .content {
   @apply border rounded-lg hover:shadow duration-500 p-4 pt-8 relative hover:scale-105 transform-gpu bg-white hover:bg-yellow-100;
 }
-.vcb-thumbnail .item:hover {
-  @apply bg-yellow-100;
-}
 .image {
   @apply rounded-full  p-2 flex-none mx-auto overflow-hidden ;
 }

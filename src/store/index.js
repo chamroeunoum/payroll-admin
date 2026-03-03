@@ -3,6 +3,7 @@ import auth from './modules/authentication'
 
 import user from './modules/user'
 import officer from './modules/officer'
+import usersalaryadjustment from './modules/usersalaryadjustment'
 import organizations from './modules/organization'
 import people from './modules/people'
 import position from './modules/position'
@@ -13,6 +14,7 @@ import attendancepolicy from './modules/attendancepolicy'
 import generalsetting from './modules/setting'
 import salary from './modules/salary'
 import salaryadjustment from './modules/salaryadjustment'
+import salarypolicy from './modules/salarypolicy'
 import holiday from './modules/holiday'
 
 
@@ -39,6 +41,7 @@ export default createStore({
     attendance ,
     attendancepolicy ,
     user,
+    usersalaryadjustment ,
     officer,
     people ,
     organizations ,
@@ -46,6 +49,7 @@ export default createStore({
     countesy ,
     salary ,
     salaryadjustment ,
+    salarypolicy ,
     error ,
     generalsetting ,
     holiday

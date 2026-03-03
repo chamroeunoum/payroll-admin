@@ -45,6 +45,12 @@ import OfficerTableCrud from './../components/officer/listing/table.vue'
 import OfficerSalaryPreview from './../components/officer/listing/salarypreview.vue'
 
 /**
+ * User Salary Adjustment of Month
+ */
+import UserSalaryAdjustmentCrud from './../components/usersalaryadjustment/index.vue'
+import UserSalaryAdjustmentTable from './../components/usersalaryadjustment/listing/table.vue'
+
+/**
  * Officer Salary Components
  */
 import SalaryCrud from './../components/salary/index.vue'
@@ -79,9 +85,9 @@ import HolidayTableCrud from './../components/holiday/listing/table.vue'
 /**
  * Salary Adjustment Components
  */
-import SalaryAdjustmentCrud from './../components/salaryadjustment/index.vue'
-import SalaryAdjustmentThumbnailCrud from './../components/salaryadjustment/listing/thumbnail.vue'
-import SalaryAdjustmentTableCrud from './../components/salaryadjustment/listing/table.vue'
+import SalaryPolicyCrud from './../components/salarypolicy/index.vue'
+import SalaryPolicyThumbnailCrud from './../components/salarypolicy/listing/thumbnail.vue'
+import SalaryPolicyTableCrud from './../components/salarypolicy/listing/table.vue'
 
 import QRComponent from './../components/qrcodes/index.vue'
 import QRListComponent from './../components/qrcodes/list.vue'
@@ -304,6 +310,23 @@ export const getRoutes = () => {
                 ]
             },
             {
+                name: 'UserSalaryAdjustment' ,
+                path: '/usersalaryadjustment',
+                component: UserSalaryAdjustmentCrud ,
+                meta: { 
+                    transition: 'slide-right' ,
+                    requiresAuth: true,
+                    is_admin : true
+                },
+                children: [
+                    {
+                        name: "UserSalaryAdjustmentTable" ,
+                        path: '' ,
+                        component: UserSalaryAdjustmentTable // UserSalaryAdjustmentTable
+                    }
+                ]
+            },
+            {
                 name: 'Salary' ,
                 path: '/salary',
                 component: SalaryCrud ,
@@ -411,9 +434,9 @@ export const getRoutes = () => {
                 ]
             },
             {
-                name: 'SalaryAdjustment' ,
-                path: '/salaryadjustment',
-                component: SalaryAdjustmentCrud ,
+                name: 'SalaryPolicy' ,
+                path: '/salarypolicy',
+                component: SalaryPolicyCrud ,
                 meta: { 
                     transition: 'slide-right' ,
                     requiresAuth: true,
@@ -421,14 +444,14 @@ export const getRoutes = () => {
                 },
                 children: [
                     {
-                        name: "SalaryAdjustmentTableCrud" ,
+                        name: "SalaryPolicyTableCrud" ,
                         path: '' ,
-                        component: SalaryAdjustmentTableCrud
+                        component: SalaryPolicyTableCrud
                     },
                     {
-                        name: "SalaryAdjustmentThumbnail" ,
+                        name: "SalaryPolicyThumbnail" ,
                         path: 'thumbnail' ,
-                        component: SalaryAdjustmentThumbnailCrud
+                        component: SalaryPolicyThumbnailCrud
                     }
                 ]
             },

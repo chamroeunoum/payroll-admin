@@ -19,7 +19,7 @@ export default {
     setup() {
       return {}
     },
-    name: "SalaryAdjustmentPage", 
+    name: "SalaryPolicyPage", 
     data() {
         return {};
     },

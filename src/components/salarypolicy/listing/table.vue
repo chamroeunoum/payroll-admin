@@ -49,23 +49,27 @@
                 <!-- <th></th> -->
                 <th class="text-center w-20" >ល.រ</th>
                 <th class="text-left" >ឈ្មោះ</th>
-                <th class="text-right w-24 " >តម្លៃគោល</th>
-                <th class="text-center w-24 " >គោលការណ៍</th>
-                <th class="text-left " >ផ្សេង</th>
+                <th class="text-left" >កូត</th>
+                <!-- <th class="text-center" >ប្រភេទធាតុចូល</th>
+                <th class="text-center w-24 " >គោលការគណនា</th>
+                <th class="text-center w-24 " >ប្រភេទគោលការ</th>
+                <th class="text-center w-24 " >ប្រភេទចង្កោមការងារ</th> -->
                 <th class="text-left w-14" ></th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(record, index) in table.records.matched" :key='index' :class=" (parseInt( record.adjustment_type ) > 0 ? ' text-green-700 ' : ' text-red-600 ') + ( index % 2 ? ' bg-gray-100 ' : '' ) " >
+              <tr v-for="(record, index) in table.records.matched" :key='index' :class=" ( record.type != 'deduction' ? ' text-green-700 ' : ( record.is_active == true ? ' text-red-600 ' : ' text-gray-300 ' ) ) + ( index % 2 ? ' bg-gray-100 ' : '' ) " >
                 <!-- <td class="w-20" >
                   <div v-if="record.image != false && record.image != null && record.image != undefined " class="image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
                   <div v-if="record.image == false || record.image == null || record.image == undefined " class="image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ orgLogoUrl +');' " ></div>
                 </td> -->
                 <td class="text-center " >{{ $toKhmer( index + 1 )+'.' }}</td>
                 <td class="text-left leading-6 tracking-wider" >{{ record.title }}</td>
-                <td class="text-right" >{{  $toKhmer( record.default_value ) }}</td>
-                <td class="text-center" >{{  record.adjustment_type == 0 ? 'កាត់បន្ថយ' : 'បន្ថែម' }}</td>
-                <td class="text-left" >{{ record.desp }}</td>
+                <td class="text-left w-24" >{{  ( record.code ) }}</td>
+                <!-- <td class="text-center w-24" >{{  record.input_type == 'user' ? 'អ្នកប្រើប្រព័ន្ធ' : 'ប្រព័ន្ធ' }}</td>
+                <td class="text-center w-24" >{{ record.period }}</td>
+                <td class="text-center w-24" >{{  record.type == 'deduction' ? 'កាត់បន្ថយ' : 'បន្ថែម' }}</td>
+                <td class="text-center" >{{ record.module_name }}</td> -->
                 <td class="relative" >
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
                 </td>
@@ -188,7 +192,7 @@ import dateFormat from 'dateformat'
 // import CreateForm from './../widgets/create.vue'
 import TableActionsForm from './actions/table-action.vue'
 export default {
-  name: "Contract" ,
+  name: "SalaryPolicy" ,
   components: {
     QrcodeVue ,
     Vue3Barcode,
@@ -204,9 +208,9 @@ export default {
      * Variables
      */    
     const model = reactive( {
-      name: "salaryadjustment" ,
-      module: "salaryadjustments" ,
-      title: "គោលការសម្របសម្រួលប្រាក់ខែ"
+      name: "salarypolicy" ,
+      module: "salarypolicies" ,
+      title: "ការកំណត់គោលការប្រាក់ខែ"
     })
     const table = reactive( {
       loading: false ,
