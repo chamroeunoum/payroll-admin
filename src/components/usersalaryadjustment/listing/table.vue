@@ -118,9 +118,9 @@
                 <td v-for="( salaryPolicy, index ) in salaryPolicies" :key="index" class="text-center" >
                   <n-input-number v-model:value="record[salaryPolicy.code]" clearable :default-value="0" @blur="updateUserSalaryAdjustment(record , salaryPolicy )" placeholder="សូមបញ្ចូលតួលេខ" :class=" ( salaryPolicy.type == 'deduction' ? ' text-red-700 ' : ' text-green-600 ' ) " />
                 </td>
-                <td class="relative" >
+                <!-- <td class="relative" >
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
-                </td>
+                </td> -->
               </tr>
             </tbody>
           </table>

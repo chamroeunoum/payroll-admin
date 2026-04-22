@@ -799,7 +799,7 @@ export default {
   @apply p-2;
 }
 .vcb-table tr th {
-  @apply p-2 border-b border-gray-200 relative ;
+  @apply p-2 border-b border-gray-200 relative text-nowrap ;
 }
 .vcb-table tr td {
   @apply p-2 relative h-16;
