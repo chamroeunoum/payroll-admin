@@ -11,9 +11,9 @@
               <img src="/src/assets/logo.jpg" class="w-10 h-10" />
               <div class="font-moul ml-2 " style="font-size: 1.2rem; " >ក្រុមហ៊ុន អូ អេន អិម (ខេមបូឌា) ខូអិលធីឌី</div>
             </div>
-            <div class="w-full mb-2 font-moul text-center" style="font-size: 1rem; " >ប្រាក់បៀវត្ស សំរាប់ខែ តុលា ឆ្នាំ ២០២៥</div>
-            <div class="w-full mb-0 text-center font-bold" >Pay Slip for the month of Oct 2025</div>
-            <div class="w-full mb-3 text-center font-bold" >From 01-Jan-2025 To 31-Jan-2025</div>
+            <div class="w-full mb-2 font-moul text-center" style="font-size: 1rem; " >ការពិនិត្យប្រាក់បៀវត្ស</div>
+            <!-- <div class="w-full mb-0 text-center font-bold" >Pay Slip for the month of Oct 2025</div>
+            <div class="w-full mb-3 text-center font-bold" >From 01-Jan-2025 To 31-Jan-2025</div> -->
             <table class="w-full border border-dashed border-gray-200 " >
               <tbody>
                 <tr class="">
@@ -22,18 +22,18 @@
                   <td class="font-bold p-1 " colspan="2"  >ថ្ងៃចូលធ្វើការ/Date Join</td>
                 </tr>
                 <tr>
-                  <td class="font-bold p-1 pb-2" >{{ record.officer.code }}</td>
-                  <td class=" p-1 pb-2">{{ record.officer.people.lastname + ' ' + record.officer.people.firstname }}</td>
-                  <td class="font-bold p-1 pb-2" colspan="2" >{{ dateFormat( record.officer.official_date , 'dd/mm/yyyy' ) }}</td>
+                  <td class="font-bold p-1 pb-2" >{{ record.code }}</td>
+                  <td class=" p-1 pb-2">{{ record.people.lastname + ' ' + record.people.firstname }}</td>
+                  <td class="font-bold p-1 pb-2" colspan="2" >{{ dateFormat( record.official_date , 'dd/mm/yyyy' ) }}</td>
                 </tr>
                 <tr>
-                  <td class="font-bold p-1 pb-2" colspan="2"  >ផ្នែក/Department : {{ record.officer.department.name }}</td>
-                  <td class="font-bold p-1 pb-2" colspan="2"  >លេខ បសស/NSSF : {{ record.officer.people.nssf_no }}</td>
+                  <td class="font-bold p-1 pb-2" colspan="2"  >ផ្នែក/Department : {{ record.department.name }}</td>
+                  <td class="font-bold p-1 pb-2" colspan="2"  >លេខ បសស/NSSF : {{ record.people.nssf_no }}</td>
                 </tr>
                 <tr>
                   <td class=" p-1 " colspan="4" >
                     <div class="flex w-full" >
-                      ប្រាក់ឈ្នួលមូលដ្ឋានសម្រាប់ខែនេះ This month Base : <div class="font-bold w-24 text-left pl-2" >{{ record.officer.salary_rank }} $</div>
+                      ប្រាក់ឈ្នួលមូលដ្ឋានសម្រាប់ខែនេះ This month Base : <div class="font-bold w-24 text-left pl-2" >{{ record.salary_rank }} $</div>
                     </div>
                   </td>
                 </tr>
@@ -42,7 +42,7 @@
                 </tr>
               </tbody>
             </table>
-            <div class="w-full my-4 font-btb-black text-center" >ប្រាក់ខែសម្រាប់ខែ {{ $toKhmer( dateFormat( new Date(record.date) , 'mm-yyyy' ) ) }}</div>
+            <!-- <div class="w-full my-4 font-btb-black text-center" >ប្រាក់ខែសម្រាប់ខែ {{ $toKhmer( dateFormat( new Date(record.date) , 'mm-yyyy' ) ) }}</div> -->
             <table class="w-full table-payment-details border-double border-4 border-gray-500 " >
               <tbody>
                 <tr>
@@ -52,124 +52,124 @@
                 </tr>
                 <tr>
                   <td>ចំនួនថ្ងៃនិងប្រាក់ដែលធ្វើការថ្ងៃធម្មតា Regular Pay</td>
-                  <td >{{ record.total_worked_days }}</td>
-                  <td >{{ record.regular_pay }}</td>
+                  <td >{{ previewSalary?.attendancesOfTheMonth?.total?.worked_days }}</td>
+                  <td >{{ previewSalary?.attendancesOfTheMonth?.total?.pay_base_worked_time }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនថ្ងៃអវត្តមាន No. Of Absences</td>
-                  <td colspan="2" >{{ record.total_absent_days }}</td>
+                  <td colspan="2" >{{ previewSalary?.attendancesOfTheMonth?.total?.attendance_by_types?.AB }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួន/ប្រាក់ម៉ោងបន្ថែមធម្មតា OT Pay 150%</td>
-                  <td>{{ record.overtime }}</td>
-                  <td>{{ record.ot_pay }}</td>
+                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.overtime / 60 }}</td>
+                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.ot_pay }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួន/ប្រាក់ម៉ោងបន្ថែម Pay 200%</td>
-                  <td></td>
-                  <td></td>
+                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.holiday_worked_time / 60 }}</td>
+                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.holiday_pay }}</td>
                 </tr>
                 <tr>
                   <td>ថ្ងៃជួសការសម្រាក់ប្រចាំឆ្នាំ Annual Leave</td>
-                  <td colspan="2">{{ record.al_pay }}</td>
+                  <td colspan="2">{{ previewSalary?.attendancesOfTheMonth?.total?.attendance_by_types?.AL }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួន/ប្រាក់ថ្ងៃសុំច្បាស់ឈឺ Sick Leave</td>
-                  <td colspan="2"></td>
+                  <td colspan="2">{{ previewSalary?.attendancesOfTheMonth?.total?.attendance_by_types?.SK }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួន/ប្រាក់ថ្ងៃច្បាស់មាតុភាព Maternity Leave</td>
-                  <td></td>
+                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.attendance_by_types?.AL }}</td>
                   <td>{{ record.maternity_pay }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួន/ប្រាក់ម៉ោងបន្ថែមថ្ងៃបុណ្យ PH Pay</td>
-                  <td>{{ record.holiday_worked_time }}</td>
-                  <td>{{ record.holiday_pay }}</td>
+                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.holiday_worked_time / 60 }}</td>
+                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.holiday_pay }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួន/ប្រាក់ម៉ោងបន្ថែម Sunday Pay</td>
-                  <td></td>
-                  <td>{{ record.weekend_pay }}</td>
+                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.sunday_worked_time / 60 }}</td>
+                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.weekend_pay }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់រង្វាន់ការងារ Attendance Bonus</td>
-                  <td colspan="2">{{ record.attendance_bonus_pay }}</td>
+                  <td colspan="2">{{ previewSalary?.attendancesOfTheMonth?.attendance_bonus }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់ឧបត្ថមថ្លៃធ្វើដំណើរ Trip Fee</td>
-                  <td colspan="2">{{ record.trip_pay }}</td>
+                  <td colspan="2">{{ previewSalary?.attendancesOfTheMonth?.trip_fee }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់ឧបត្ថមអាហារសម្រាប់ធ្វើការថែមម៉ោង Dinner for working OT</td>
-                  <td colspan="2">{{ record.dinner_pay }}</td>
+                  <td colspan="2">{{ previewSalary?.attendancesOfTheMonth?.total?.dinner_pay }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់រង្វាន់ Rewards</td>
-                  <td colspan="2">{{ record.reward_pay }}</td>
+                  <td colspan="2">{{ previewSalary?.rewards }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់ឧបត្ថមទារកដ្ឋាន Bonus Day Care</td>
-                  <td colspan="2">{{ record.bonus_daycare }}</td>
+                  <td colspan="2">{{ previewSalary?.bonus_daycare }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់ទូទាត់សម្រាប់ប្រាក់ប្រចាំឆ្នាំ Comp. for annual leave</td>
-                  <td colspan="2"></td>
+                  <td colspan="2">{{ previewSalary?.comp_for_annual_leave }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់អតីតភាព Seniority Bonus</td>
-                  <td colspan="2">{{ record.senority }}</td>
+                  <td colspan="2">{{ previewSalary?.seniority_bonus }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់បំណាច់អតីតភាពការងារថ្មី New work seniority bonus</td>
-                  <td colspan="2">{{ record.newwork_senority }}</td>
+                  <td colspan="2">{{ previewSalary?.newwork_seniority_bonus }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់ដែលត្រូវសង Salary adjustment</td>
-                  <td colspan="2"></td>
+                  <td colspan="2">{{ previewSalary?.salary_adjustments?.key }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់សរុបទាំងអស់ Gross Pay</td>
-                  <td colspan="2">{{ record.gross_salary }}</td>
+                  <td colspan="2">{{ previewSalary?.gross_salary }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់កាត់ថ្លៃថែទាំសុខភាព Health Care Service</td>
-                  <td colspan="2"></td>
+                  <td colspan="2">0</td>
                 </tr>
                 <tr>
                   <td>កាត់ប្រាក់ពន្ធ Tax</td>
-                  <td colspan="2"></td>
+                  <td colspan="2">{{ previewSalary?.tax_withholding }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់បានខ្ចី Cash Advance</td>
-                  <td colspan="2">{{ record.borrow }}</td>
+                  <td colspan="2">{{ previewSalary?.cash_advance }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់គោលសុទ្ធបើកលើកទី១ពាក់កណ្ដាលខែ<br/>Take basic salary middle of month (50%)</td>
-                  <td colspan="2"></td>
+                  <td colspan="2">{{ previewSalary?.basic_salary_middle_of_month }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់កាត់ទុករបបសន្តិសុខសង្គម(សោធនិវត្ស)<br/>Amount withhold on NSSF 2%</td>
-                  <td colspan="2">{{ record.nssf }}</td>
+                  <td colspan="2">{{ previewSalary?.nssf }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់កាត់មានកំហុស Mistake</td>
-                  <td colspan="2">{{ record.mistake }}</td>
+                  <td colspan="2">{{ previewSalary?.mistake }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់កាត់ថ្លៃទឹកភ្លើង Deduce Utilities</td>
-                  <td colspan="2">{{ record.utility }}</td>
+                  <td colspan="2">{{ previewSalary?.utilities }}</td>
                 </tr>
                 <tr>
                   <td class="flex gap-2 " ><div class="font-moul" >ប្រាក់ឈ្នួលសរុប</div><div class="" >Net Pay</div></td>
-                  <td colspan="2">{{ record.net_salary }}</td>
+                  <td colspan="2">{{ previewSalary?.net_pay }}</td>
                 </tr>
               </tbody>
               <!-- <tbody>
               <tr >
                 <td class=" w-8 p-2"  >{{ $toKhmer( 1 ) }}.</td>
                 <td class="p-2" >ប្រាក់ខែគោល</td>
-                <td class="p-2 text-green-600 text-right " >{{ $toKhmer( parseFloat( record.officer.salary_rank ).toFixed(2) ) }}</td>
+                <td class="p-2 text-green-600 text-right " >{{ $toKhmer( parseFloat( record.salary_rank ).toFixed(2) ) }}</td>
               </tr>
               <tr >
                 <td class=" w-8 p-2"  >{{ $toKhmer( index + 2 ) }}.</td>
@@ -183,7 +183,7 @@
                 <th class="p-1 text-right" >{{ 
                   $toKhmer( 
                     parseFloat( 
-                      parseFloat( record.officer.salary ) + 
+                      parseFloat( record.salary ) + 
                       ( 
                         record.PayrollAdjustmentHistories != undefined 
                           ? record.PayrollAdjustmentHistories.reduce( ( sum , adj ) => 
@@ -255,6 +255,12 @@ export default {
       type: Boolean ,
       default: false
     },
+    salaryType: {
+      type: Number
+    },
+    salaryDate: {
+      type: Number
+    },
     onClose: {
       type: Function
     } ,
@@ -278,7 +284,7 @@ export default {
     ) 
 
     const userCountesies = computed( () => {
-      return props.record.officer.countesy != undefined ? props.record.officer.countesy.name : 'ok'
+      return props.record.countesy != undefined ? props.record.countesy.name : 'ok'
     })
     
 
@@ -307,7 +313,7 @@ export default {
       // props.record.lastname = ""
       // props.record.phone = ""
       // props.record.email = ""
-      // props.record.officer.people = null ,
+      // props.record.people = null ,
       // props.record.organizations = [] 
       // props.record.positions = []
       // selectedPositions.value = []
@@ -367,10 +373,26 @@ export default {
       props.onClose( 0 )
     }
 
+    const previewSalary = ref(null)
+    function getPreviewSalary(){
+      store.dispatch('officer/previewSalary',{
+        officer_id : props.record.id ,
+        type: parseInt( props.salaryType ) > 0 ? (
+          parseInt( props.salaryType ) > 2 ? 2 : 1
+        ): 0 ,
+        date: dateFormat( new Date( props.salaryDate ) , 'yyyy-mm-dd')
+      }).then( res => {
+        previewSalary.value = res.data.ok == true ? res.data.result : null
+        console.log( res )
+      }).catch( err => {
+        console.log( err )
+      })
+    }
     function initial(){
+      getPreviewSalary()
       // selectedOrganizations.value = [463]
-      selectedOrganizations.value = Array.isArray( props.record.officer.people.organizations ) ? props.record.officer.people.organizations.map( o => o.id ) : []
-      selectedPositions.value = Array.isArray( props.record.officer.people.positions ) ? props.record.officer.people.positions.map( o => o.id ) : []
+      // selectedOrganizations.value = Array.isArray( props.record.people.organizations ) ? props.record.people.organizations.map( o => o.id ) : []
+      // selectedPositions.value = Array.isArray( props.record.people.positions ) ? props.record.people.positions.map( o => o.id ) : []
     }
 
     return {
@@ -383,6 +405,7 @@ export default {
       selectedPositions ,
       positions , 
       userCountesies ,
+      previewSalary ,
       /**
        * Functions
        */
@@ -391,7 +414,7 @@ export default {
       clearRecord ,
       maskOrEscClick ,
       ocmLogoUrl ,
-      dateFormat
+      dateFormat 
     }
   }
 }

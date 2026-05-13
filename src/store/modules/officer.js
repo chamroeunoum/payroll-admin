@@ -30,7 +30,9 @@ const actions = {
         page: params.page ,
         positions: params.positions == undefined ? [] : params.positions ,
         organizations: params.organizations == undefined ? [] : params.organizations ,
-        ids: params.ids == undefined ? [] : params.ids
+        ids: params.ids == undefined ? [] : params.ids ,
+        date: params.date == undefined ? '' : params.date ,
+        attendance_date: params.attendance_date == undefined ? '' : params.attendance_date
       }).toString()
     )
   },
@@ -70,9 +72,16 @@ const actions = {
   async upload({ state, commit, rootState },formData) {    
     return await crud.upload(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/upload",formData)
   },
-  async generateSalary ({ state, commit, rootState },params) {
+  async generateSalary({ state, commit, rootState },params) {
     return await crud.create(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/generatesalary",params)
   },
+  async previewSalary({ state, commit, rootState },params) {
+    return await crud.read(import.meta.env.VITE_API_SERVER+"/"+state.model.name+'/previewsalary' + "?" + new URLSearchParams({
+        officer_id: params.officer_id ,
+        date: params.date ,
+        type: params.type ,
+      }).toString())
+  }
 }
 
 // mutations

@@ -494,7 +494,7 @@ export default {
           'passport' : props.record.passport ,
           'email' : props.record.email ,
           'phone' : props.record.phone ,
-          'caregory_id' : props.record.category_id ,
+          'category_id' : props.record.category_id ,
           'department_id' : props.record.category_id ,
           'section_id' : props.record.category_id ,
           'salary_rank' : parseFloat( props.record.salary_rank ) <= 0 ? 0 : parseFloat( props.record.salary_rank ) ,

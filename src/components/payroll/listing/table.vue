@@ -13,12 +13,12 @@
         <!-- <div class="mt-1 ml-2 flex flex-wrap">
           <n-tooltip trigger="hover">
             <template #trigger>
-              <svg class="ml-1 w-7 h-7 p-1 mt-1 bg-white rounded-full border border-gray-300 cursor-pointer hover:text-green-500 duration-300" @click="toggleFilter()" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M18 28h-4a2 2 0 0 1-2-2v-7.59L4.59 11A2 2 0 0 1 4 9.59V6a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v3.59a2 2 0 0 1-.59 1.41L20 18.41V26a2 2 0 0 1-2 2zM6 6v3.59l8 8V26h4v-8.41l8-8V6z" fill="currentColor"></path></svg>
+              <svg class="ml-1 w-7 h-7 p-1 mt-1 bg-white rounded-full border border-gray-300 cursor-pointer hover:text-green-700 duration-300" @click="toggleFilter()" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M18 28h-4a2 2 0 0 1-2-2v-7.59L4.59 11A2 2 0 0 1 4 9.59V6a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v3.59a2 2 0 0 1-.59 1.41L20 18.41V26a2 2 0 0 1-2 2zM6 6v3.59l8 8V26h4v-8.41l8-8V6z" fill="currentColor"></path></svg>
             </template>
             សម្រង់ទិន្នន័យ
           </n-tooltip>
         </div> -->
-        <div class="w-3/5 md:w-2/5 relative" >
+        <!-- <div class="w-3/5 md:w-2/5 relative" >
           <n-tooltip trigger="hover">
             <template #trigger>
               <div class="w-full relative" >
@@ -28,12 +28,16 @@
             </template>
             សូមបញ្ចូលពាក្យគន្លឹះដើម្បីស្វែងរក
           </n-tooltip>
-        </div>
-        <div class="mt-1 mr-2 flex flex-wrap">
-          <!-- <router-link to="/officer/import" class="border rounded h-8 py-1 px-3 duration-300 hover:border-blue-600 hover:text-blue-700 leading-6" >នាំចូល</router-link> -->
+        </div> -->
+        <div class="mt-1 mr-2 flex flex-wrap leading-9 ">
+          <!-- <n-date-picker type="date" v-model:value="date" clearable placeholder="សូមជ្រើសរើសថ្ងៃខែឆ្នាំ" class="mx-1 " /> -->
+          <!-- <n-button @click="generateSalaries" class="mr-2" >គណនាប្រាក់ខែ</n-button> -->
+           <n-button @click="$router.push('/payroll/generate')" class="mr-2" >គណនាប្រាក់ខែ</n-button>
+          ច្រោះតាមខែ <n-date-picker type="month" v-model:value="filterMonth" clearable placeholder="សូមជ្រើសរើសខែ" class="mx-1 " @update:value="filterByMonth" />
+          ច្រោះតាមឆ្នាំ <n-date-picker type="year" v-model:value="filterYear" clearable placeholder="សូមជ្រើសរើសឆ្នាំ" class="mx-1 " @update:value="filterByYear" />
           <!-- <n-tooltip trigger="hover">
             <template #trigger>
-              <div @click="showCreateModal()" class="flex cursor-pointer hover:text-green-500 duration-300 ml-2 leading-8" >
+              <div @click="showCreateModal()" class="flex cursor-pointer hover:text-green-700 duration-300 ml-2 leading-8" >
                 <svg class="w-8 h-8 mr-1 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path><path d="M12 9v6"></path></g></svg>
                 មន្ត្រីមានអត្តលេខ
               </div>
@@ -42,7 +46,7 @@
           </n-tooltip>
           <n-tooltip trigger="hover">
             <template #trigger>
-              <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-500 duration-300 ml-2 leading-8" >
+              <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-700 duration-300 ml-2 leading-8" >
                 <svg class="w-8 h-8 mr-1 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path><path d="M12 9v6"></path></g></svg>
                 មន្ត្រីគ្មានអត្តលេខ
               </div>
@@ -51,29 +55,23 @@
           </n-tooltip> -->
           <!-- <n-tooltip trigger="hover">
             <template #trigger>
-              <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-500 duration-300 ml-2 leading-8" >
+              <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-700 duration-300 ml-2 leading-8" >
                 <svg class="w-8 h-8 mr-1 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path><path d="M12 9v6"></path></g></svg>
               </div>
             </template>
             បន្ថែមបុគ្គលិក
-          </n-tooltip> -->
+          </n-tooltip>
           <n-tooltip trigger="hover">
             <template #trigger>
-              <n-date-picker v-model:value="timestamp" type="month" clearable @update:value="filterRecords(false)" />
-            </template>
-            ត្រឡប់ទៅ ការកំណត់
-          </n-tooltip>
-          <!-- <n-tooltip trigger="hover">
-            <template #trigger>
               <router-link to="/setting" >
-                <svg class="w-8 h-8 mx-1 cursor-pointer hover:text-green-500 duration-300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M1.91 7.383a8.491 8.491 0 0 1 1.78-3.08a.5.5 0 0 1 .54-.135l1.918.686a1 1 0 0 0 1.32-.762l.366-2.006a.5.5 0 0 1 .388-.4a8.532 8.532 0 0 1 3.555 0a.5.5 0 0 1 .387.4l.367 2.006a1 1 0 0 0 1.32.762l1.918-.686a.5.5 0 0 1 .54.136a8.491 8.491 0 0 1 1.78 3.079a.5.5 0 0 1-.152.535l-1.555 1.32a1 1 0 0 0 0 1.524l1.555 1.32a.5.5 0 0 1 .152.535a8.491 8.491 0 0 1-1.78 3.08a.5.5 0 0 1-.54.135l-1.918-.686a1 1 0 0 0-1.32.762l-.367 2.007a.5.5 0 0 1-.387.399a8.53 8.53 0 0 1-3.555 0a.5.5 0 0 1-.388-.4l-.365-2.006a1 1 0 0 0-1.32-.762l-1.919.686a.5.5 0 0 1-.54-.136a8.49 8.49 0 0 1-1.78-3.079a.5.5 0 0 1 .153-.535l1.554-1.32a1 1 0 0 0 0-1.524l-1.554-1.32a.5.5 0 0 1-.153-.535zm1.061-.006l1.294 1.098a2 2 0 0 1 0 3.05L2.97 12.623c.292.782.714 1.51 1.245 2.152l1.596-.57a2 2 0 0 1 2.64 1.525l.305 1.668a7.556 7.556 0 0 0 2.485 0l.305-1.67a1.998 1.998 0 0 1 2.64-1.524l1.597.571a7.492 7.492 0 0 0 1.245-2.152l-1.294-1.098a1.998 1.998 0 0 1 0-3.05l1.294-1.098a7.491 7.491 0 0 0-1.245-2.152l-1.596.57a2 2 0 0 1-2.64-1.524l-.306-1.669a7.555 7.555 0 0 0-2.485 0l-.304 1.669a2 2 0 0 1-2.641 1.525l-1.596-.571a7.491 7.491 0 0 0-1.245 2.152zM7.5 10a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0zm1 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 0 0-3 0z" fill="currentColor"></path></g></svg>
+                <svg class="w-8 h-8 mx-1 cursor-pointer hover:text-green-700 duration-300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M1.91 7.383a8.491 8.491 0 0 1 1.78-3.08a.5.5 0 0 1 .54-.135l1.918.686a1 1 0 0 0 1.32-.762l.366-2.006a.5.5 0 0 1 .388-.4a8.532 8.532 0 0 1 3.555 0a.5.5 0 0 1 .387.4l.367 2.006a1 1 0 0 0 1.32.762l1.918-.686a.5.5 0 0 1 .54.136a8.491 8.491 0 0 1 1.78 3.079a.5.5 0 0 1-.152.535l-1.555 1.32a1 1 0 0 0 0 1.524l1.555 1.32a.5.5 0 0 1 .152.535a8.491 8.491 0 0 1-1.78 3.08a.5.5 0 0 1-.54.135l-1.918-.686a1 1 0 0 0-1.32.762l-.367 2.007a.5.5 0 0 1-.387.399a8.53 8.53 0 0 1-3.555 0a.5.5 0 0 1-.388-.4l-.365-2.006a1 1 0 0 0-1.32-.762l-1.919.686a.5.5 0 0 1-.54-.136a8.49 8.49 0 0 1-1.78-3.079a.5.5 0 0 1 .153-.535l1.554-1.32a1 1 0 0 0 0-1.524l-1.554-1.32a.5.5 0 0 1-.153-.535zm1.061-.006l1.294 1.098a2 2 0 0 1 0 3.05L2.97 12.623c.292.782.714 1.51 1.245 2.152l1.596-.57a2 2 0 0 1 2.64 1.525l.305 1.668a7.556 7.556 0 0 0 2.485 0l.305-1.67a1.998 1.998 0 0 1 2.64-1.524l1.597.571a7.492 7.492 0 0 0 1.245-2.152l-1.294-1.098a1.998 1.998 0 0 1 0-3.05l1.294-1.098a7.491 7.491 0 0 0-1.245-2.152l-1.596.57a2 2 0 0 1-2.64-1.524l-.306-1.669a7.555 7.555 0 0 0-2.485 0l-.304 1.669a2 2 0 0 1-2.641 1.525l-1.596-.571a7.491 7.491 0 0 0-1.245 2.152zM7.5 10a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0zm1 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 0 0-3 0z" fill="currentColor"></path></g></svg>
               </router-link>
             </template>
             ត្រឡប់ទៅ ការកំណត់
           </n-tooltip> -->
           <!-- <n-tooltip trigger="hover">
             <template #trigger>
-              <svg class="mx-1 w-7 h-7 p-1 bg-white rounded-full border border-gray-300 cursor-pointer hover:text-green-500 duration-300" @click="$router.push('/people/export')" 
+              <svg class="mx-1 w-7 h-7 p-1 bg-white rounded-full border border-gray-300 cursor-pointer hover:text-green-700 duration-300" @click="$router.push('/people/export')" 
               xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024"><path d="M854.6 288.6L639.4 73.4c-6-6-14.1-9.4-22.6-9.4H192c-17.7 0-32 14.3-32 32v832c0 17.7 14.3 32 32 32h640c17.7 0 32-14.3 32-32V311.3c0-8.5-3.4-16.7-9.4-22.7zM790.2 326H602V137.8L790.2 326zm1.8 562H232V136h302v216a42 42 0 0 0 42 42h216v494zM514.1 580.1l-61.8-102.4c-2.2-3.6-6.1-5.8-10.3-5.8h-38.4c-2.3 0-4.5.6-6.4 1.9c-5.6 3.5-7.3 10.9-3.7 16.6l82.3 130.4l-83.4 132.8a12.04 12.04 0 0 0 10.2 18.4h34.5c4.2 0 8-2.2 10.2-5.7L510 664.8l62.3 101.4c2.2 3.6 6.1 5.7 10.2 5.7H620c2.3 0 4.5-.7 6.5-1.9c5.6-3.6 7.2-11 3.6-16.6l-84-130.4l85.3-132.5a12.04 12.04 0 0 0-10.1-18.5h-35.7c-4.2 0-8.1 2.2-10.3 5.8l-61.2 102.3z" fill="currentColor"></path></svg>
             </template>
             នាំចេញទិន្នន័យ
@@ -86,49 +84,102 @@
       <Transition name="fade" >
         <div v-if="Array.isArray( table.records.matched ) && table.records.matched.length > 0 " class="vcb-thumbnail mb-12" >
           <table class="vcb-table" >
-            <thead>
+            <thead v-if="table.records.matched.length > 0">
               <tr>
-                <th class="text-center w-14 " >ល.រ</th>
-                <th class="text-left w-16 " >កូដ</th>
-                <th class="text-left " >ឈ្មោះ</th>
-                <th class="text-left " >អង់គ្លេស</th>
-                <th class="text-left w-16 " >ភេទ</th>
-                <th class="text-center w-40 " >ថ្ងៃខែឆ្នាំកំណើត</th>
-                <th v-for="( salaryPolicy, index ) in salaryPolicies" :key="index" :class=" ' text-center w-40 ' + ( salaryPolicy.type == 'deduction' ? ' text-red-700 ' : ' text-green-600 ' ) " >{{ salaryPolicy.title }}</th>
-                <th class="w-12" ></th>
+                <th class="text-center" >ល.រ</th>
+                <th class="text-left" >កូដ</th>
+                <th class="text-left" >ថ្ងៃធ្វើប្រាក់ខែ</th>
+                <th class="text-left" >ថ្ងៃចាប់ផ្ដើម</th>
+                <th class="text-left" >ថ្ងៃបញ្ចប់</th>
+                <th class="text-left " >ប្រាក់ឈ្នួលសុទ្ធ</th>
+                <th class="text-left " >ចំនួនថ្ងៃធ្វើការធម្មតា</th>
+                <th class="text-left " >ចំនួនថ្ងៃអវត្តមាន</th>
+                <th class="text-left " >ប្រាក់តាមចំនួនថ្ងៃធ្វើការធម្មតា</th>
+                <th class="text-left " >ប្រាក់រង្វាន់ធ្វើការទៀងទាត់</th>
+                <th class="text-left " >ប្រាក់សោហ៊ុយធ្វើដំណើរឬស្នាក់នៅ</th>
+                <th class="text-left " >ចំនួនម៉ោងធ្វើការថែមម៉ោង(១៥០%)</th>
+                <th class="text-left " >ប្រាក់ធ្វើការម៉ោងបន្ថែម(១៥០%)</th>
+                <th class="text-left " >ប្រាក់ថ្លៃបាយធ្វើការម៉ោងបន្ថែម</th>
+                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់ប្រចាំឆ្នាំ</th>
+                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់ឈឺ</th>
+                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់មាតុភាព</th>
+                <th class="text-left " >ប្រាក់ឈប់សម្រាបកមាតុភាព</th>
+                <th class="text-left " >ចំនួនម៉ោងធ្វើការថ្ងៃឈប់សម្រាក់ប្រចាំសប្ដាហ៍</th>
+                <th class="text-left " >ប្រាក់ធ្វើការថ្ងៃឈប់សម្រាកប្រចាំសប្ដាហ៍</th>
+                <th class="text-left " >ចំនួនម៉ោងធ្វើការថ្ងៃបុណ្យ</th>
+                <th class="text-left " >ប្រាក់ធ្វើការថ្ងៃបុណ្យ</th>
+                <th class="text-left " >ប្រាក់រង្វាន់ផ្សេងៗ</th>
+                <th class="text-left " >ប្រាក់ឧបត្ថមទារកដ្ឋាន</th>
+                <th class="text-left " >ប្រាក់ទូទាត់ថ្ងៃឈប់សម្រាកប្រចាំឆ្នាំ</th>
+                <th class="text-left " >ប្រាក់រង្វាន់អតីតភាពការងារ</th>
+                <th class="text-left " >បំណាច់អតីតភាពការងាររំលឹកឆ្នាំចាស់</th>
+                <th class="text-left " >បំណាច់អតីតភាពការងារទូទាត់ក្នុងឆ្នាំថ្មី</th>
+                <th class="text-left " >ប្រាក់កែតម្រូវ</th>
+                <th class="text-right" >ប្រាក់បៀវត្សដុល</th>
+                <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ(ដុល្លារ)</th>
+                <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ(រៀល)</th>
+                <th class="text-right" >ប្រាក់កាត់ទុករបបសន្តិសុខសង្គម</th>
+                <th class="text-right" >ប្រាក់បានខ្ចី</th>
+                <th class="text-right" >ប្រាក់កាត់លើកំហុស</th>
+                <th class="text-right" >ប្រាក់ប្រើប្រាស់ទឹកភ្លើង</th>
+                <th class="text-right" >ប្រាក់បៀរវត្សជាក់ស្ដែង</th>
+                <th class="text-center" >ផ្សេងៗ</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(record, index) in table.records.matched" :key='index' class="item relative" >
-                <td class="text-center text-bold" >{{ $toKhmer( index + 1 ) }}</td>
-                <td class="text-left" >{{ $toKhmer( record.code ) }}</td>
-                <td class="text-left" >{{ 
-                  record.people != undefined && record.people != null 
-                    ? record.people.lastname + " " + record.people.firstname
-                    : '' }}</td>
-                <td class="text-left" >{{ 
-                  record.people != undefined && record.people != null 
-                    ? record.people.enlastname + " " + record.people.enfirstname
-                    : ''
-                }}</td>
-                <td class="text-center" >{{ 
-                  record.people.gender == 0
-                    ? 'ស្រី' 
-                    : 'ប្រុស'
-                }}</td>
-                <td class="text-center" >{{ 
-                  record.people.dob != undefined && record.people.dob != null 
-                  ? $toKhmer( dateFormat( new Date( record.people.dob ) , 'dd-mm-yyyy' ) ) 
-                  : ''
-                }}</td>
-                <td v-for="( salaryPolicy, index ) in salaryPolicies" :key="index" class="text-center" >
-                  <n-input-number v-model:value="record[salaryPolicy.code]" clearable :default-value="0" @blur="updateUserSalaryAdjustment(record , salaryPolicy )" placeholder="សូមបញ្ចូលតួលេខ" :class=" ( salaryPolicy.type == 'deduction' ? ' text-red-700 ' : ' text-green-600 ' ) " />
-                </td>
-                <!-- <td class="relative" >
+              <tr v-for="(record, index) in table.records.matched " :key='index' class="item" >
+                <td class="text-center w-12 " >{{ ( index + 1 ) }}</td>
+                <td class="text-center w-40 " >{{ record.code }}</td>
+                <td class="text-center w-40 " >{{ dateFormat( new Date( record.date ) , 'dd-mm-yyyy' ) }}</td>
+                <td class="text-center w-40 " >{{ dateFormat( new Date( record.period_start ) , 'dd-mm-yyyy' ) }}</td>
+                <td class="text-center w-40 " >{{ dateFormat( new Date( record.period_end ) , 'dd-mm-yyyy' ) }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.basic_salary ) }}</td>
+                <td class="text-center text-blue-600" >{{ record.total_worked_days }}</td>
+                <td class="text-center text-red-500" >{{ record.total_absent_days }}</td>
+                <!-- <td class="text-center" >{{ record.pay_base_worked_time }}</td> -->
+                <td class="text-center text-green-700" >{{ formatCurrency( record.regular_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.attendance_bonus_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.trip_pay ) }}</td>
+                <td class="text-center" >{{ record.overtime }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.ot_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.dinner_pay ) }}</td>
+                <td class="text-center" >{{ record.total_al_days }}</td>
+                <td class="text-center" >{{ record.total_sk_days }}</td>
+                <td class="text-center" >{{ record.total_ml_days }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.maternity_pay ) }}</td>
+                <td class="text-center" >{{ record.sunday_worked_time }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.weekend_pay ) }}</td>
+                <td class="text-center" >{{ record.holiday_worked_time }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.holiday_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.reward_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ record.bonus_daycare }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.al_pay ) }}</td>
+                <td class="text-center text-green-700" >{{ record.senority }}</td>
+                <td class="text-center text-green-700" >{{ record.recall_newwork_senority }}</td>
+                <td class="text-center text-green-700" >{{ record.newwork_senority }}</td>
+                <td class="text-center text-green-700" >{{ record.adjustment_increment + record.adjustment_deduction }}</td>
+                <td class="text-center text-green-700" >{{ formatCurrency( record.gross_salary ) }}</td>
+                <td class="text-center text-blue-500" >{{ formatCurrency( record.taxable_salary ) }}</td>
+                <td class="text-center text-blue-500" >{{ formatCurrency( record.taxable_salary * record.exchange_rate ) }}</td>
+                <td class="text-center text-red-500" >{{ formatCurrency( record.nssf ) }}</td>
+                <td class="text-center text-red-500" >{{ formatCurrency( record.borrow ) }}</td>
+                <td class="text-center text-red-500" >{{ formatCurrency( record.mistake ) }}</td>
+                <td class="text-center text-red-500" >{{ formatCurrency( record.utility ) }}</td>
+                <td class="text-center text-blue-500" >{{ formatCurrency( record.net_salary ) }}</td>
+                <td class="relative w-16" >
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
-                </td> -->
+                </td>
               </tr>
             </tbody>
+            <!-- <tfoot>
+              <tr class="bg-gray-200" >
+                <th colspan="7" class="text-right" >សរុប</th>
+                <th class="text-right" >{{ $toKhmer( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.officer.salary ) , 0 ) ) }}</th>
+                <th class="text-right" >{{ $toKhmer( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.basic_salary ) , 0 ) ) }}</th>
+                <th colspan="2"></th>
+              </tr>
+            </tfoot> -->
+            
           </table>
         </div>
       </Transition>
@@ -206,21 +257,21 @@
       </Transition>
     </div>
     <!-- Form create account -->
-    <create-form v-bind:model="model" v-bind:show="createModal.show" :onClose="closeCreateModal"/>
-    <create-non-officer-form v-bind:model="model" v-bind:show="createNonOfficerModal.show" :onClose="closeCreateNonOfficerModal"/>
+    <!-- <create-form v-bind:model="model" v-bind:show="createModal.show" :onClose="closeCreateModal"/>
+    <create-non-officer-form v-bind:model="model" v-bind:show="createNonOfficerModal.show" :onClose="closeCreateNonOfficerModal"/> -->
     <!-- Filter panel of crud -->
     <Transition name="slide-fade" >
       <div v-if="filter" class="vcb-filters-panel">
-        <svg @click="toggleFilter()" class="absolute bg-white rounded-full shadow p-2 right-2 top-2 w-10 h-10 border border-gray-200 cursor-pointer hover:text-green-500 duration-300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M18 28h-4a2 2 0 0 1-2-2v-7.59L4.59 11A2 2 0 0 1 4 9.59V6a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v3.59a2 2 0 0 1-.59 1.41L20 18.41V26a2 2 0 0 1-2 2zM6 6v3.59l8 8V26h4v-8.41l8-8V6z" fill="currentColor"></path></svg>
+        <svg @click="toggleFilter()" class="absolute bg-white rounded-full shadow p-2 right-2 top-2 w-10 h-10 border border-gray-200 cursor-pointer hover:text-green-700 duration-300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M18 28h-4a2 2 0 0 1-2-2v-7.59L4.59 11A2 2 0 0 1 4 9.59V6a2 2 0 0 1 2-2h20a2 2 0 0 1 2 2v3.59a2 2 0 0 1-.59 1.41L20 18.41V26a2 2 0 0 1-2 2zM6 6v3.59l8 8V26h4v-8.41l8-8V6z" fill="currentColor"></path></svg>
         <div class="filter-title font-moul" >សូមជ្រើសរើសលក្ខណ សម្រង់ទិន្នន័យ៖</div>
         <div class="filter-actions" >
           <div class="filter-action" >
             <!-- Positions -->
-            <n-select v-model:value="selectedPositions" filterable clearable multiple @update:value="filterRecords(false)" placeholder="សូមជ្រើសរើស មុខតំណែង" :options="optionPositions" />
+            
           </div>
           <div class="filter-action" >
             <!-- Organizations -->
-            <n-select v-model:value="selectedOrganizations" filterable clearable multiple @update:value="filterRecords(false)" placeholder="សូមជ្រើសើស ស្ថាប័ន / អង្គភាព" :options="optionOrganizations" />
+            
           </div>
         </div>
       </div>
@@ -240,31 +291,25 @@ import dateFormat from 'dateformat'
 /**
  * CRUD component form
  */
-import CreateForm from './../widgets/create.vue'
-import CreateNonOfficerForm from './../widgets/createnonofficer.vue'
 import TableActionsForm from './actions/table-action.vue'
 export default {
   watch: {
   },
-  name: "People" ,
+  name: "Payroll" ,
   components: {
     QrcodeVue ,
     Vue3Barcode,
-    /**
-     * Forms
-     */
-    CreateForm ,
-    CreateNonOfficerForm ,
     TableActionsForm
   },
   setup(){
     const store = useStore()
     const route = useRoute()
+    const router = useRouter()
     const dialog = useDialog()
     const message = useMessage()
     const notify = useNotification()
 
-    const peopleIds = ref( 
+    const officerids = ref( 
       route.params.ids != undefined && route.params.ids.trim().length > 0 ? route.params.ids.split(',') : null
     )
 
@@ -272,15 +317,9 @@ export default {
      * Variables
      */    
     const model = reactive( {
-      name: "usersalaryadjustment" ,
-      module: "usersalaryadjustments" ,
-      title: "គោលការប្រែប្រួលប្រាក់ខែប្រចាំខែ"
-    })
-
-    const officerModel = reactive({
-      name: "officer" ,
-      module: "officers" ,
-      title: "មន្ត្រី"
+      name: "payroll" ,
+      module: "payrolls" ,
+      title: "បញ្ជីប្រាក់បៀរវត្ដ"
     })
     const table = reactive( {
       loading: false ,
@@ -291,20 +330,14 @@ export default {
       },
       columns: {
         searchable: {
-          username: '' ,
-          firstname: '' ,
-          lastname: '' ,
-          email: '' ,
-          phone: '' ,
-          active: ''
+          date: ''
         },
         format: {
-          username: '' ,
-          firstname: '' ,
-          lastname: '' ,
-          email: '' ,
-          phone: '' ,
-          active: ''
+          date: '' ,
+          officer_id: '' ,
+          Attendance_amount: 0 ,
+          adjustment_amount: 0 ,
+          basic_salary: 0
         }
       } ,
       pagination: {
@@ -317,7 +350,6 @@ export default {
         buttons: []
       }
     })
-    const timestamp = ref( Date.now() )
 
     function filterRecords(helper=true){
       if( helper ){
@@ -352,20 +384,16 @@ export default {
        */
       window.clearTimeout()
       table.loading = true
-      store.dispatch( officerModel.name+'/list',{
+      store.dispatch(model.name+'/list',{
         search: table.search ,
         perPage: table.pagination.perPage ,
         page: table.pagination.page ,
-        positions: selectedPositions.value ,
-        organizations: selectedOrganizations.value ,
-        ids: peopleIds.value ,
-        date: dateFormat( new Date( timestamp.value ) , 'yyyy-mm' )
+        year : year.value ,
+        month : month.value
       }).then(res => {
         table.records.all = table.records.matched = res.data.records
         table.pagination = res.data.pagination
-
-        getSalaryAdjustments()
-
+        
         var paginationNumberList = 10
         if( ( table.pagination.page - ( parseInt( paginationNumberList / 2 ) + 1 ) ) < 1 ){
           table.pagination.start = 1
@@ -413,199 +441,59 @@ export default {
       getRecords()
     }
 
-    /**
-     * Create modal handling
-     */
-    var createModal = reactive({show:false})
-    function showCreateModal(){
-      createModal.show = true
-    }
-
-    function closeCreateModal( actionStatus ){
-      createModal.show = false
-      if( parseInt( actionStatus ) > 0 ) getRecords()
-    }
-
-    /**
-     * Create non officer modal handling
-     */
-    var createNonOfficerModal = reactive({show:false})
-    function showCreateNonOfficerModal(){
-      createNonOfficerModal.show = true
-    }
-
-    function closeCreateNonOfficerModal( actionStatus ){
-      createNonOfficerModal.show = false
-      if( parseInt( actionStatus ) > 0 ) getRecords()
-    }
-
-    function closeActions( actionStatus ){
-      if( parseInt( actionStatus ) > 0 ) getRecords()
-    }
-    
-    /**
-     * Load positions
-     */
-    const selectedPositions = ref(null)
-    const optionPositions = computed( () => {
-      let positions = Array.isArray( store.getters['position/getRecords'] ) && store.getters['position/getRecords'].length > 0 ? store.getters['position/getRecords'] : []
-      positions = positions.map( ( p ) => { return { label : p.name , value : p.id } })
-      positions.unshift({ label: 'សូមជ្រើសរើស មុនតំណែង' , value: null })
-      return positions
-    })
-    function getPositions(){
-      store.dispatch('position/list',{
-        page: 1 ,
-        perPage: 1000 ,
-        search: ''
-      }).then(res=>{
-        store.commit('position/setRecords',res.data.records)
-      }).catch(err =>{
-        notify.error({
-          title: 'អានតំណែង' ,
-          description: 'មានបញ្ហាពេលអានតំណែង។'
-        })
-        console.log( err )
-      })
-    }
-
-    /**
-     * Load positions
-     */
-    const selectedOrganizations = ref(null)
-    const optionOrganizations = computed( () => {
-      let organizations = Array.isArray( store.getters['organizations/getRecords'] ) && store.getters['organizations/getRecords'].length > 0 ? store.getters['organizations/getRecords'] : []
-      organizations = organizations.map( ( p ) => { return { label : p.name , value : p.id } })
-      organizations.unshift({ label: 'សូមជ្រើសរើស ស្ថាប័ន / អង្គភាព' , value: null })
-      return organizations
-    })
-    function getOrganizations(){
-      store.dispatch('organizations/list',{
-        page: 1 ,
-        perPage: 1000 ,
-        search: '' ,
-        id: 0
-      }).then(res=>{
-        store.commit('organizations/setRecords',res.data.records)
-      }).catch(err =>{
-        notify.error({
-          title: 'អានអង្គភាព' ,
-          description: 'មានបញ្ហាពេលអានអានអង្គភាព។'
-        })
-        console.log( err )
-      })
-    }
-
-    /**
-     * Load positions
-     */
-    const selectedCountesies = ref(null)
-    const optionCountesies = computed( () => {
-      let countesies = Array.isArray( store.getters['countesy/getRecords'] ) && store.getters['countesy/getRecords'].length > 0 ? store.getters['countesy/getRecords'] : []
-      countesies = countesies.map( ( p ) => { return { label : p.name , value : p.id } })
-      countesies.unshift({ label: 'សូមជ្រើសរើស ងារ' , value: null })
-      return countesies
-    })
-    function getCountesies(){
-      store.dispatch('countesy/list',{
-        page: 1 ,
-        perPage: 1000 ,
-        search: ''
-      }).then(res=>{
-        store.commit('countesy/setRecords',res.data.records)
-      }).catch(err =>{
-        notify.error({
-          title: 'អានងារ' ,
-          description: 'មានបញ្ហាពេលអានងារ។'
-        })
-        console.log( err )
-      })
-    }
-
     const filter = ref(false)    
     function toggleFilter(){
       filter.value = !filter.value
     }
 
-    const salaryPolicies = ref([])
-    function getSalaryAdjustments(){
-      /**
-       * Clear time interval after calling
-       */
-      store.dispatch('salarypolicy/list',{
-        search: '' ,
-        perPage: 200 ,
-        page: 1
-      }).then(res => {
-        salaryPolicies.value = res.data.records
-        if( salaryPolicies.value.length > 0 ){
-          table.records.matched = table.records.all = table.records.all.map( o => {
-            salaryPolicies.value.map(s => {
-              let userSalaryPolicy = o.user_salary_policies.find( usp => usp.salary_policy_id == s.id )
-              o[s.code] = o.user_salary_policies.length != undefined && o.user_salary_policies.length > 0
-                ? (
-                  userSalaryPolicy != undefined ? parseFloat( userSalaryPolicy.adjustment_amount ) : 0 
-                )
-                : 0
-            })
-            return o
-          })
-        }
+    const filterMonth = ref( new Date().getTime() )
+    const filterYear = ref( new Date().getTime() )
+    const month = ref('')
+    const year = ref('')
+    function filterByMonth(){
+      month.value = dateFormat( new Date( filterMonth.value ) , 'mm' )
+      year.value = dateFormat( new Date( filterMonth.value ) , 'yyyy' )
+      filterYear.value = new Date( dateFormat( new Date( year.value ) , 'yyyy' ) ).getTime()
+      filterRecords(false)
+    }
+    function filterByYear(){
+      year.value = dateFormat( new Date( filterYear.value ) , 'yyyy' )
+      filterMonth.value = new Date( year.value ).getTime()
+      month.value = ''
+      filterRecords(false)
+    }
+
+    const date = ref( new Date().getTime() )
+    function generateSalaries(){
+      store.dispatch('salary/generateSalaries',{ date: dateFormat( new Date( date.value ) , 'dd-mm-yyyy' ) } ).then( res => {
+        console.log( res.data )
+        filterMonth.value = new Date( date.value ).getTime()
+        filterByMonth()
       }).catch( err => {
         console.log( err )
       })
     }
 
-    function updateUserSalaryAdjustment(officer, salaryPolicy) {
-      if (parseFloat(officer[salaryPolicy.code]) >= 0) {
-        store.dispatch('usersalaryadjustment/update', {
-          officer_id: officer.id,
-          salary_policy_id: salaryPolicy.id,
-          amount: parseFloat(officer[salaryPolicy.code]) ,
-          date: dateFormat( new Date( timestamp.value ) , 'yyyy-mm' )
-        }).then(res => {
-          if (res.data.ok == true) {
-            notify.success({
-              title: 'គោលការប្រាក់ខែ',
-              content: 'រក្សារទុករួចរាល់។' ,
-              duration: 500
-            })
-          } else {
-            notify.error({
-              title: 'គោលការប្រាក់ខែ',
-              content: 'មានបញ្ហាក្នុងការរក្សារទុករួចរាល់។',
-              duration: 2000
-            })
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      } else {
-        notify.error({
-          title: 'គោលការប្រាក់ខែ',
-          content: 'តម្លៃត្រូវចាប់ពីសូន្យឡើង។',
-          duration: 1000
-        })
-      }
+    function closeActions( actionStatus ){
+      if( parseInt( actionStatus ) > 0 ) getRecords()
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat().format( amount )
     }
     /**
      * Initial the data
      */
     getRecords()
-    getPositions()
-    getOrganizations()
-    getCountesies()
 
 
     return {
-      timestamp ,
       /**
        * Variables
        */
       model ,
       table ,
       ocmLogoUrl ,
-      salaryPolicies ,
       /**
        * Table
        */
@@ -622,19 +510,6 @@ export default {
        */
       closeTableLoading ,
       /**
-       * Creating
-       */
-      createModal ,
-      showCreateModal ,
-      closeCreateModal ,
-      /**
-       * Creating non officer
-       */
-      createNonOfficerModal ,
-      showCreateNonOfficerModal ,
-      closeCreateNonOfficerModal ,
-      closeActions ,
-      /**
        * Functions
        */
       toggleFilter ,
@@ -643,14 +518,16 @@ export default {
       /**
       * Filters
       */
-      optionPositions ,
-      selectedPositions ,
-      selectedCountesies ,
-      optionOrganizations ,
-      selectedOrganizations ,
       getKhmer ,
       dateFormat ,
-      updateUserSalaryAdjustment
+      filterMonth ,
+      filterYear ,
+      filterByMonth ,
+      filterByYear ,
+      date ,
+      generateSalaries, 
+      formatCurrency ,
+      closeActions
     }
   }
 }
@@ -658,11 +535,11 @@ export default {
 </script>
 <style type="text/css" scoped >
 .vcb-thumbnail {
-  @apply flex flex-wrap justify-center;
+  @apply flex flex-wrap ;
 }
-.vcb-thumbnail .item {
+/* .vcb-thumbnail .item {
   @apply xl:w-1/5 lg:w-1/4 md:w-1/3 sm:w-1/3 w-1/2 p-2 ;
-}
+} */
 .vcb-thumbnail .item .content {
   @apply border rounded-lg hover:shadow duration-500 p-4 pt-8 relative hover:scale-105 transform-gpu bg-white hover:bg-yellow-100;
 }
@@ -682,12 +559,12 @@ export default {
   @apply p-2 m-2 bg-white rounded-lg shadow border border-gray-300 w-4/6 sm:w-2/5 md:w-1/3 lg:w-1/4 xl:w-2/6 ;
 }
 .vcb-table {
-  @apply p-2 w-full ;
+  @apply p-2;
 }
 .vcb-table tr th {
-  @apply p-2 border-b border-gray-200 relative ;
+  @apply p-2 border-b border-gray-200 relative text-nowrap ;
 }
 .vcb-table tr td {
-  @apply p-2 relative border-b border-gray-200;
+  @apply p-2 relative h-16;
 }
 </style>

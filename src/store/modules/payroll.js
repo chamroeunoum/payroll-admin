@@ -3,8 +3,8 @@ import crud from '../../api/crud'
 // initial state
 const state = () => ({
   model: {
-    name: "salaries" ,
-    title: "ប្រាក់បៀរវដ្ត" 
+    name: "payrolls" ,
+    title: "បញ្ជីប្រាក់បៀរវដ្ត" 
   },
   records: [] ,
   record: null ,
@@ -28,12 +28,8 @@ const actions = {
         search: params.search ,
         perPage: params.perPage ,
         page: params.page ,
-        positions: Array.isArray( params.positions ) && params.positions.length > 0 ? params.positions : [] ,
-        organizations: Array.isArray( params.organizations ) && params.organizations.length > 0 ? params.organizations : [] ,
-        officerids: Array.isArray( params.officerids ) && params.officerids.length > 0 ? params.officerids : [] ,
         year : params.year != undefined && params.year > 0 ? params.year : '' ,
-        month : params.month != undefined && params.month > 0 ? params.month : '' ,
-        payroll_id: params.payroll_id != undefined && params.payroll_id > 0 ? params.payroll_id : '' ,
+        month : params.month != undefined && params.month > 0 ? params.month : ''
       }).toString()
     )
   },

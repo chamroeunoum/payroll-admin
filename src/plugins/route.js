@@ -57,6 +57,13 @@ import SalaryCrud from './../components/salary/index.vue'
 import SalaryTableCrud from './../components/salary/listing/table.vue'
 
 /**
+ * Officer Payroll Components
+ */
+import PayrollCrud from './../components/payroll/index.vue'
+import PayrollTableCrud from './../components/payroll/listing/table.vue'
+import PayrollGenerateTableCrud from './../components/payroll/listing/officer.vue'
+
+/**
  * Position Components
  */
 import PositionCrud from './../components/position/index.vue'
@@ -328,7 +335,7 @@ export const getRoutes = () => {
             },
             {
                 name: 'Salary' ,
-                path: '/salary',
+                path: '/payroll/:id/salary',
                 component: SalaryCrud ,
                 meta: { 
                     transition: 'slide-right' ,
@@ -340,6 +347,28 @@ export const getRoutes = () => {
                         name: "SalaryTableCrud" ,
                         path: '' ,
                         component: SalaryTableCrud
+                    }
+                ]
+            },
+            {
+                name: 'Payroll' ,
+                path: '/payroll',
+                component: PayrollCrud ,
+                meta: { 
+                    transition: 'slide-right' ,
+                    requiresAuth: true,
+                    is_admin : true
+                },
+                children: [
+                    {
+                        name: 'PayrollTable' ,
+                        path: '' ,
+                        component: PayrollTableCrud
+                    },
+                    {
+                        name: 'PayrollGenerateTable' ,
+                        path: 'generate' ,
+                        component: PayrollGenerateTableCrud
                     }
                 ]
             },

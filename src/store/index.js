@@ -13,6 +13,7 @@ import attendance from './modules/attendance'
 import attendancepolicy from './modules/attendancepolicy'
 import generalsetting from './modules/setting'
 import salary from './modules/salary'
+import payroll from './modules/payroll'
 import salaryadjustment from './modules/salaryadjustment'
 import salarypolicy from './modules/salarypolicy'
 import holiday from './modules/holiday'
@@ -48,6 +49,7 @@ export default createStore({
     position ,
     countesy ,
     salary ,
+    payroll ,
     salaryadjustment ,
     salarypolicy ,
     error ,

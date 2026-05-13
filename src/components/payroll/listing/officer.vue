@@ -31,16 +31,20 @@
         </div>
         <div class="mt-1 mr-2 flex flex-wrap">
           <!-- <router-link to="/officer/import" class="border rounded h-8 py-1 px-3 duration-300 hover:border-blue-600 hover:text-blue-700 leading-6" >នាំចូល</router-link> -->
-          <!-- <n-tooltip trigger="hover">
+          <n-tooltip trigger="hover">
             <template #trigger>
-              <div @click="showCreateModal()" class="flex cursor-pointer hover:text-green-500 duration-300 ml-2 leading-8" >
-                <svg class="w-8 h-8 mr-1 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path><path d="M12 9v6"></path></g></svg>
-                មន្ត្រីមានអត្តលេខ
-              </div>
+              <n-select placeholder="ជ្រើសរើសប្រភេទបៀវត្ស" v-model:value="salaryType" :options="[{ label : 'ពេញ១ខែ' , value : 0 }, { label : 'ពាក់កណ្ដាលដើមខែ' , value : 1 } ,{ label : 'ពាក់កណ្ដាលចុងខែ' , value : 2 }]"
+              class="w-48" />
             </template>
-            បញ្ចូលព័ត៌មានមន្ត្រី
+            ប្រភេទប្រាក់ខែ
           </n-tooltip>
           <n-tooltip trigger="hover">
+            <template #trigger>
+              <n-date-picker v-model:value="salaryDate" type="month" clearable class="w-60 ml-2 " placeholder="ជ្រើសរើសកាលបរិច្ឆែទគណនាបៀវត្ស" @update:value="filterRecords(false)"/>
+            </template>
+            កាលបរិច្ឆែទគណាបៀវត្ស
+          </n-tooltip>
+          <!-- <n-tooltip trigger="hover">
             <template #trigger>
               <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-500 duration-300 ml-2 leading-8" >
                 <svg class="w-8 h-8 mr-1 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path><path d="M12 9v6"></path></g></svg>
@@ -57,12 +61,6 @@
             </template>
             បន្ថែមបុគ្គលិក
           </n-tooltip> -->
-          <n-tooltip trigger="hover">
-            <template #trigger>
-              <n-date-picker v-model:value="timestamp" type="month" clearable @update:value="filterRecords(false)" />
-            </template>
-            ត្រឡប់ទៅ ការកំណត់
-          </n-tooltip>
           <!-- <n-tooltip trigger="hover">
             <template #trigger>
               <router-link to="/setting" >
@@ -88,20 +86,37 @@
           <table class="vcb-table" >
             <thead>
               <tr>
+                <!-- <th class="w-20" ></th> -->
                 <th class="text-center w-14 " >ល.រ</th>
                 <th class="text-left w-16 " >កូដ</th>
                 <th class="text-left " >ឈ្មោះ</th>
                 <th class="text-left " >អង់គ្លេស</th>
                 <th class="text-left w-16 " >ភេទ</th>
                 <th class="text-center w-40 " >ថ្ងៃខែឆ្នាំកំណើត</th>
-                <th v-for="( salaryPolicy, index ) in salaryPolicies" :key="index" :class=" ' text-center w-40 ' + ( salaryPolicy.type == 'deduction' ? ' text-red-700 ' : ' text-green-600 ' ) " >{{ salaryPolicy.title }}</th>
-                <th class="w-12" ></th>
+                <th class="text-left w-28 " >រៀបការ</th>
+                <th class="text-left w-16 " >ចំនួនកូន</th>
+                <!-- <th class="text-left w-28 " >ទូរសព្ទ</th>
+                <th class="text-left w-28 " >អត្តសញ្ញាណបណ្ណ</th>
+                <th class="text-left w-28 " >កម្រិតអប់រំ</th>
+                <th class="text-left w-28 " >ជំនាញ</th> -->
+                <th class="text-left w-28 " >ចូលធ្វើការ</th>
+                <th class="text-left " >ផ្នែក</th>
+                <th class="text-left w-40 " >តួនាទី</th>
+                <th class="text-left w-28 " >ប្រាក់ខែ</th>
+                <th class="text-center w-12" >ធ្វើការថែមម៉ោង</th>
+                <!-- <th class="text-left w-28 " >ប.ស.ស.</th>
+                <th class="text-left w-28 " >សៀវភៅការងារ</th>             -->
+                <th>មុខងារផ្សេងៗ</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(record, index) in table.records.matched" :key='index' class="item relative" >
-                <td class="text-center text-bold" >{{ $toKhmer( index + 1 ) }}</td>
-                <td class="text-left" >{{ $toKhmer( record.code ) }}</td>
+                <!-- <td>
+                  <div v-if="record.image != false && record.image != null && record.image != undefined " class="w-12 h-12 image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
+                  <div v-if="record.image == false || record.image == null || record.image == undefined " class="w-12 h-12 image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ocmLogoUrl+');' " ></div>
+                </td> -->
+                <td class="text-center font-bold" >{{ $toKhmer( index + 1 ) }}</td>
+                <td class="text-left font-bold" >{{ $toKhmer( record.code ) }}</td>
                 <td class="text-left" >{{ 
                   record.people != undefined && record.people != null 
                     ? record.people.lastname + " " + record.people.firstname
@@ -111,25 +126,108 @@
                     ? record.people.enlastname + " " + record.people.enfirstname
                     : ''
                 }}</td>
-                <td class="text-center" >{{ 
-                  record.people.gender == 0
-                    ? 'ស្រី' 
-                    : 'ប្រុស'
-                }}</td>
+                <td class="text-center" >
+                    <svg v-if="record.people.gender == 0" class="text-pink-500 w-8 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"></circle><path d="M10 22v-4H8l2-6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1l2 6h-2v4"></path></g></svg>
+                    <svg v-if="record.people.gender == 1" class="text-blue-500 w-8 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2"></circle><path d="M10 22v-5l-1-1v-4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4l-1 1v5"></path></g></svg>
+                </td>
                 <td class="text-center" >{{ 
                   record.people.dob != undefined && record.people.dob != null 
                   ? $toKhmer( dateFormat( new Date( record.people.dob ) , 'dd-mm-yyyy' ) ) 
                   : ''
                 }}</td>
-                <td v-for="( salaryPolicy, index ) in salaryPolicies" :key="index" class="text-center" >
-                  <n-input-number v-model:value="record[salaryPolicy.code]" clearable :default-value="0" @blur="updateUserSalaryAdjustment(record , salaryPolicy )" placeholder="សូមបញ្ចូលតួលេខ" :class=" ( salaryPolicy.type == 'deduction' ? ' text-red-700 ' : ' text-green-600 ' ) " />
+                <td class="text-left " >
+                  {{  
+                  record.people.marry_status == 'married'
+                    ? 'ការរួច'
+                    : (
+                      record.people.marry_status == 'single'
+                        ? 'នៅលីវ' 
+                        : 'មេមាយ/ពោះមាយ'
+                    )
+                }}</td>
+                <td class="text-left" >{{  parseInt( record.people.kids ) > 0 ? $toKhmer( record.people.kids ) : '' }}</td>
+                <!-- <td class="text-left" >{{  $toKhmer( record.people.mobile_phone ) }}</td>
+                <td class="text-left" >{{  $toKhmer( record.people.nid ) }}</td>
+                <td class="text-left" >{{  record.people.degree }}</td>
+                <td class="text-left" >{{  record.people.major }}</td> -->
+                <td class="text-center" >{{ 
+                  record.official_date != undefined && record.official_date != null 
+                  ? $toKhmer( dateFormat( new Date( record.official_date ) , 'dd-mm-yyyy' ) ) 
+                  : ''
+                }}</td>
+                <td class="text-left" >{{ 
+                (
+                    record.category != undefined && record.category != null
+                      ? record.category.name
+                      : ''
+                  )+
+                  (
+                    record.department != undefined && record.department != null
+                      ? ', ' + record.department.name
+                      : ''
+                  )+
+                  (
+                    record.section != undefined && record.section != null
+                      ? ', ' + record.section.name
+                      : ''
+                  )
+                }}</td>
+                <td class="text-left" >{{ 
+                  record.position != undefined && record.position != null
+                  ? record.position.name
+                  : ''
+                }}</td>
+                <td class="text-left" >{{  $toKhmer( record.salary_rank ) }}</td>
+                <!-- <td class="text-center" >{{ 
+                  record.people.nssf_no != undefined && record.people.nssf_no != null 
+                  ? $toKhmer( record.people.nssf_no )
+                  : ''
+                }}</td>
+                <td class="text-left" >{{ $toKhmer( record.workbook_no ) }}</td> -->
+                <td>
+                  <n-tooltip trigger="hover" v-if="parseInt( record.allowed_ot ) > 0" >
+                    <template #trigger>
+                      <svg class="text-green-500 w-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><g fill="none"><path d="M22.707 12.707a1 1 0 0 0-1.414-1.414L14.5 18.086l-3.293-3.293a1 1 0 0 0-1.414 1.414l4 4a1 1 0 0 0 1.414 0l7.5-7.5zM16 2C8.268 2 2 8.268 2 16s6.268 14 14 14s14-6.268 14-14S23.732 2 16 2zM4 16C4 9.373 9.373 4 16 4s12 5.373 12 12s-5.373 12-12 12S4 22.627 4 16z" fill="currentColor"></path></g></svg>
+                    </template>
+                    បុគ្គលិកនេះអាចធ្វើការថែមម៉ោងបាន។ ចុចទីនេះដើម្បីបិទការធ្វើការថែមម៉ោង។
+                  </n-tooltip>
+                  <n-tooltip trigger="hover" v-if="parseInt( record.allowed_ot ) == 0" >
+                    <template #trigger>
+                      <svg class="text-red-500 w-6 cursor-pointer" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1024 1024"><path d="M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448s448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372c0-89 31.3-170.8 83.5-234.8l523.3 523.3C682.8 852.7 601 884 512 884zm288.5-137.2L277.2 223.5C341.2 171.3 423 140 512 140c205.4 0 372 166.6 372 372c0 89-31.3 170.8-83.5 234.8z" fill="currentColor"></path></svg>
+                    </template>
+                    បុគ្គលិកនេះមិនអាចធ្វើការថែមម៉ោងបានទេ។ ចុចទីនេះដើម្បីបើកការធ្វើការថែមម៉ោង។
+                  </n-tooltip>
                 </td>
-                <!-- <td class="relative" >
-                  <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
-                </td> -->
+                <td class="relative w-32" >
+                  <officer-table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" v-bind:salaryType="salaryType" v-bind:salaryDate="salaryDate" />
+                </td>
+                <!-- <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" /> -->
               </tr>
             </tbody>
           </table>
+          <!-- <div v-for="(record, index) in table.records.matched" :key='index' class="item" >
+            <div class="content" >
+              <div v-if="record.image != false && record.image != null && record.image != undefined " class="image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
+              <div v-if="record.image == false || record.image == null || record.image == undefined " class="image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ocmLogoUrl+');' " ></div>
+              <div class="flex flex-wrap " >
+                <div class="w-full py-2" >
+                  <div v-if="record.countesy != undefined && record.countesy != null " class="w-full text-center font-moul mr-2" >{{  record.countesy.name }}</div>
+                  <div v-if="record.people != undefined && record.people != null " class="w-full text-center font-moul leading-6 tracking-wider" >{{ record.people.lastname + " " + record.people.firstname }}<br/>{{ record.people.enlastname + " " + record.people.enfirstname }}</div>
+                </div>
+                <div class="w-full flex flex-wrap justify-between text-gray-600" >
+                  <div v-if=" ( record.position != undefined && record.position != null ) || ( record.dob != undefined && record.dob != null ) " class="w-1/2 text-left text-vcb-xs my-1 leading-5 tracking-wider" >
+                    {{ $toKhmer( dateFormat( new Date( record.people.dob ) , 'dd-mm-yyyy' ) ) }}<br/>
+                    {{ record.position.name }}
+                  </div>
+                  <div v-if="record.organization != undefined && record.organization != null " class="w-1/2 text-right text-vcb-xs my-1  leading-5 tracking-wide" v-html=" record.organization.name " ></div>
+                </div>
+                <div v-if="record.card != null && record.card != undefined && record.card.id > 0" class="absolute left-1 top-1 text-vcb-xs text-left font-bold leading-6 tracking-wider  text-gray-500 " >{{ $toKhmer( record.card.number ) }}</div>
+                <div v-if="record.card == null || record.card == undefined && ( record.organization != undefined && record.organization != null ) " class="absolute left-1 top-1 text-vcb-xs text-left font-bold leading-6 tracking-wider  text-blue-500 " v-html=" $toKhmer( ( record.organization != undefined && record.organization != null ? record.organization.prefix + '-' : '' ) + ( record.id + '' ).padStart( 4 , '0' ) )" ></div>
+                <div v-if="record.code != null && record.code != undefined " class="absolute left-1 top-5 text-vcb-xs text-left font-bold leading-6 tracking-wider text-green-700 " v-html=" $toKhmer( record.code )" ></div>
+              </div>
+              <thumbnail-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
+            </div>
+          </div> -->
         </div>
       </Transition>
       <!-- Loading -->
@@ -206,8 +304,6 @@
       </Transition>
     </div>
     <!-- Form create account -->
-    <create-form v-bind:model="model" v-bind:show="createModal.show" :onClose="closeCreateModal"/>
-    <create-non-officer-form v-bind:model="model" v-bind:show="createNonOfficerModal.show" :onClose="closeCreateNonOfficerModal"/>
     <!-- Filter panel of crud -->
     <Transition name="slide-fade" >
       <div v-if="filter" class="vcb-filters-panel">
@@ -233,18 +329,19 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import QrcodeVue from 'qrcode.vue'
 import Vue3Barcode from 'vue3-barcode'
-import { getKhmer } from './../../../plugins/kh/number.js'
+import { getKhmer } from '../../../plugins/kh/number.js'
 import { useDialog, useMessage, useNotification } from 'naive-ui'
 import ocmLogoUrl from './../../../assets/logo.jpg'
 import dateFormat from 'dateformat'
 /**
  * CRUD component form
  */
-import CreateForm from './../widgets/create.vue'
-import CreateNonOfficerForm from './../widgets/createnonofficer.vue'
-import TableActionsForm from './actions/table-action.vue'
+// import CreateForm from './../widgets/create.vue'
+// import CreateNonOfficerForm from './../widgets/createnonofficer.vue'
+import OfficerTableActionsForm from './actions/table-action-officer.vue'
 export default {
   watch: {
+    
   },
   name: "People" ,
   components: {
@@ -253,9 +350,7 @@ export default {
     /**
      * Forms
      */
-    CreateForm ,
-    CreateNonOfficerForm ,
-    TableActionsForm
+    OfficerTableActionsForm
   },
   setup(){
     const store = useStore()
@@ -264,6 +359,8 @@ export default {
     const message = useMessage()
     const notify = useNotification()
 
+    const salaryType = ref(0)
+    const salaryDate = ref( Date.now() )
     const peopleIds = ref( 
       route.params.ids != undefined && route.params.ids.trim().length > 0 ? route.params.ids.split(',') : null
     )
@@ -272,15 +369,9 @@ export default {
      * Variables
      */    
     const model = reactive( {
-      name: "usersalaryadjustment" ,
-      module: "usersalaryadjustments" ,
-      title: "គោលការប្រែប្រួលប្រាក់ខែប្រចាំខែ"
-    })
-
-    const officerModel = reactive({
       name: "officer" ,
       module: "officers" ,
-      title: "មន្ត្រី"
+      title: "គណនាប្រាក់បៀវត្សបុគ្គលិក"
     })
     const table = reactive( {
       loading: false ,
@@ -317,7 +408,6 @@ export default {
         buttons: []
       }
     })
-    const timestamp = ref( Date.now() )
 
     function filterRecords(helper=true){
       if( helper ){
@@ -352,20 +442,18 @@ export default {
        */
       window.clearTimeout()
       table.loading = true
-      store.dispatch( officerModel.name+'/list',{
+      store.dispatch(model.name+'/list',{
         search: table.search ,
         perPage: table.pagination.perPage ,
         page: table.pagination.page ,
         positions: selectedPositions.value ,
         organizations: selectedOrganizations.value ,
         ids: peopleIds.value ,
-        date: dateFormat( new Date( timestamp.value ) , 'yyyy-mm' )
+        attendance_date: dateFormat( new Date( salaryDate.value ), 'yyyy-mm-dd' )
       }).then(res => {
         table.records.all = table.records.matched = res.data.records
         table.pagination = res.data.pagination
-
-        getSalaryAdjustments()
-
+        
         var paginationNumberList = 10
         if( ( table.pagination.page - ( parseInt( paginationNumberList / 2 ) + 1 ) ) < 1 ){
           table.pagination.start = 1
@@ -499,7 +587,7 @@ export default {
     /**
      * Load positions
      */
-    const selectedCountesies = ref(null)
+     const selectedCountesies = ref(null)
     const optionCountesies = computed( () => {
       let countesies = Array.isArray( store.getters['countesy/getRecords'] ) && store.getters['countesy/getRecords'].length > 0 ? store.getters['countesy/getRecords'] : []
       countesies = countesies.map( ( p ) => { return { label : p.name , value : p.id } })
@@ -526,68 +614,6 @@ export default {
     function toggleFilter(){
       filter.value = !filter.value
     }
-
-    const salaryPolicies = ref([])
-    function getSalaryAdjustments(){
-      /**
-       * Clear time interval after calling
-       */
-      store.dispatch('salarypolicy/list',{
-        search: '' ,
-        perPage: 200 ,
-        page: 1
-      }).then(res => {
-        salaryPolicies.value = res.data.records
-        if( salaryPolicies.value.length > 0 ){
-          table.records.matched = table.records.all = table.records.all.map( o => {
-            salaryPolicies.value.map(s => {
-              let userSalaryPolicy = o.user_salary_policies.find( usp => usp.salary_policy_id == s.id )
-              o[s.code] = o.user_salary_policies.length != undefined && o.user_salary_policies.length > 0
-                ? (
-                  userSalaryPolicy != undefined ? parseFloat( userSalaryPolicy.adjustment_amount ) : 0 
-                )
-                : 0
-            })
-            return o
-          })
-        }
-      }).catch( err => {
-        console.log( err )
-      })
-    }
-
-    function updateUserSalaryAdjustment(officer, salaryPolicy) {
-      if (parseFloat(officer[salaryPolicy.code]) >= 0) {
-        store.dispatch('usersalaryadjustment/update', {
-          officer_id: officer.id,
-          salary_policy_id: salaryPolicy.id,
-          amount: parseFloat(officer[salaryPolicy.code]) ,
-          date: dateFormat( new Date( timestamp.value ) , 'yyyy-mm' )
-        }).then(res => {
-          if (res.data.ok == true) {
-            notify.success({
-              title: 'គោលការប្រាក់ខែ',
-              content: 'រក្សារទុករួចរាល់។' ,
-              duration: 500
-            })
-          } else {
-            notify.error({
-              title: 'គោលការប្រាក់ខែ',
-              content: 'មានបញ្ហាក្នុងការរក្សារទុករួចរាល់។',
-              duration: 2000
-            })
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      } else {
-        notify.error({
-          title: 'គោលការប្រាក់ខែ',
-          content: 'តម្លៃត្រូវចាប់ពីសូន្យឡើង។',
-          duration: 1000
-        })
-      }
-    }
     /**
      * Initial the data
      */
@@ -598,14 +624,14 @@ export default {
 
 
     return {
-      timestamp ,
       /**
        * Variables
        */
       model ,
       table ,
       ocmLogoUrl ,
-      salaryPolicies ,
+      salaryDate ,
+      salaryType ,
       /**
        * Table
        */
@@ -649,8 +675,7 @@ export default {
       optionOrganizations ,
       selectedOrganizations ,
       getKhmer ,
-      dateFormat ,
-      updateUserSalaryAdjustment
+      dateFormat
     }
   }
 }

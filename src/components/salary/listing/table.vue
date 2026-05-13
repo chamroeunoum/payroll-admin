@@ -18,22 +18,26 @@
             សម្រង់ទិន្នន័យ
           </n-tooltip>
         </div> -->
-        <!-- <div class="w-3/5 md:w-2/5 relative" >
+        <div class="w-3/5 md:w-2/5 relative" >
           <n-tooltip trigger="hover">
             <template #trigger>
               <div class="w-full relative" >
-                <input type="text" @keypress.enter="filterRecords(false)" v-model="table.search" class="bg-gray-100 px-2 h-8 my-1 w-full rounded border border-gray-200 focus:border-blue-600 hover:border-blue-600 duration-300" placeholder="ស្វែងរក" />
+                <input type="text" 
+                  @keypress.enter="filterRecords(false)" 
+                  v-model="table.search" 
+                  class="bg-gray-100 px-2 h-8 my-1 w-full rounded border border-gray-200 focus:border-blue-600 hover:border-blue-600 duration-300" 
+                  placeholder="សូមបញ្ចូល​លេខបុគ្គលិក ឬ ឈ្មោះ" />
                 <svg class="absolute right-1 top-2 w-6 h-6 text-gray-400  cursor-pointer" @click="filterRecords(false)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M8.5 3a5.5 5.5 0 0 1 4.227 9.02l4.127 4.126a.5.5 0 0 1-.638.765l-.07-.057l-4.126-4.127A5.5 5.5 0 1 1 8.5 3zm0 1a4.5 4.5 0 1 0 0 9a4.5 4.5 0 0 0 0-9z" fill="currentColor"></path></g></svg>
               </div>
             </template>
-            សូមបញ្ចូលពាក្យគន្លឹះដើម្បីស្វែងរក
+            សូមបញ្ចូល​លេខបុគ្គលិក ឬ ឈ្មោះ
           </n-tooltip>
-        </div> -->
+        </div>
         <div class="mt-1 mr-2 flex flex-wrap leading-9 ">
-          <n-date-picker type="date" v-model:value="date" clearable placeholder="សូមជ្រើសរើសថ្ងៃខែឆ្នាំ" class="mx-1 " />
-          <n-button @click="generateSalaries" class="mr-2" >គណនាប្រាក់ខែ</n-button>
-          ច្រោះតាមខែ <n-date-picker type="month" v-model:value="filterMonth" clearable placeholder="សូមជ្រើសរើសខែ" class="mx-1 " @update:value="filterByMonth" />
-          ច្រោះតាមឆ្នាំ <n-date-picker type="year" v-model:value="filterYear" clearable placeholder="សូមជ្រើសរើសឆ្នាំ" class="mx-1 " @update:value="filterByYear" />
+          <!-- <n-date-picker type="date" v-model:value="date" clearable placeholder="សូមជ្រើសរើសថ្ងៃខែឆ្នាំ" class="mx-1 " /> -->
+          <!-- <n-button @click="generateSalaries" class="mr-2" >គណនាប្រាក់ខែ</n-button> -->
+          <!-- ច្រោះតាមខែ <n-date-picker type="month" v-model:value="filterMonth" clearable placeholder="សូមជ្រើសរើសខែ" class="mx-1 " @update:value="filterByMonth" /> -->
+          <!-- ច្រោះតាមឆ្នាំ <n-date-picker type="year" v-model:value="filterYear" clearable placeholder="សូមជ្រើសរើសឆ្នាំ" class="mx-1 " @update:value="filterByYear" /> -->
           <!-- <n-tooltip trigger="hover">
             <template #trigger>
               <div @click="showCreateModal()" class="flex cursor-pointer hover:text-green-700 duration-300 ml-2 leading-8" >
@@ -42,8 +46,8 @@
               </div>
             </template>
             បញ្ចូលព័ត៌មានមន្ត្រី
-          </n-tooltip>
-          <n-tooltip trigger="hover">
+          </n-tooltip> -->
+          <!-- <n-tooltip trigger="hover">
             <template #trigger>
               <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-700 duration-300 ml-2 leading-8" >
                 <svg class="w-8 h-8 mr-1 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path><path d="M12 9v6"></path></g></svg>
@@ -132,34 +136,35 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(record, index) in salaries" :key='index' class="item" >
-                <td class="text-center w-12 " >{{ ( index + 1 ) }}</td>
-                <td class="text-center w-24 " >{{ record.officer.code }}</td>
+              <tr v-for="(record, index) in table.records.matched" :key='index' class="item" >
+                <td class="text-center w-12 font-bold " >{{ ( index + 1 ) }}</td>
+                <td class="text-center w-24 font-bold " >{{ record.officer.code }}</td>
                 <td class="text-center w-40 " >{{ record.officer.people.lastname + ' ' + record.officer.people.firstname }}</td>
                 <td class="text-center w-60 " >{{ record.officer.people.enlastname + ' ' + record.officer.people.enfirstname }}</td>
-                <td class="text-center" >{{ record.officer.people.gender }}</td>
-                <td class="text-center" >{{ record.officer.people.nationality }}</td>
+                <td class="text-center" >{{ ['ស្រី' , 'ប្រុស' ][ parseInt( record.officer.people.gender ) > 0 ? 1 : 0 ] }}</td>
+                <td class="text-center" >{{ record.officer.people.nationality == 'KHM' ? 'ខ្មែរ' : 'បរទេស' }}</td>
                 <td class="text-center" >{{ 
                   record.officer.official_date != undefined && record.officer.official_date != null 
                   ? $toKhmer( dateFormat( new Date( record.officer.official_date ) , 'dd-mm-yyyy' ) ) 
                   : ''
                 }}</td>
-                <td class="text-center" >{{ 
-                (
+                <td class="text-center" >{{ [
+                  (
                     record.officer.category != undefined && record.officer.category != null
                       ? record.officer.category.name
                       : ''
-                  )+
+                  ) ,
                   (
                     record.officer.department != undefined && record.officer.department != null
-                      ? ', ' + record.officer.department.name
+                      ? record.officer.department.name
                       : ''
-                  )+
+                  ) ,
                   (
                     record.officer.section != undefined && record.officer.section != null
-                      ? ', ' + record.officer.section.name
+                      ?  record.officer.section.name
                       : ''
                   )
+                ].filter(o=>o!='').join( ', ')
                 }}
                 </td>
                 <td class="text-center text-blue-500" >{{ formatCurrency( record.officer.salary_rank ) }}</td>
@@ -194,67 +199,20 @@
                 <td class="text-center text-red-500" >{{ formatCurrency( record.borrow ) }}</td>
                 <td class="text-center text-red-500" >{{ formatCurrency( record.mistake ) }}</td>
                 <td class="text-center text-red-500" >{{ formatCurrency( record.utility ) }}</td>
-                <td class="text-center text-blue-500" >{{ formatCurrency( record.net_salary ) }}</td>
-                <!-- <td>
-                  <div v-if="record.image != false && record.image != null && record.image != undefined " class="w-12 h-12 image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
-                  <div v-if="record.image == false || record.image == null || record.image == undefined " class="w-12 h-12 image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ocmLogoUrl+');' " ></div>
-                </td>
-                <td class="text-center" >{{ $toKhmer( index + 1 ) }}</td>
-                <td class="text-left" >{{ $toKhmer( record.officer.code ) }}</td>
-                <td class="text-left" >{{ ( record.officer.countesy != undefined && record.officer.countesy != null ? record.officer.countesy.name : '' ) }} {{ 
-                  record.officer.people != undefined && record.officer.people != null 
-                    ? record.officer.people.lastname + " " + record.officer.people.firstname
-                    : '' }}<br/>{{ 
-                  record.officer.people != undefined && record.officer.people != null 
-                    ? record.officer.people.enlastname + " " + record.officer.people.enfirstname
-                    : ''
-                }}</td>
-                <td class="text-center" >{{ 
-                  record.officer.date != undefined && record.officer.date != null 
-                  ? $toKhmer( dateFormat( new Date( record.officer.date ) , 'dd-mm-yyyy' ) ) 
-                  : ''
-                }}</td>
-                <td class="text-left" >{{ 
-                  record.officer.organization != undefined && record.officer.organization != null
-                  ? record.officer.organization.name
-                  : ''
-                }}</td>
-                <td class="text-left" >{{ 
-                  record.officer.position != undefined && record.officer.position != null
-                  ? record.officer.position.name
-                  : ''
-                }}</td>
-                <td class="text-right" >{{ 
-                  $toKhmer( record.officer.salary != undefined && record.officer.salary != null
-                    ? record.officer.salary
-                    : 0
-                  )
-                }}</td>
-                <td class="text-right" >{{ 
-                  $toKhmer( 
-                    record.basic_salary != undefined && record.basic_salary != null
-                    ? parseFloat( record.basic_salary ) + parseFloat( record.adjustment_amount )
-                    : 0
-                  )
-                }}</td>
-                <td class="text-center" >{{ 
-                  record.date != undefined && record.date != null 
-                  ? $toKhmer( dateFormat( new Date( record.date ) , 'dd-mm-yyyy' ) ) 
-                  : ''
-                }}</td> -->
+                <td class="text-center text-blue-500 font-bold " >{{ formatCurrency( record.net_salary ) }}</td>
                 <td class="relative w-16" >
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
                 </td>
               </tr>
             </tbody>
-            <!-- <tfoot>
+            <tfoot>
               <tr class="bg-gray-200" >
-                <th colspan="7" class="text-right" >សរុប</th>
-                <th class="text-right" >{{ $toKhmer( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.officer.salary ) , 0 ) ) }}</th>
-                <th class="text-right" >{{ $toKhmer( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.basic_salary ) , 0 ) ) }}</th>
-                <th colspan="2"></th>
+                <th colspan="39" class="text-right" >សរុប</th>
+                <!-- <th class="text-right" >{{ $toKhmer( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.officer.salary ) , 0 ) ) }}</th> -->
+                <th class="text-center font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.basic_salary ) , 0 ) ) }}</th>
+                <th colspan="1"></th>
               </tr>
-            </tfoot> -->
+            </tfoot>
           </table>
           <!-- <div v-for="(record, index) in table.records.matched" :key='index' class="item" >
             <div class="content" >
@@ -413,6 +371,8 @@ export default {
     const message = useMessage()
     const notify = useNotification()
 
+    const payrollId = ref( route.params.id )
+    console.log( payrollId.value )
     const officerids = ref( 
       route.params.ids != undefined && route.params.ids.trim().length > 0 ? route.params.ids.split(',') : null
     )
@@ -497,7 +457,8 @@ export default {
         organizations: selectedOrganizations.value ,
         officerids: officerids.value ,
         year : year.value ,
-        month : month.value
+        month : month.value ,
+        payroll_id : payrollId.value 
       }).then(res => {
         table.records.all = table.records.matched = res.data.records
         table.pagination = res.data.pagination
@@ -695,7 +656,10 @@ export default {
     }
 
     function formatCurrency(amount) {
-      return new Intl.NumberFormat().format( amount )
+      return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format( amount )
     }
     /**
      * Initial the data
@@ -799,9 +763,9 @@ export default {
   @apply p-2;
 }
 .vcb-table tr th {
-  @apply p-2 border-b border-gray-200 relative text-nowrap ;
+  @apply px-2 py-4 border-b border-gray-200 relative text-nowrap ;
 }
 .vcb-table tr td {
-  @apply p-2 relative h-16;
+  @apply p-2 relative h-16 border-b border-gray-200 ;
 }
 </style>
