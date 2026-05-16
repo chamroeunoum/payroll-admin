@@ -562,9 +562,10 @@ export default {
   @apply p-2;
 }
 .vcb-table tr th {
-  @apply p-2 border-b border-gray-200 relative text-nowrap ;
+  /* @apply p-2 border-b border-gray-200 relative ; */
+  @apply px-2 py-4 border-b border-gray-200 relative text-nowrap ;
 }
 .vcb-table tr td {
-  @apply p-2 relative h-16;
+  @apply p-2 relative border-b border-gray-200 relative text-nowrap ;
 }
 </style>

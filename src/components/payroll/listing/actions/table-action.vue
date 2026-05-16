@@ -232,12 +232,12 @@ export default {
   @apply flex flex-wrap justify-center absolute w-96 top-0 right-0 bottom-0;
 }
 .vcb-thumbnail .actions .action-toggle {
-  @apply absolute top-5 right-1 w-8 h-8 p-0 rounded-full cursor-pointer ;
+  @apply absolute top-2 right-1 w-4 h-4 p-0 rounded-full cursor-pointer ;
 }
 .vcb-thumbnail .actions .panel {
   @apply bg-white/95 absolute w-full top-0 bottom-0 flex flex-wrap content-center justify-center p-2 rounded-l;
 }
 .vcb-thumbnail .actions .action {
-  @apply cursor-pointer w-10 m-1 p-1 bg-white border border-gray-200 rounded ;
+  @apply cursor-pointer w-6 m-1 p-1 bg-white border border-gray-200 rounded ;
 }
 </style>

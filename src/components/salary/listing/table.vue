@@ -95,7 +95,7 @@
                 <th class="text-center" >ល.រ</th>
                 <th class="text-left" >កូដ</th>
                 <th class="text-left" >ឈ្មោះខ្មែរ</th>
-                <th class="text-center" >ឈ្មោះអង់គ្លេស</th>
+                <th class="text-left" >ឈ្មោះអង់គ្លេស</th>
                 <th class="text-left" >ភេទ</th>
                 <th class="text-left " >សញ្ជាតិ</th>
                 <th class="text-left " >ថ្ងៃចូលធ្វើការ</th>
@@ -138,17 +138,17 @@
             <tbody>
               <tr v-for="(record, index) in table.records.matched" :key='index' class="item" >
                 <td class="text-center w-12 font-bold " >{{ ( index + 1 ) }}</td>
-                <td class="text-center w-24 font-bold " >{{ record.officer.code }}</td>
-                <td class="text-center w-40 " >{{ record.officer.people.lastname + ' ' + record.officer.people.firstname }}</td>
-                <td class="text-center w-60 " >{{ record.officer.people.enlastname + ' ' + record.officer.people.enfirstname }}</td>
-                <td class="text-center" >{{ ['ស្រី' , 'ប្រុស' ][ parseInt( record.officer.people.gender ) > 0 ? 1 : 0 ] }}</td>
-                <td class="text-center" >{{ record.officer.people.nationality == 'KHM' ? 'ខ្មែរ' : 'បរទេស' }}</td>
-                <td class="text-center" >{{ 
+                <td class="text-left w-24 font-bold " >{{ record.officer.code }}</td>
+                <td class="text-left w-40 " >{{ record.officer.people.lastname + ' ' + record.officer.people.firstname }}</td>
+                <td class="text-left w-60 " >{{ record.officer.people.enlastname + ' ' + record.officer.people.enfirstname }}</td>
+                <td class="text-left" >{{ ['ស្រី' , 'ប្រុស' ][ parseInt( record.officer.people.gender ) > 0 ? 1 : 0 ] }}</td>
+                <td class="text-left" >{{ record.officer.people.nationality == 'KHM' ? 'ខ្មែរ' : 'បរទេស' }}</td>
+                <td class="text-left" >{{ 
                   record.officer.official_date != undefined && record.officer.official_date != null 
                   ? $toKhmer( dateFormat( new Date( record.officer.official_date ) , 'dd-mm-yyyy' ) ) 
                   : ''
                 }}</td>
-                <td class="text-center" >{{ [
+                <td class="text-left" >{{ [
                   (
                     record.officer.category != undefined && record.officer.category != null
                       ? record.officer.category.name
@@ -763,9 +763,10 @@ export default {
   @apply p-2;
 }
 .vcb-table tr th {
+  /* @apply p-2 border-b border-gray-200 relative ; */
   @apply px-2 py-4 border-b border-gray-200 relative text-nowrap ;
 }
 .vcb-table tr td {
-  @apply p-2 relative h-16 border-b border-gray-200 ;
+  @apply p-2 relative border-b border-gray-200 relative text-nowrap ;
 }
 </style>
