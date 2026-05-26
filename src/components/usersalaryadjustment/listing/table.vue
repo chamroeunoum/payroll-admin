@@ -112,10 +112,10 @@
                     : ''
                 }}</td>
                 <td class="text-center" >{{ 
-                  record.people.gender == 0
+                  record.people.gender == 0 
                     ? 'ស្រី' 
-                    : 'ប្រុស'
-                }}</td>
+                    : 'ប្រុស' 
+                }}</td> 
                 <td class="text-center" >{{ 
                   record.people.dob != undefined && record.people.dob != null 
                   ? $toKhmer( dateFormat( new Date( record.people.dob ) , 'dd-mm-yyyy' ) ) 
@@ -361,8 +361,12 @@ export default {
         ids: peopleIds.value ,
         date: dateFormat( new Date( timestamp.value ) , 'yyyy-mm' )
       }).then(res => {
-        table.records.all = table.records.matched = res.data.records
+        table.records.all = table.records.matched = res.data.records != undefined && res.data.records.length > 0 
+          ? res.data.records
+          : []
         table.pagination = res.data.pagination
+
+        console.log( res.data.records.map( r => { return { 'salary_policies' : r.user_salary_policies } } ) )
 
         getSalaryAdjustments()
 
