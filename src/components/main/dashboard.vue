@@ -8,11 +8,7 @@
                     <div class="m-auto mb-2 font-pvh">កិច្ចសន្យា</div>
                     <div class="m-auto mb-2 font-bold text-blue-600" v-html=" $toKhmer( totalContracts )" ></div>
                 </div>
-                <div v-if="isBackendManagement()" @click="$router.push('/room')" class="widget-thumbnail-tln hover:scale-105 transform-gpu duration-300">
-                    <svg class="m-auto mb-4 h-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 12v.01"></path><path d="M3 21h18"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></g></svg>
-                    <div class="m-auto mb-2 font-pvh">អាផាមិន</div>
-                    <div class="m-auto mb-2 font-bold text-blue-600" v-html=" $toKhmer( totalRooms )" ></div>
-                </div> -->
+                -->
                 <div v-if="isBackendManagement()" @click="$router.push('/officer')" class="widget-thumbnail-tln hover:scale-105 transform-gpu duration-300">
                     <svg class="m-auto mb-4 h-12 text-blue-600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><g fill="none"><path d="M18 13a1 1 0 0 1 1-1h6a1 1 0 0 1 0 2h-6a1 1 0 0 1-1-1zm1 4a1 1 0 1 0 0 2h6a1 1 0 0 0 0-2h-6zm-6-4a2 2 0 1 1-4 0a2 2 0 0 1 4 0zm-6 4.5A1.5 1.5 0 0 1 8.5 16h5a1.5 1.5 0 0 1 1.5 1.5s0 3.5-4 3.5s-4-3.5-4-3.5zM2 7.25A3.25 3.25 0 0 1 5.25 4h21.5A3.25 3.25 0 0 1 30 7.25v17.5A3.25 3.25 0 0 1 26.75 28H5.25A3.25 3.25 0 0 1 2 24.75V7.25zM5.25 6C4.56 6 4 6.56 4 7.25v17.5c0 .69.56 1.25 1.25 1.25h21.5c.69 0 1.25-.56 1.25-1.25V7.25C28 6.56 27.44 6 26.75 6H5.25z" fill="currentColor"></path></g></svg>
                     <div class="m-auto mb-2 font-pvh">បុគ្គលិក</div>
@@ -79,22 +75,7 @@ export default {
             })
         }
 
-        const totalRooms = ref(0)
-        function getRooms(){
-            store.dispatch( 'room/list',{
-                search: '' ,
-                page: 1 , 
-                perPage: 10
-            } ).then( res => {
-                console.log( res.data.pagination )
-                totalRooms.value = res.data.pagination.totalRecords 
-            }).catch( err => {
-                console.log( err )
-            })
-        }
-
         getStaffs()
-        getRooms()
         getContracts()
         
 
@@ -109,8 +90,7 @@ export default {
             toggleDashboardWidgets ,
             isBackendManagement ,
             totalStaffs ,
-            totalContracts ,
-            totalRooms
+            totalContracts
         }
     }
 }
