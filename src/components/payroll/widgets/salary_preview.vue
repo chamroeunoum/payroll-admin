@@ -53,21 +53,21 @@
                 <tr>
                   <td>ចំនួនថ្ងៃនិងប្រាក់ដែលធ្វើការថ្ងៃធម្មតា Regular Pay</td>
                   <td >{{ previewSalary?.attendancesOfTheMonth?.total?.worked_days }}</td>
-                  <td >{{ previewSalary?.attendancesOfTheMonth?.total?.pay_base_worked_time }}</td>
+                  <td class="text-blue-700" >{{ previewSalary?.attendancesOfTheMonth?.total?.normal_pay }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនថ្ងៃអវត្តមាន No. Of Absences</td>
-                  <td colspan="2" >{{ previewSalary?.attendancesOfTheMonth?.total?.attendance_by_types?.AB }}</td>
+                  <td colspan="2" class="text-red-500" >{{ previewSalary?.attendancesOfTheMonth?.total?.attendance_by_types?.AB }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួន/ប្រាក់ម៉ោងបន្ថែមធម្មតា OT Pay 150%</td>
-                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.overtime / 60 }}</td>
-                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.ot_pay }}</td>
+                  <td>{{ ( previewSalary?.attendancesOfTheMonth?.total?.overtime / 60 ).toFixed(2) }}</td>
+                  <td class="text-green-700" >{{ previewSalary?.attendancesOfTheMonth?.total?.ot_pay }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួន/ប្រាក់ម៉ោងបន្ថែម Pay 200%</td>
-                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.holiday_worked_time / 60 }}</td>
-                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.holiday_pay }}</td>
+                  <td>{{ ( previewSalary?.attendancesOfTheMonth?.total?.holiday_worked_time / 60 ).toFixed(2) }}</td>
+                  <td class="text-green-700" >{{ previewSalary?.attendancesOfTheMonth?.total?.holiday_pay }}</td>
                 </tr>
                 <tr>
                   <td>ថ្ងៃជួសការសម្រាក់ប្រចាំឆ្នាំ Annual Leave</td>
@@ -80,89 +80,121 @@
                 <tr>
                   <td>ចំនួន/ប្រាក់ថ្ងៃច្បាស់មាតុភាព Maternity Leave</td>
                   <td>{{ previewSalary?.attendancesOfTheMonth?.total?.attendance_by_types?.AL }}</td>
-                  <td>{{ record.maternity_pay }}</td>
+                  <td class="text-green-700" >{{
+                    previewSalary?.user_policies?.al_pay?.adjustment_amount > 0
+                      ? previewSalary.user_policies.al_pay.adjustment_amount
+                      : 0
+                  }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួន/ប្រាក់ម៉ោងបន្ថែមថ្ងៃបុណ្យ PH Pay</td>
-                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.holiday_worked_time / 60 }}</td>
-                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.holiday_pay }}</td>
+                  <td>{{ ( previewSalary?.attendancesOfTheMonth?.total?.holiday_worked_time / 60 ).toFixed(2) }}</td>
+                  <td class="text-green-700">{{ previewSalary?.attendancesOfTheMonth?.total?.holiday_pay }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួន/ប្រាក់ម៉ោងបន្ថែម Sunday Pay</td>
-                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.sunday_worked_time / 60 }}</td>
-                  <td>{{ previewSalary?.attendancesOfTheMonth?.total?.weekend_pay }}</td>
+                  <td>{{ ( previewSalary?.attendancesOfTheMonth?.total?.sunday_worked_time / 60 ).toFixed(2) }}</td>
+                  <td class="text-green-700" >{{ previewSalary?.attendancesOfTheMonth?.total?.weekend_pay }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់រង្វាន់ការងារ Attendance Bonus</td>
-                  <td colspan="2">{{ previewSalary?.attendancesOfTheMonth?.attendance_bonus }}</td>
+                  <td colspan="2" class="text-green-700">{{ previewSalary?.attendancesOfTheMonth?.attendance_bonus }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់ឧបត្ថមថ្លៃធ្វើដំណើរ Trip Fee</td>
-                  <td colspan="2">{{ previewSalary?.attendancesOfTheMonth?.trip_fee }}</td>
+                  <td colspan="2" class="text-green-700">{{ previewSalary?.attendancesOfTheMonth?.trip_fee }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់ឧបត្ថមអាហារសម្រាប់ធ្វើការថែមម៉ោង Dinner for working OT</td>
-                  <td colspan="2">{{ previewSalary?.attendancesOfTheMonth?.total?.dinner_pay }}</td>
+                  <td colspan="2" class="text-green-700">{{ previewSalary?.attendancesOfTheMonth?.total?.dinner_pay }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់រង្វាន់ Rewards</td>
-                  <td colspan="2">{{ previewSalary?.rewards }}</td>
+                  <td colspan="2" class="text-green-700">{{
+                    previewSalary?.user_policies?.reward?.adjustment_amount > 0
+                      ? previewSalary.user_policies.reward.adjustment_amount
+                      : 0
+                  }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់ឧបត្ថមទារកដ្ឋាន Bonus Day Care</td>
-                  <td colspan="2">{{ previewSalary?.bonus_daycare }}</td>
+                  <td colspan="2" class="text-green-700">{{
+                    previewSalary?.user_policies?.baby_care?.adjustment_amount > 0
+                      ? previewSalary.user_policies.baby_care.adjustment_amount
+                      : 0
+                  }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់ទូទាត់សម្រាប់ប្រាក់ប្រចាំឆ្នាំ Comp. for annual leave</td>
-                  <td colspan="2">{{ previewSalary?.comp_for_annual_leave }}</td>
+                  <td colspan="2" class="text-green-700">{{ previewSalary?.comp_for_annual_leave }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់អតីតភាព Seniority Bonus</td>
-                  <td colspan="2">{{ previewSalary?.seniority_bonus }}</td>
+                  <td colspan="2" class="text-green-700">{{ previewSalary?.seniority_bonus }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់បំណាច់អតីតភាពការងារថ្មី New work seniority bonus</td>
-                  <td colspan="2">{{ previewSalary?.newwork_seniority_bonus }}</td>
+                  <td colspan="2" class="text-green-700">{{ previewSalary?.newwork_seniority_bonus }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់ដែលត្រូវសង Salary adjustment</td>
-                  <td colspan="2">{{ previewSalary?.salary_adjustments?.key }}</td>
+                  <td colspan="2" class="text-red-700">{{ 
+                    previewSalary?.user_policies?.salary_adjustment?.adjustment_amount > 0
+                      ? previewSalary.user_policies.salary_adjustment.adjustment_amount
+                      : 0
+                  }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់សរុបទាំងអស់ Gross Pay</td>
-                  <td colspan="2">{{ previewSalary?.gross_salary }}</td>
+                  <td colspan="2" class="text-blue-700">{{ previewSalary?.gross_salary }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់កាត់ថ្លៃថែទាំសុខភាព Health Care Service</td>
-                  <td colspan="2">0</td>
+                  <td colspan="2" class="text-red-700">{{ 
+                    previewSalary?.user_policies?.health_service?.adjustment_amount > 0
+                      ? previewSalary.user_policies.health_service.adjustment_amount
+                      : 0
+                  }}</td>
                 </tr>
                 <tr>
                   <td>កាត់ប្រាក់ពន្ធ Tax</td>
-                  <td colspan="2">{{ previewSalary?.tax_withholding }}</td>
+                  <td colspan="2" class="text-red-700">{{ previewSalary?.tax_withholding }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់បានខ្ចី Cash Advance</td>
-                  <td colspan="2">{{ previewSalary?.cash_advance }}</td>
+                  <td colspan="2" class="text-red-700" >{{
+                    previewSalary?.user_policies?.cash_advanced?.adjustment_amount > 0
+                      ? previewSalary.user_policies.cash_advanced.adjustment_amount
+                    : 0
+                }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់គោលសុទ្ធបើកលើកទី១ពាក់កណ្ដាលខែ<br/>Take basic salary middle of month (50%)</td>
-                  <td colspan="2">{{ previewSalary?.basic_salary_middle_of_month }}</td>
+                  <td colspan="2" class="text-red-700">{{ previewSalary?.basic_salary_middle_of_month }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់កាត់ទុករបបសន្តិសុខសង្គម(សោធនិវត្ស)<br/>Amount withhold on NSSF 2%</td>
-                  <td colspan="2">{{ previewSalary?.nssf }}</td>
+                  <td colspan="2" class="text-red-700">{{ previewSalary?.nssf }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់កាត់មានកំហុស Mistake</td>
-                  <td colspan="2">{{ previewSalary?.mistake }}</td>
+                  <td colspan="2" class="text-red-700">{{
+                    previewSalary?.user_policies?.mistake?.adjustment_amount > 0
+                      ? previewSalary.user_policies.mistake.adjustment_amount
+                      : 0
+                 }}</td>
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់កាត់ថ្លៃទឹកភ្លើង Deduce Utilities</td>
-                  <td colspan="2">{{ previewSalary?.utilities }}</td>
+                  <td colspan="2" class="text-red-700">{{
+                    previewSalary?.user_policies?.utility?.adjustment_amount > 0
+                      ? previewSalary.user_policies.utility.adjustment_amount
+                      : 0
+                  }}</td>
                 </tr>
                 <tr>
                   <td class="flex gap-2 " ><div class="font-moul" >ប្រាក់ឈ្នួលសរុប</div><div class="" >Net Pay</div></td>
-                  <td colspan="2">{{ previewSalary?.net_pay }}</td>
+                  <td colspan="2" class="text-green-700">{{ previewSalary?.net_pay }}</td>
                 </tr>
               </tbody>
               <!-- <tbody>
@@ -381,9 +413,10 @@ export default {
           parseInt( props.salaryType ) > 2 ? 2 : 1
         ): 0 ,
         date: dateFormat( new Date( props.salaryDate ) , 'yyyy-mm-dd')
-      }).then( res => {
+      }).then( res => { 
         previewSalary.value = res.data.ok == true ? res.data.result : null
-        console.log( res )
+        console.log(previewSalary.value)
+        console.log( res.data )
       }).catch( err => {
         console.log( err )
       })

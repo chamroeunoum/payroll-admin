@@ -156,7 +156,7 @@ export default {
       props.onClose( parseInt( actionStatus ) )
     }
     var detailModal = reactive({show:false})
-    function showDetailModal(record){
+    function showDetailModal(record) {
       detailModal.show = true
       show.value = false
     }
