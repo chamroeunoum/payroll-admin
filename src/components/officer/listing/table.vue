@@ -110,7 +110,7 @@
                 <!-- <td>
                   <div v-if="record.image != false && record.image != null && record.image != undefined " class="w-12 h-12 image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
                   <div v-if="record.image == false || record.image == null || record.image == undefined " class="w-12 h-12 image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ocmLogoUrl+');' " ></div>
-                </td> -->
+                </td> --> 
                 <td class="text-center text-bold" >{{ $toKhmer( index + 1 ) }}</td>
                 <td class="text-left" >{{ $toKhmer( record.code ) }}</td>
                 <td class="text-left" >{{ 

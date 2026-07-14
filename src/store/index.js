@@ -19,6 +19,7 @@ import salarypolicy from './modules/salarypolicy'
 import holiday from './modules/holiday'
 import leaverequest from './modules/leaverequest'
 import attendanceadjustment from './modules/attendanceadjustment'
+import dashboard from './modules/dashboard'
 
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -58,7 +59,8 @@ export default createStore({
     generalsetting ,
     holiday ,
     leaverequest ,
-    attendanceadjustment
+    attendanceadjustment ,
+    dashboard
   },
   strict: debug,
   plugins: debug ? 

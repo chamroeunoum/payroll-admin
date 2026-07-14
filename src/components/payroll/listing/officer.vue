@@ -44,6 +44,9 @@
             </template>
             កាលបរិច្ឆែទគណាបៀវត្ស
           </n-tooltip>
+          <n-button @click="generateAllSalaries" type="primary" class="ml-2" :loading="generatingAll">
+            គណនាប្រាក់បៀវត្សទាំងអស់
+          </n-button>
           <!-- <n-tooltip trigger="hover">
             <template #trigger>
               <div @click="showCreateNonOfficerModal()" class="flex cursor-pointer hover:text-green-500 duration-300 ml-2 leading-8" >
@@ -361,6 +364,7 @@ export default {
 
     const salaryType = ref(0)
     const salaryDate = ref( Date.now() )
+    const generatingAll = ref(false)
     const peopleIds = ref( 
       route.params.ids != undefined && route.params.ids.trim().length > 0 ? route.params.ids.split(',') : null
     )
@@ -530,6 +534,39 @@ export default {
     function closeActions( actionStatus ){
       if( parseInt( actionStatus ) > 0 ) getRecords()
     }
+
+    function generateAllSalaries(){
+      generatingAll.value = true
+      const modeMap = ['full', 'mid', 'end']
+      store.dispatch('payroll/generateSalaries',{
+        date: dateFormat( new Date( salaryDate.value ) , 'dd-mm-yyyy' ),
+        mode: modeMap[ salaryType.value ] || 'full'
+      }).then( res => {
+        generatingAll.value = false
+        if( res.data.ok ){
+          notify.success({
+            title: 'គណនាប្រាក់បៀវត្ស',
+            description: res.data.message || 'គណនាប្រាក់បៀវត្សទាំងអស់រួចរាល់',
+            duration: 3000
+          })
+          getRecords()
+        }else{
+          notify.error({
+            title: 'គណនាប្រាក់បៀវត្ស',
+            description: res.data.message || 'មានបញ្ហាក្នុងពេលគណនាប្រាក់បៀវត្ស',
+            duration: 5000
+          })
+        }
+      }).catch( err => {
+        generatingAll.value = false
+        const msg = err.response?.data?.message || err.message || 'មានបញ្ហាក្នុងពេលគណនាប្រាក់បៀវត្ស'
+        notify.error({
+          title: 'គណនាប្រាក់បៀវត្ស',
+          description: msg,
+          duration: 5000
+        })
+      })
+    }
     
     /**
      * Load positions
@@ -632,6 +669,7 @@ export default {
       ocmLogoUrl ,
       salaryDate ,
       salaryType ,
+      generatingAll ,
       /**
        * Table
        */
@@ -660,6 +698,7 @@ export default {
       showCreateNonOfficerModal ,
       closeCreateNonOfficerModal ,
       closeActions ,
+      generateAllSalaries ,
       /**
        * Functions
        */

@@ -281,3 +281,118 @@ Hover enlargement
 .hover-enlarge-120 {
 @apply hover:shadow duration-500 hover:scale-105 transform-gpu border border-gray-100 hover:border-blue-400 ;
 }
+
+/**
+BI Dashboard Cards
+*/
+.bi-card {
+@apply bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden;
+}
+.bi-card-header {
+@apply flex items-center gap-2 px-4 py-3 border-b border-gray-100 bg-gray-50;
+}
+.bi-card-title {
+@apply font-moul text-sm flex-grow;
+}
+.bi-card-period {
+@apply text-xs text-gray-500 bg-gray-200 rounded-full px-2 py-0.5;
+}
+.bi-card-body {
+@apply p-4;
+}
+.bi-card-empty {
+@apply p-8 text-center text-gray-400;
+}
+.bi-loading {
+@apply text-blue-500;
+}
+.bi-no-data {
+@apply text-gray-400;
+}
+.bi-stat-grid {
+@apply grid grid-cols-2 gap-3 mb-4;
+}
+.bi-stat-item {
+@apply text-center p-2 bg-gray-50 rounded-lg;
+}
+.bi-stat-value {
+@apply text-2xl font-bold;
+}
+.bi-stat-label {
+@apply text-xs text-gray-500 mt-1;
+}
+
+/* Finance items inside Payroll card */
+.bi-finance-grid {
+@apply space-y-2;
+}
+.bi-finance-item {
+@apply flex justify-between items-center py-1.5 border-b border-gray-50;
+}
+.bi-finance-label {
+@apply text-xs text-gray-600;
+}
+.bi-finance-value {
+@apply text-sm font-bold;
+}
+
+/* Attendance rate bar */
+.bi-att-rate-section {
+@apply mb-4;
+}
+.bi-att-rate-label {
+@apply text-xs text-gray-600 mb-1;
+}
+.bi-att-rate-bar-bg {
+@apply w-full h-3 bg-gray-200 rounded-full overflow-hidden;
+}
+.bi-att-rate-bar-fill {
+@apply h-full rounded-full transition-all duration-500;
+}
+.bi-att-rate-pct {
+@apply text-right text-xs font-bold mt-0.5;
+}
+
+/* Attendance breakdown rows */
+.bi-att-breakdown {
+@apply space-y-1.5 mb-4;
+}
+.bi-att-row {
+@apply flex items-center gap-2;
+}
+.bi-att-dot {
+@apply w-2.5 h-2.5 rounded-full flex-none;
+}
+.bi-att-label {
+@apply text-xs flex-grow;
+}
+.bi-att-value {
+@apply text-xs font-bold;
+}
+
+/* OT section */
+.bi-ot-section {
+@apply border-t border-gray-200 pt-3 space-y-1;
+}
+.bi-ot-row {
+@apply flex justify-between text-xs;
+}
+
+/* Department badges */
+.bi-dept-section {
+@apply border-t border-gray-200 pt-3 mt-2;
+}
+.bi-dept-title {
+@apply text-xs text-gray-500 mb-2 font-bold;
+}
+.bi-dept-badges {
+@apply flex flex-wrap gap-1.5;
+}
+.bi-dept-badge {
+@apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium
+	bg-blue-50 text-blue-700 border border-blue-200;
+}
+.bi-dept-badge-count {
+@apply inline-flex items-center justify-center min-w-[18px] h-[18px] px-1
+	rounded-full bg-blue-200 text-blue-800 text-[10px] font-bold;
+}

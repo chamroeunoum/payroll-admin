@@ -164,7 +164,7 @@
                       ?  record.officer.section.name
                       : ''
                   )
-                ].filter(o=>o!='').join( ', ')
+                ].filter(o=>o!=''&&o!=null).join( ', ')
                 }}
                 </td>
                 <td class="text-center text-blue-500" >{{ formatCurrency( record.officer.salary_rank ) }}</td>
