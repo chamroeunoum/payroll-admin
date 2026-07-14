@@ -40,7 +40,6 @@
               </template>
               ចុះវត្តមាន
             </n-button>
-
           </div>
           <div class="uploader w-42 flex" >
             <input type="file" multiple placeholder="ឯកសារយោង" @change="handleExcelFile" class="hidden " id="referenceDocument" accept=".xlsx, .xls" />
@@ -56,61 +55,88 @@
               ជ្រើសរើសឯកសារ Excel
             </n-button>
           </div>
+          <div class="ml-2 ">
+            <n-tooltip trigger="hover">
+              <template #trigger>
+                <n-button icon-placement="left" type="warning" @click="downloadTemplate">
+                  <template #icon>
+                    <NIcon>
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7l7-7zM5 18v2h14v-2H5z" fill="currentColor"/></svg>
+                    </NIcon>
+                  </template>
+                  ទាញយក Template Excel
+                </n-button>
+              </template>
+              ទាញយក Template Excel សម្រាប់បំពេញវត្តមាន
+            </n-tooltip>
+          </div>
         </div>
       </div>
       <!-- Filter panel of crud -->
       <div class="filters-bar"></div>
     </div>
-    <!-- Table of crud -->
+    <!-- Table of crud with tabs -->
     <div class="mt-4 mb-24 relative">
-      <div v-if="unregisterEmployeeCodes.length" class="w-full my-1 mb-2 py-2 text-left text-md text-red-600 " >
-        {{ 'មានមន្ត្រីដែលមិនទាន់បានចុះឈ្មោះចំនួន៖ ' + unregisterEmployeeCodes.length + ' នៃតួលេខសរុប ' + allEmployeeCodes.length + ' ។ សូមពិនិត្យបន្ទាប់ក្រហមខាងក្រោម។' }}
-        <n-button type="default" @click="toggleRegisterOfficers">{{ toggleOfficer != true ? 'បុគ្គលិកគ្មានក្នុងប្រព័ន្ធ' : 'បុគ្គលិកក្នុងប្រព័ន្ធ' }}</n-button>
-        <n-button type="default" @click="resetEmployeeCodes">បង្ហាញទាំងអស់</n-button>
-      </div>
-      <div v-if="files != null && files.length" class="w-full my-1 mb-2 py-2 text-left text-md text-red-600 " >
+      <div v-if="files != null && files.length" class="w-full my-1 mb-2 py-2 text-left text-md text-blue-600 " >
         កំពុងអានឯកសារឈ្មោះ ៖ {{  currentFile.name  }}។ {{ currentFileIndex + 1 }} នៃ {{ files.length }}
       </div>
+      <div v-if="unregisterEmployeeCodes.length" class="w-full my-1 mb-2 py-2 text-left text-md text-red-600 " >
+        {{ 'មានមន្ត្រីដែលមិនទាន់បានចុះឈ្មោះចំនួន៖ ' + unregisterEmployeeCodes.length + ' នៃតួលេខសរុប ' + allEmployeeCodes.length + ' ។ សូមពិនិត្យបន្ទាប់ក្រហមខាងក្រោម។' }}
+      </div>
       <div v-if="rows.length">
-        <table class="vcb-table mb-40 ">
-          <thead>
-            <tr >
-              <th class="capital" >{{ ( columns[0] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
-              <th class="capital" >{{ ( columns[1] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
-              <th class="capital" >{{ ( columns[2] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
-              <th class="capital" >{{ ( columns[3] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
-              <th class="capital" >{{ ( columns[4] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
-              <th class="capital" >{{ ( columns[5] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
-              <th class="capital" >{{ ( columns[6] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
-              <th class="capital" >{{ ( columns[7] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
-              <th class="capital" >{{ ( columns[8] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
-              <th class="capital" >{{ ( columns[9] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(row, index) in filteredRows" :key="index" :class="( row[10] ? ' bg-yellow-100' : ' ' ) + ( row[11] == false ? ' bg-red-200 ' : ' ' ) " >
-              <td class="text-center font-bold" >{{ row[0] }}</td>
-              <td>{{ row[1] }}</td>              
-              <td>{{ row[2] }}</td>
-              <td>{{ row[3] }}</td>
-              <td>{{ row[4] }}</td>
-              <td>{{ row[5] }}</td>
-              <td>{{ row[6] }}</td>
-              <td>{{ row[7] }}</td>
-              <td :class=" row[10] == false ? '' : ( row[8].toLowerCase() == 'ab' ? ' text-red-700' : '' ) " >{{ row[8] }}</td>
-              <td>{{ row[9] }}</td>
-              <!-- <td v-for="(cell, cellIndex) in row" :key="cellIndex">
-                {{ cell }}
-              </td> -->
-            </tr>
-          </tbody>
-        </table>
-      </div>      
+        <n-tabs v-model:value="activeTab" type="line" animated>
+          <n-tab-pane name="registered" :tab="'ក្នុងប្រព័ន្ធ ( ' + registerEmployeeCodes.length + ' )'">
+            <div v-if="registerEmployeeCodes.length <= 0" class="text-center py-10 text-gray-400" >មិនមានបុគ្គលិកក្នុងប្រព័ន្ធឡើយ។</div>
+          </n-tab-pane>
+          <n-tab-pane name="unregistered" :tab="'មិនទាន់ក្នុងប្រព័ន្ធ ( ' + unregisterEmployeeCodes.length + ' )'">
+            <div v-if="unregisterEmployeeCodes.length <= 0" class="text-center py-10 text-gray-400" >មិនមានបុគ្គលិកក្រៅប្រព័ន្ធឡើយ។</div>
+          </n-tab-pane>
+          <n-tab-pane name="all" :tab="'ទាំងអស់ ( ' + allEmployeeCodes.length + ' )'"></n-tab-pane>
+        </n-tabs>
+
+        <div v-if="tabRows.length" class="overflow-x-auto">
+          <table class="vcb-table mb-40">
+            <thead>
+              <tr>
+                <th class="capital" >{{ ( columns[0] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
+                <th class="capital" >{{ ( columns[1] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
+                <th class="capital" >{{ ( columns[2] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
+                <th class="capital" >{{ ( columns[3] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
+                <th class="capital" >{{ ( columns[4] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
+                <th class="capital" >{{ ( columns[5] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
+                <th class="capital" >{{ ( columns[6] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
+                <th class="capital" >{{ ( columns[7] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
+                <th class="capital" >{{ ( columns[8] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
+                <th class="capital" >{{ ( columns[9] + '' ).toUpperCase().replaceAll( '_' , ' ' ) }}</th>
+                <th v-if="activeTab == 'all'" class="w-20 text-center" >ស្ថានភាព</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, index) in tabRows" :key="index" class="hover:bg-gray-50" >
+                <td class="text-center font-bold" >{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
+                <td>{{ row[6] }}</td>
+                <td>{{ row[7] }}</td>
+                <td>{{ row[8] }}</td>
+                <td>{{ row[9] }}</td>
+                <td v-if="activeTab == 'all'" class="text-center">
+                  <n-tag v-if="row[11] == true" type="success" size="tiny">ក្នុងប្រព័ន្ធ</n-tag>
+                  <n-tag v-if="row[11] == false" type="error" size="tiny">គ្មានក្នុងប្រព័ន្ធ</n-tag>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { reactive ,ref } from 'vue'
+import { reactive ,ref , computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import QrcodeVue from 'qrcode.vue'
@@ -161,9 +187,12 @@ export default {
     const currentFileIndex = ref(0)
     function handleExcelFile(event){
       files.value = event.target.files
+      currentFile.value = files.value.length > 0 ? files.value[0] : null
+      currentFileIndex.value = 0
       rows.value = []
       columns.value = []
       filteredRows.value = [] 
+      allEmployeeCodes.value = []
       registerEmployeeCodes.value = []
       unregisterEmployeeCodes.value = []
 
@@ -198,7 +227,8 @@ export default {
           console.log( (i + 1) + '. ' + file.name )
           let formatedData = reformatData( jsonData )
 
-          // rows.value = rows.value.concat( formatedData )
+          rows.value = formatedData
+          filteredRows.value = formatedData
         }
         reader.readAsArrayBuffer(file)
       }
@@ -263,6 +293,12 @@ export default {
       document.getElementById('referenceDocument').click();
     }
 
+    function downloadTemplate(){
+      let date = new Date().toISOString().split('T')[0];
+      let url = import.meta.env.VITE_API_SERVER + '/attendances/template?date=' + date;
+      window.open(url, '_blank');
+    }
+
     const search = ref('')
     function filterRecords(){
       if( search.value != undefined && search.value != '' && search.value.trim().length > 0 ){
@@ -318,6 +354,13 @@ export default {
       filteredRows.value = rows.value
     }
 
+    const activeTab = ref('all')
+    const tabRows = computed(() => {
+      if( activeTab.value == 'registered' ) return registerEmployeeCodes.value
+      if( activeTab.value == 'unregistered' ) return unregisterEmployeeCodes.value
+      return allEmployeeCodes.value
+    })
+
     /**
      * Initial the data
      */
@@ -341,12 +384,15 @@ export default {
       files , 
       currentFile ,
       currentFileIndex ,
+      activeTab ,
+      tabRows ,
       /**
        * Functions
        */
       ocmLogoUrl ,
       handleExcelFile ,
       importExcelFile ,
+      downloadTemplate ,
       dateFormat  ,
       filterRecords ,
       registerAttendances ,

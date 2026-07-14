@@ -4,7 +4,7 @@ import axios from "axios"
 // initial state
 const state = () => ({
   model: {
-    name: "Attendancepolicies" ,
+    name: "attendancepolicies" ,
     title: "គោលការណ៍វត្តមាន" 
   },
   records: [] ,

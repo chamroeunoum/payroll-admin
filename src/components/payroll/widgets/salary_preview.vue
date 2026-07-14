@@ -1,17 +1,29 @@
 <template>
   <!-- Form edit account -->
     <div class="vcb-pop-create font-ktr">
-      <n-modal v-bind:show="show" :on-esc="maskOrEscClick" :on-mask-click="maskOrEscClick"  :on-after-enter="initial" transform-origin="center">
-        <!-- <n-card class="w-11/12 xl:w-7/12 lg:w-7/12 md:w-8/12 sm:w-11/12 font-pvh text-xl p-0 " :bordered="false" size="small"> -->
-          <n-card class="w-[540px] p-0 " style="" :bordered="false" size="small">
-          <!-- Form edit account -->
-          <div class="card relative border border-gray-300 rounded p-8 -my-3 -mx-4">
+      <n-modal v-bind:show="show" :on-esc="maskOrEscClick" :on-mask-click="maskOrEscClick"  :on-after-enter="initial" transform-origin="center" style="width: 620px;">
+          <n-card class="w-[600px] p-0 relative" :bordered="false" size="small">
+          <div class="absolute top-2 right-2 z-10">
+            <n-button size="tiny" type="primary" @click="printPayslip">
+              <template #icon>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" width="14" height="14"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z" fill="currentColor"/></svg>
+              </template>
+              បោះពុម្ព
+            </n-button>
+          </div>
+          <div id="payslip-print-area" class="card relative border border-gray-300 rounded p-8 -my-3 -mx-4">
             <div class="w-full mb-2 font-moul flex items-center place-content-center " >
               <!-- <div class="w-10 h-10 mr-2 bg-contain bg-no-repeat bg-center p-2" style=" background-image: url('/src/assets/logo.jpg'); " ></div> -->
               <img src="/src/assets/logo.jpg" class="w-10 h-10" />
               <div class="font-moul ml-2 " style="font-size: 1.2rem; " >ក្រុមហ៊ុន អូ អេន អិម (ខេមបូឌា) ខូអិលធីឌី</div>
             </div>
-            <div class="w-full mb-2 font-moul text-center" style="font-size: 1rem; " >ការពិនិត្យប្រាក់បៀវត្ស</div>
+            <div class="w-full mb-1 font-moul text-center" style="font-size: 1rem; " >ប័ណ្ណប្រាក់បៀវត្ស / Pay Slip</div>
+            <div class="w-full mb-2 text-center font-bold text-sm" >
+              <span v-if="salaryType == 0">ប្រចាំខែ / Full Month</span>
+              <span v-else-if="salaryType == 1">ពាក់កណ្ដាលខែ (ដើម) / Mid Month</span>
+              <span v-else-if="salaryType == 2">ពាក់កណ្ដាលខែ (ចុង) / End Month</span>
+              &nbsp;—&nbsp; {{ $toKhmer( dateFormat( new Date(salaryDate) , 'mm/yyyy' ) ) }}
+            </div>
             <!-- <div class="w-full mb-0 text-center font-bold" >Pay Slip for the month of Oct 2025</div>
             <div class="w-full mb-3 text-center font-bold" >From 01-Jan-2025 To 31-Jan-2025</div> -->
             <table class="w-full border border-dashed border-gray-200 " >
@@ -423,9 +435,63 @@ export default {
     }
     function initial(){
       getPreviewSalary()
-      // selectedOrganizations.value = [463]
-      // selectedOrganizations.value = Array.isArray( props.record.people.organizations ) ? props.record.people.organizations.map( o => o.id ) : []
-      // selectedPositions.value = Array.isArray( props.record.people.positions ) ? props.record.people.positions.map( o => o.id ) : []
+    }
+    function printPayslip(){
+      const printContents = document.getElementById('payslip-print-area').innerHTML
+      const win = window.open('', '', 'width=800,height=600')
+      win.document.write(`
+        <html>
+        <head>
+          <title>Payslip</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Moul&family=Noto+Sans+Khmer:wght@400;700&display=swap');
+            * { font-family: 'Noto Sans Khmer', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+            body { padding: 30px; font-size: 13px; }
+            .w-full { width: 100%; }
+            .font-moul { font-family: 'Moul', cursive; }
+            .text-center { text-align: center; }
+            .text-sm { font-size: 12px; }
+            .font-bold { font-weight: 700; }
+            .flex { display: flex; }
+            .items-center { align-items: center; }
+            .place-content-center { justify-content: center; }
+            .ml-2 { margin-left: 8px; }
+            .mb-1 { margin-bottom: 4px; }
+            .mb-2 { margin-bottom: 8px; }
+            .mb-40 { margin-bottom: 160px; }
+            .p-1 { padding: 4px; }
+            .p-2 { padding: 8px; }
+            .p-8 { padding: 32px; }
+            .border { border: 1px solid #ddd; }
+            .border-dashed { border-style: dashed; }
+            .border-4 { border-width: 4px; }
+            .border-double { border-style: double; }
+            .border-gray-200 { border-color: #e5e7eb; }
+            .border-gray-500 { border-color: #6b7280; }
+            .w-10 { width: 40px; }
+            .h-10 { height: 40px; }
+            .w-24 { width: 96px; }
+            .w-20 { width: 80px; }
+            .text-left { text-align: left; }
+            .text-green-700 { color: #15803d; }
+            .text-blue-700 { color: #1d4ed8; }
+            .text-red-500, .text-red-700 { color: #b91c1c; }
+            .gap-2 { gap: 8px; }
+            table { width: 100%; border-collapse: collapse; }
+            .table-payment-details tr td, .table-payment-details tr th { border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; padding: 5px; }
+            .table-payment-details tr td:not(:first-child) { text-align: center; }
+            .table-payment-details tr th:first-child { text-align: left; }
+            .table-payment-details tr td:first-child { text-align: left; }
+            .table-payment-details tr th:last-child, .table-payment-details tr td:last-child { border-right: none; }
+            .pl-2 { padding-left: 8px; }
+            @page { margin: 15mm; }
+          </style>
+        </head>
+        <body>${printContents}</body>
+        </html>
+      `)
+      win.document.close()
+      setTimeout(() => { win.print() }, 500)
     }
 
     return {
@@ -447,7 +513,8 @@ export default {
       clearRecord ,
       maskOrEscClick ,
       ocmLogoUrl ,
-      dateFormat 
+      dateFormat ,
+      printPayslip 
     }
   }
 }

@@ -20,8 +20,8 @@ import AttendanceMonthlyCrud from './../components/attendance/monthly.vue'
 /**
  * Attendance Policy Components
  */
-// import AttendancePolicyCrud from './../components/Attendance/policy/index.vue'
-// import AttendancePolicyListCrud from './../components/Attendance/policy/list.vue'
+import AttendancePolicyCrud from './../components/attendancepolicy/index.vue'
+import AttendancePolicyListCrud from './../components/attendancepolicy/list.vue'
 
 /**
  * User Components
@@ -88,6 +88,17 @@ import SettingGeneralCrud from './../components/setting/listing/general.vue'
 import HolidayCrud from './../components/holiday/index.vue'
 import HolidayThumbnailCrud from './../components/holiday/listing/thumbnail.vue'
 import HolidayTableCrud from './../components/holiday/listing/table.vue'
+
+/**
+ * Leave Request Components
+ */
+import LeaveRequestCrud from './../components/leaverequest/index.vue'
+import LeaveRequestTableCrud from './../components/leaverequest/listing/table.vue'
+
+/**
+ * Attendance Adjustment Components
+ */
+import AttendanceAdjustmentCrud from './../components/attendanceadjustment/index.vue'
 
 /**
  * Salary Adjustment Components
@@ -237,23 +248,23 @@ export const getRoutes = () => {
                     
                 ]
             },
-            // {
-            //     name: 'AttendancePolicy' ,
-            //     path: '/Attendancepolicy',
-            //     component: AttendancePolicyCrud ,
-            //     meta: { 
-            //         transition: 'slide-right' ,
-            //         requiresAuth: true,
-            //         is_admin : true
-            //     },
-            //     children: [
-            //         {
-            //             name: "AttendancePolicyList" ,
-            //             path: '' ,
-            //             component: AttendancePolicyListCrud
-            //         },                    
-            //     ]
-            // },
+            {
+                name: 'AttendancePolicy' ,
+                path: '/attendancepolicy',
+                component: AttendancePolicyCrud ,
+                meta: { 
+                    transition: 'slide-right' ,
+                    requiresAuth: true,
+                    is_admin : true
+                },
+                children: [
+                    {
+                        name: "AttendancePolicyList" ,
+                        path: '' ,
+                        component: AttendancePolicyListCrud
+                    },                    
+                ]
+            },
             {
                 name: 'Officer' ,
                 path: '/officer',
@@ -461,6 +472,33 @@ export const getRoutes = () => {
                         component: HolidayThumbnailCrud
                     }
                 ]
+            },
+            {
+                name: 'LeaveRequest' ,
+                path: '/leaverequest',
+                component: LeaveRequestCrud ,
+                meta: { 
+                    transition: 'slide-right' ,
+                    requiresAuth: true,
+                    is_admin : true
+                },
+                children: [
+                    {
+                        name: "LeaveRequestTable" ,
+                        path: '' ,
+                        component: LeaveRequestTableCrud
+                    }
+                ]
+            },
+            {
+                name: 'AttendanceAdjustment' ,
+                path: '/attendanceadjustment',
+                component: AttendanceAdjustmentCrud ,
+                meta: { 
+                    transition: 'slide-right' ,
+                    requiresAuth: true,
+                    is_admin : true
+                }
             },
             {
                 name: 'SalaryPolicy' ,

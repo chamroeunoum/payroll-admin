@@ -80,12 +80,12 @@
               </div>
             </div>
           </div>
-          <div class="w-full shadow p-4 m-2 rounded bg-white  flex flex-wrap " >
+          <!-- <div class="w-full shadow p-4 m-2 rounded bg-white  flex flex-wrap " >
             <div class="font-moul text-left w-full mb-2 border-b border-gray-200 pb-2 " >ការពិន័យ</div>
             <div v-for="(record, index) in table.records.matched.filter( ( r ) => r.key == 'total_days_late_payment' || r.key == 'total_amount_late_pay' )" :key='index' class="item " >
               <div class=" content"  >
-                <!-- <div v-if="record.image != false && record.image != null && record.image != undefined " class="image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
-                <div v-if="record.image == false || record.image == null || record.image == undefined " class="image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ orgLogoUrl +');' " ></div> -->
+                <div v-if="record.image != false && record.image != null && record.image != undefined " class="image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
+                <div v-if="record.image == false || record.image == null || record.image == undefined " class="image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ orgLogoUrl +');' " ></div>
                 <div class="flex flex-wrap " >
                   <div class="w-full py-2" >
                     <div class="w-full text-center font-btb-black leading-6 tracking-wider" >{{ record.name }}</div>
@@ -103,8 +103,8 @@
             <div class="font-moul text-left w-full mb-2 border-b border-gray-200 pb-2 " >ថ្លៃសេវាផ្សេងៗ និងអាត្រាប្ដូរប្រាក់</div>
             <div v-for="(record, index) in table.records.matched.filter( ( r ) => r.key == 'water_price' || r.key == 'electricity_price' || r.key == 'daily_exchange_rate' )" :key='index' class="item " >
               <div class=" content"  >
-                <!-- <div v-if="record.image != false && record.image != null && record.image != undefined " class="image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
-                <div v-if="record.image == false || record.image == null || record.image == undefined " class="image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ orgLogoUrl +');' " ></div> -->
+                <div v-if="record.image != false && record.image != null && record.image != undefined " class="image bg-80% bg-cover bg-center bg-no-repeat " :style=" 'background-image: url(' + record.image +');' " ></div>
+                <div v-if="record.image == false || record.image == null || record.image == undefined " class="image bg-contain bg-center bg-no-repeat " :style=" 'background-image: url('+ orgLogoUrl +');' " ></div>
                 <div class="flex flex-wrap " >
                   <div class="w-full py-2" >
                     <div class="w-full text-center font-btb-black leading-6 tracking-wider" >{{ record.name }}</div>
@@ -117,7 +117,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <div class="w-full shadow p-4 m-2 rounded bg-white  flex flex-wrap " >
             <div class="font-moul text-left w-full mb-2 border-b border-gray-200 pb-2 " >ការកំណត់ពីវត្តមាន</div>
             <div v-for="(record, index) in table.records.matched.filter( ( r ) => r.key == 'daily_working_hours' || r.key == 'attn_mode_maternity_leave' || r.key == 'attn_mode_annual_leave' || r.key == 'attn_mode_married_leave' || r.key == 'attn_mode_sick_leave' || r.key == 'attn_ot_weekend_percentage' || r.key == 'attn_ot_holiday_percentage' || r.key == 'attn_bonus_permonth' || r.key == 'attn_ot_percentage' )" :key='index' class="item " >
