@@ -131,8 +131,8 @@
                 <tr>
                   <td>ប្រាក់ឧបត្ថមទារកដ្ឋាន Bonus Day Care</td>
                   <td colspan="2" class="text-green-700">{{
-                    previewSalary?.user_policies?.baby_care?.adjustment_amount > 0
-                      ? previewSalary.user_policies.baby_care.adjustment_amount
+                    previewSalary?.user_policies?.bonus_daycare?.adjustment_amount > 0
+                      ? previewSalary.user_policies.bonus_daycare.adjustment_amount
                       : 0
                   }}</td>
                 </tr>
