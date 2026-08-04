@@ -1,6 +1,6 @@
 <template>
-  <div class="relative bg-background bg-gray-50 bg-cover bg-center w-full min-h-screen" >
-    <div class="top-10 right-0 bottom-0 left-40 absolute p-4">
+  <div class="relative bg-background bg-gray-50 bg-cover bg-center w-full h-screen overflow-hidden" >
+    <div class="top-10 right-0 bottom-0 left-40 fixed p-4 overflow-y-auto">
       <router-view v-slot="{ Component , route}">
         <Transition name="fade" mode="out-in" >
           <component :is="Component" />

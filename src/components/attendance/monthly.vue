@@ -25,7 +25,19 @@
           <svg class="absolute right-1 top-2 text-gray-400 hover:text-blue-700 cursor-pointer" @click="filterRecords(false)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M8.5 3a5.5 5.5 0 0 1 4.227 9.02l4.127 4.126a.5.5 0 0 1-.638.765l-.07-.057l-4.126-4.127A5.5 5.5 0 1 1 8.5 3zm0 1a4.5 4.5 0 1 0 0 9a4.5 4.5 0 0 0 0-9z" fill="currentColor"></path></g></svg>
         </div>
         <div class="mt-1 mr-2">
-          <n-date-picker v-model:value="attendanceDate" type="month" @update:value="filterRecords(false)"/>
+          <n-select
+            v-model:value="selectedOfficerId"
+            :options="officerOptions"
+            filterable
+            clearable
+            placeholder="ស្វែងរកបុគ្គលិកតាមឈ្មោះ ឬ លេខកូដ"
+            class="w-72"
+            :loading="officersLoading"
+            @update:value="onOfficerChange"
+          />
+        </div>
+        <div class="mt-1 mr-2">
+          <n-date-picker v-model:value="attendanceDate" type="month" @update:value="onDateChange"/>
         </div>
         <div class="mt-1 mr-2">
           <n-button type="default" @click="$router.push('/attendance')" >
@@ -125,7 +137,14 @@
               </div>
               <div class="text-right flex flex-row-reverse" >
                 <div class="p-4 w-60 font-bold font-moul text-center leading-5 " >{{ $toKhmer( table.records.matched.reduce( ( sum , attendance ) => sum + ( attendance.calculateTime.checktimes.reduce( ( sm , ct ) => sm + ct.spenttime , 0 ) ) , 0 ) ) }} នាទី <br/> {{ $toKhmer( parseInt( table.records.matched.reduce( ( sum , attendance ) => sum + ( attendance.calculateTime.checktimes.reduce( ( sm , ct ) => sm + ct.spenttime , 0 ) ) , 0 ) / 60 ) ) + " ម៉ោង" }} {{ $toKhmer( parseInt( table.records.matched.reduce( ( sum , attendance ) => sum + ( attendance.calculateTime.checktimes.reduce( ( sm , ct ) => sm + ct.spenttime , 0 ) ) , 0 ) % 60 ) ) + " នាទី" }}</div>
-                <div class="flex-grow p-4 w-60 font-bold font-moul " >សរុប</div>
+                <div class="flex-grow p-4 w-60 font-bold font-moul " >សរុបម៉ោងការងារ</div>
+              </div>
+              <div class="text-right flex flex-row-reverse border-t border-green-200" >
+                <div class="p-4 w-60 font-bold font-moul text-green-700 text-center leading-5" >
+                  {{ $toKhmer( totalOTMinutes ) }} នាទី<br/>
+                  {{ $toKhmer( parseInt( totalOTMinutes / 60 ) ) }} ម៉ោង {{ $toKhmer( parseInt( totalOTMinutes % 60 ) ) }} នាទី
+                </div>
+                <div class="flex-grow p-4 w-60 font-bold font-moul text-green-700" >សរុបម៉ោងបន្ថែម (OT)</div>
               </div>
             </div>
             <div class="w-1/3 p-4 flex flex-wrap -mt-20" >
@@ -170,13 +189,14 @@
   </div>
 </template>
 <script>
-import { reactive ,ref } from 'vue'
+import { reactive ,ref , computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import QrcodeVue from 'qrcode.vue'
 import Vue3Barcode from 'vue3-barcode'
 import { useDialog, useMessage, useNotification } from 'naive-ui'
 import dateFormat from "dateformat";
+import crud from '../../api/crud'
 /**
  * CRUD component form
  */
@@ -198,6 +218,10 @@ export default {
     attendanceDate.value = route.params.date != '' && route.params.date != undefined
     ? (new Date( route.params.date )).getTime()
     : (new Date()).getTime()
+
+    const selectedOfficerId = ref( route.params.userId ? parseInt(route.params.userId) : null )
+    const officerOptions = ref([])
+    const officersLoading = ref(false)
 
     const daysOfWeek = reactive([
       {
@@ -356,15 +380,47 @@ export default {
     /**
      * Functions
      */
+    function getOfficers(){
+      officersLoading.value = true
+      const dt = attendanceDate.value != null && parseInt( attendanceDate.value ) > 0
+        ? dateFormat( new Date(attendanceDate.value) , "yyyy-mm-dd" )
+        : dateFormat( new Date() , "yyyy-mm-dd" )
+      crud.list(import.meta.env.VITE_API_SERVER + '/officers/compact/attendance?' + new URLSearchParams({
+        date: dt,
+      }).toString()).then(res => {
+        const records = res.data.records || []
+        officerOptions.value = records.map(o => ({
+          label: (o.code ? o.code + ' - ' : '') + (o.people ? o.people.lastname + ' ' + o.people.firstname : '') + (o.people ? ' (' + o.people.enlastname + ' ' + o.people.enfirstname + ')' : ''),
+          value: o.id
+        }))
+        officersLoading.value = false
+      }).catch(err => {
+        console.log(err)
+        officersLoading.value = false
+      })
+    }
+
+    function onOfficerChange(val){
+      if( val ){
+        selectedOfficerId.value = val
+        getRecords()
+      }
+    }
+
+    function onDateChange(){
+      getOfficers()
+      getRecords()
+    }
+
     function getRecords(){
-      // console.log( dateFormat( new Date(attendanceDate.value) , "yyyy-mm-dd" ) )
-      /**
-       * Clear time interval after calling
-       */
+      if( !selectedOfficerId.value ) {
+        closeTableLoading()
+        return
+      }
       window.clearTimeout()
       table.loading = true
       store.dispatch(model.module+'/userattendances',{
-        userId: route.params.userId ,
+        userId: selectedOfficerId.value ,
         date: attendanceDate.value != null && parseInt( attendanceDate.value ) > 0 ? dateFormat( new Date(attendanceDate.value) , "yyyy-mm-dd" ) : dateFormat( new Date() , "yyyy-mm-dd" ) ,
       }).then(res => {
         table.records.all = table.records.matched = res.data.records
@@ -481,6 +537,11 @@ export default {
     }
 
     const attendanceTotalByTypes = ref()
+    const totalOTMinutes = computed(() => {
+      return (table.records.matched || []).reduce((sum, att) => {
+        return sum + parseFloat(att.calculateTime?.overtime || 0)
+      }, 0)
+    })
     const attendanceTypeLabels = ref([
       {
         key : 'AB' ,
@@ -535,6 +596,7 @@ export default {
     /**
      * Initial the data
      */
+    getOfficers()
     getRecords()
 
 
@@ -546,6 +608,11 @@ export default {
       table ,
       user ,
       attendanceDate ,
+      selectedOfficerId ,
+      officerOptions ,
+      officersLoading ,
+      onOfficerChange ,
+      onDateChange ,
       /**
        * Table
        */
@@ -571,7 +638,8 @@ export default {
       openMap ,
       openPicture ,
       attendanceTypeLabels ,
-      attendanceTotalByTypes
+      attendanceTotalByTypes ,
+      totalOTMinutes
     }
   }
 }

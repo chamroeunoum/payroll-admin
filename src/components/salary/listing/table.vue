@@ -86,53 +86,129 @@
     <div class="vcb-table-panel relative ">
       <Transition name="fade" >
         <div v-if="Array.isArray( table.records.matched ) && table.records.matched.length > 0 " class="vcb-thumbnail mb-12" >
+          <!-- Report header like Excel -->
+          <div class="salary-report-header w-full text-center py-4 border border-gray-300 bg-white" >
+            <div class="font-bold text-lg leading-6" >O and M (CAMBODIA) CO., LTD.</div>
+            <div class="text-sm leading-5" >National Road No. 4, Posenchey District, Kingdom of Cambodia (P1-051)</div>
+            <div class="font-moul text-xl leading-8 mt-2" >ប្រាក់បៀវត្សសំរាប់បុគ្គលិកការិយាល័យ</div>
+            <div class="font-bold leading-6" >TOTAL SALARY PAY TO OFFICE</div>
+            <div class="text-sm leading-6" >For The Period of {{ reportPeriodLabel }}</div>
+            <div class="text-sm leading-6" >Exchange rate riel/usd : {{ formatCurrency( reportExchangeRate ) }}</div>
+          </div>
           <table class="vcb-table" >
             <thead v-if="table.records.matched.length > 0">
+              <!-- Row 1 : Khmer headers (like Excel row 9) -->
               <tr>
-                <!-- <th class="" 
-                  v-for="(row , rindex) in Object.getOwnPropertyNames( table.records.matched[0] )" >{{ row.split('_').map( (word) => word.charAt(0).toUpperCase() + word.slice(1) ).join(' ') }}</th> -->
-
                 <th class="text-center" >ល.រ</th>
-                <th class="text-left" >កូដ</th>
-                <th class="text-left" >ឈ្មោះខ្មែរ</th>
-                <th class="text-left" >ឈ្មោះអង់គ្លេស</th>
+                <th class="text-left" >អត្តលេខ</th>
+                <th class="text-left" >ឈ្មោះជាភាសាខ្មែរ</th>
+                <th class="text-left" >ឈ្មោះជាភាសាឡាតាំង</th>
                 <th class="text-left" >ភេទ</th>
-                <th class="text-left " >សញ្ជាតិ</th>
-                <th class="text-left " >ថ្ងៃចូលធ្វើការ</th>
-                <th class="text-left " >ក្រុម/ផ្នែក</th>
-                <th class="text-left " >ប្រាក់ឈ្នួលសុទ្ធ</th>
-                <th class="text-left " >ចំនួនថ្ងៃធ្វើការធម្មតា</th>
-                <th class="text-left " >ចំនួនថ្ងៃអវត្តមាន</th>
-                <th class="text-left " >ប្រាក់តាមចំនួនថ្ងៃធ្វើការធម្មតា</th>
-                <th class="text-left " >ប្រាក់រង្វាន់ធ្វើការទៀងទាត់</th>
-                <th class="text-left " >ប្រាក់សោហ៊ុយធ្វើដំណើរឬស្នាក់នៅ</th>
-                <th class="text-left " >ចំនួនម៉ោងធ្វើការថែមម៉ោង(១៥០%)</th>
-                <th class="text-left " >ប្រាក់ធ្វើការម៉ោងបន្ថែម(១៥០%)</th>
-                <th class="text-left " >ប្រាក់ថ្លៃបាយធ្វើការម៉ោងបន្ថែម</th>
-                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់ប្រចាំឆ្នាំ</th>
-                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់ឈឺ</th>
-                <th class="text-left " >ចំនួនថ្ងៃឈប់សម្រាប់មាតុភាព</th>
-                <th class="text-left " >ប្រាក់ឈប់សម្រាបកមាតុភាព</th>
-                <th class="text-left " >ចំនួនម៉ោងធ្វើការថ្ងៃឈប់សម្រាក់ប្រចាំសប្ដាហ៍</th>
-                <th class="text-left " >ប្រាក់ធ្វើការថ្ងៃឈប់សម្រាកប្រចាំសប្ដាហ៍</th>
-                <th class="text-left " >ចំនួនម៉ោងធ្វើការថ្ងៃបុណ្យ</th>
-                <th class="text-left " >ប្រាក់ធ្វើការថ្ងៃបុណ្យ</th>
-                <th class="text-left " >ប្រាក់រង្វាន់ផ្សេងៗ</th>
-                <th class="text-left " >ប្រាក់ឧបត្ថមទារកដ្ឋាន</th>
-                <th class="text-left " >ប្រាក់ទូទាត់ថ្ងៃឈប់សម្រាកប្រចាំឆ្នាំ</th>
-                <th class="text-left " >ប្រាក់រង្វាន់អតីតភាពការងារ</th>
-                <th class="text-left " >បំណាច់អតីតភាពការងាររំលឹកឆ្នាំចាស់</th>
-                <th class="text-left " >បំណាច់អតីតភាពការងារទូទាត់ក្នុងឆ្នាំថ្មី</th>
-                <th class="text-left " >ប្រាក់កែតម្រូវ</th>
+                <th class="text-left" >សញ្ជាតិ</th>
+                <th class="text-left" >ថ្ងៃចូលធ្វើការ</th>
+                <th class="text-left" >ក្រុម ឬ ផ្នែក</th>
+                <th class="text-right" >ប្រាក់ឈ្នួលសុទ្ធសាធ</th>
+                <th class="text-center" >ចំនួនថ្ងៃធ្វើការធម្មតា</th>
+                <th class="text-center" >ចំនួនថ្ងៃអវត្តមាន</th>
+                <th class="text-center" >ចំនួនថ្ងៃវត្តមាន</th>
+                <th class="text-right" >ប្រាក់តាមចំនួនថ្ងៃធ្វើការធម្មតា</th>
+                <th class="text-right" >ប្រាក់រង្វាន់ធ្វើការទៀងទាត់</th>
+                <th class="text-right" >ប្រាក់រង្វាន់ធ្វើការទៀងទាត់ពិសេស</th>
+                <th class="text-right" >ប្រាក់សោហ៊ុយធ្វើដំណើរនិងស្នាក់នៅ</th>
+                <th class="text-center" >ចំនួនម៉ោង OT ១៥០%</th>
+                <th class="text-right" >ប្រាក់ OT ១៥០%</th>
+                <th class="text-right" >ប្រាក់ OT ២០០%</th>
+                <th class="text-right" >ប្រាក់ថ្លៃបាយធ្វើការថែមម៉ោង</th>
+                <th class="text-center" >ចំនួនថ្ងៃឈប់សម្រាកប្រចាំឆ្នាំ</th>
+                <th class="text-center" >ចំនួនថ្ងៃឈប់សម្រាកឈឺ</th>
+                <th class="text-center" >ចំនួនថ្ងៃឈប់សម្រាកមាតុភាព</th>
+                <th class="text-right" >ប្រាក់ឈប់សម្រាកមាតុភាព</th>
+                <th class="text-center" >ចំនួនម៉ោងថ្ងៃអាទិត្យ</th>
+                <th class="text-right" >ប្រាក់ធ្វើការថ្ងៃអាទិត្យ</th>
+                <th class="text-center" >ចំនួនម៉ោងធ្វើការថ្ងៃបុណ្យ</th>
+                <th class="text-right" >ប្រាក់ធ្វើការថ្ងៃបុណ្យ</th>
+                <th class="text-right" >ប្រាក់រង្វាន់ផ្សេងៗ</th>
+                <th class="text-right" >ប្រាក់ឧបត្ថមទារកដ្ឋាន</th>
+                <th class="text-right" >ប្រាក់ទូទាត់ថ្ងៃឈប់សម្រាកប្រចាំឆ្នាំ</th>
+                <th class="text-right" >ប្រាក់រង្វាន់អតីតភាពការងារ</th>
+                <th class="text-right" >បំណាច់អតីតភាព (រំលឹកឆ្នាំចាស់)</th>
+                <th class="text-right" >បំណាច់អតីតភាព (ទូទាត់ក្នុងឆ្នាំ)</th>
+                <th class="text-right" >ប្រាក់កែតម្រូវ</th>
                 <th class="text-right" >ប្រាក់បៀវត្សដុល</th>
-                <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ(ដុល្លារ)</th>
-                <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ(រៀល)</th>
-                <th class="text-right" >ប្រាក់កាត់ទុករបបសន្តិសុខសង្គម</th>
-                <th class="text-right" >ប្រាក់បានខ្ចី</th>
-                <th class="text-right" >ប្រាក់កាត់លើកំហុស</th>
-                <th class="text-right" >ប្រាក់ប្រើប្រាស់ទឹកភ្លើង</th>
-                <th class="text-right" >ប្រាក់បៀរវត្សជាក់ស្ដែង</th>
-                <th></th>
+                <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ</th>
+                <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ (រៀល)</th>
+                <th class="text-center" >ចំនួនកូនស្ថិតក្នុងបន្ទុក</th>
+                <th class="text-center" >សហព័ន្ធមេផ្ទះ</th>
+                <th class="text-right" >មូលដ្ឋានកំណត់ពន្ធត្រូវបានកាត់បន្ថយ</th>
+                <th class="text-right" >មូលដ្ឋានគិតពន្ធលើប្រាក់បៀវត្ស</th>
+                <th class="text-right" >ប្រាក់កាត់ទុកលើប្រាក់បៀវត្ស (រៀល)</th>
+                <th class="text-right" >ប្រាក់កាត់ទុកលើប្រាក់បៀវត្ស (ដុល្លារ)</th>
+                <th class="text-right" >កាត់ទុករបបសន្តិសុខសង្គម ២%</th>
+                <th class="text-right" >ចំនួនប្រាក់បានខ្ចី</th>
+                <th class="text-right" >ប្រាក់គោលសុទ្ធបើកពាក់កណ្តាលខែ</th>
+                <th class="text-right" >សេវាសុខភាព (រៀល)</th>
+                <th class="text-right" >សេវាសុខភាព (ដុល្លារ)</th>
+                <th class="text-right" >កាត់លើកំហុស</th>
+                <th class="text-right" >ប្រើប្រាស់ទឹកភ្លើង</th>
+                <th class="text-right" >ប្រាក់បៀវត្សត្រូវបើកជាក់ស្តែង</th>
+                <th class="text-left" >ប្រភេទ</th>
+                <th rowspan="2"></th>
+              </tr>
+              <!-- Row 2 : English headers (like Excel row 11) -->
+              <tr>
+                <th class="text-center" >No.</th>
+                <th class="text-left" >ID card #</th>
+                <th class="text-left" >Name in Khmer</th>
+                <th class="text-left" >Name in English</th>
+                <th class="text-left" >Sex</th>
+                <th class="text-left" >Nationality</th>
+                <th class="text-left" >Date of Join</th>
+                <th class="text-left" >Dept./Sect.</th>
+                <th class="text-right" >Basic Salary</th>
+                <th class="text-center" >No. of Worked Day</th>
+                <th class="text-center" >No. of Absence Day</th>
+                <th class="text-center" >No. of Regular Worked Day</th>
+                <th class="text-right" >Regular Basic Pay</th>
+                <th class="text-right" >Attendant Bonus</th>
+                <th class="text-right" >Special Attendant Bonus</th>
+                <th class="text-right" >Trip Fee</th>
+                <th class="text-center" >Hour of Normal OT 150%</th>
+                <th class="text-right" >Normal OT Pay 150%</th>
+                <th class="text-right" >Overtime Pay 200%</th>
+                <th class="text-right" >Dinner for working overtime</th>
+                <th class="text-center" >Annual Leave (Day)</th>
+                <th class="text-center" >Sick Leave (Day)</th>
+                <th class="text-center" >Maternity Leave (Day)</th>
+                <th class="text-right" >Maternity Leave Pay</th>
+                <th class="text-center" >Sunday OT</th>
+                <th class="text-right" >Sunday OT Pay</th>
+                <th class="text-center" >Public holiday</th>
+                <th class="text-right" >Public Holiday Pay</th>
+                <th class="text-right" >Reward</th>
+                <th class="text-right" >Bonus Day Care</th>
+                <th class="text-right" >Comp. for annual leave</th>
+                <th class="text-right" >Seniority bonus</th>
+                <th class="text-right" >Recall New work seniority bonus</th>
+                <th class="text-right" >New work seniority bonus</th>
+                <th class="text-right" >Adjustment</th>
+                <th class="text-right" >Gross salary IN USD</th>
+                <th class="text-right" >Taxable Salary IN USD</th>
+                <th class="text-right" >Taxable Salary IN Riel</th>
+                <th class="text-center" >No of Children</th>
+                <th class="text-center" >Spouse</th>
+                <th class="text-right" >Tax base reduction</th>
+                <th class="text-right" >Basic salary to calculate tax</th>
+                <th class="text-right" >Withhold Tax IN RIEL</th>
+                <th class="text-right" >Withhold Tax IN USD</th>
+                <th class="text-right" >Amount Withhold on NSSF 2%</th>
+                <th class="text-right" >Cash advance</th>
+                <th class="text-right" >Take Basic salary middle of month</th>
+                <th class="text-right" >NSSF-Health care (Riel)</th>
+                <th class="text-right" >NSSF-Health care (USD)</th>
+                <th class="text-right" >Mistake</th>
+                <th class="text-right" >Electric Usage</th>
+                <th class="text-right" >Net Pay</th>
+                <th class="text-left" >Category</th>
               </tr>
             </thead>
             <tbody>
@@ -167,39 +243,51 @@
                 ].filter(o=>o!=''&&o!=null).join( ', ')
                 }}
                 </td>
-                <td class="text-center text-blue-500" >{{ formatCurrency( record.officer.salary_rank ) }}</td>
+                <td class="text-right text-blue-500" >{{ formatCurrency( record.basic_salary ) }}</td>
                 <td class="text-center text-blue-600" >{{ record.total_worked_days }}</td>
                 <td class="text-center text-red-500" >{{ record.total_absent_days }}</td>
-                <!-- <td class="text-center" >{{ record.pay_base_worked_time }}</td> -->
-                <td class="text-center text-green-700" >{{ formatCurrency( record.regular_pay ) }}</td>
-                <td class="text-center text-green-700" >{{ formatCurrency( record.attendance_bonus_pay ) }}</td>
-                <td class="text-center text-green-700" >{{ formatCurrency( record.trip_pay ) }}</td>
+                <td class="text-center" >{{ totalDaysPerMonth }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.regular_pay ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.attendance_bonus_pay ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( getAdjustment(record, 'special_attn_bonus') ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.trip_pay ) }}</td>
                 <td class="text-center" >{{ record.overtime }}</td>
-                <td class="text-center text-green-700" >{{ formatCurrency( record.ot_pay ) }}</td>
-                <td class="text-center text-green-700" >{{ formatCurrency( record.dinner_pay ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.ot_pay ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( ( record.weekend_pay || 0 ) + ( record.holiday_pay || 0 ) ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.dinner_pay ) }}</td>
                 <td class="text-center" >{{ record.total_al_days }}</td>
                 <td class="text-center" >{{ record.total_sk_days }}</td>
                 <td class="text-center" >{{ record.total_ml_days }}</td>
-                <td class="text-center text-green-700" >{{ formatCurrency( record.maternity_pay ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.maternity_pay ) }}</td>
                 <td class="text-center" >{{ record.sunday_worked_time }}</td>
-                <td class="text-center text-green-700" >{{ formatCurrency( record.weekend_pay ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.weekend_pay ) }}</td>
                 <td class="text-center" >{{ record.holiday_worked_time }}</td>
-                <td class="text-center text-green-700" >{{ formatCurrency( record.holiday_pay ) }}</td>
-                <td class="text-center text-green-700" >{{ formatCurrency( record.reward_pay ) }}</td>
-                <td class="text-center text-green-700" >{{ record.bonus_daycare }}</td>
-                <td class="text-center text-green-700" >{{ formatCurrency( record.al_pay ) }}</td>
-                <td class="text-center text-green-700" >{{ record.senority }}</td>
-                <td class="text-center text-green-700" >{{ record.recall_newwork_senority }}</td>
-                <td class="text-center text-green-700" >{{ record.newwork_senority }}</td>
-                <td class="text-center text-green-700" >{{ record.adjustment_increment + record.adjustment_deduction }}</td>
-                <td class="text-center text-green-700" >{{ formatCurrency( record.gross_salary ) }}</td>
-                <td class="text-center text-blue-500" >{{ formatCurrency( record.taxable_salary ) }}</td>
-                <td class="text-center text-blue-500" >{{ formatCurrency( record.taxable_salary * record.exchange_rate ) }}</td>
-                <td class="text-center text-red-500" >{{ formatCurrency( record.nssf ) }}</td>
-                <td class="text-center text-red-500" >{{ formatCurrency( record.borrow ) }}</td>
-                <td class="text-center text-red-500" >{{ formatCurrency( record.mistake ) }}</td>
-                <td class="text-center text-red-500" >{{ formatCurrency( record.utility ) }}</td>
-                <td class="text-center text-blue-500 font-bold " >{{ formatCurrency( record.net_salary ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.holiday_pay ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.reward_pay ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.bonus_daycare ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.al_pay ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.senority ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.recall_newwork_senority ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.newwork_senority ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( ( record.adjustment_increment || 0 ) + ( record.adjustment_deduction || 0 ) ) }}</td>
+                <td class="text-right text-green-700" >{{ formatCurrency( record.gross_salary ) }}</td>
+                <td class="text-right text-blue-500" >{{ formatCurrency( record.taxable_salary ) }}</td>
+                <td class="text-right text-blue-500" >{{ formatCurrency( ( record.taxable_salary || 0 ) * ( record.exchange_rate || 0 ) ) }}</td>
+                <td class="text-center" >{{ record.officer.people.kids }}</td>
+                <td class="text-center" >{{ record.officer.people.spouse }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( record.tax_base_reduction ) }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( record.taxable_salary_reduced ) }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( ( record.withholding_tax || 0 ) * ( record.exchange_rate || 0 ) ) }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( record.withholding_tax ) }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( record.nssf ) }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( record.borrow ) }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( getAdjustment(record, 'basic_salary_middle_of_month') ) }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( ( record.nssf || 0 ) * ( record.exchange_rate || 0 ) ) }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( record.nssf ) }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( record.mistake ) }}</td>
+                <td class="text-right text-red-500" >{{ formatCurrency( record.utility ) }}</td>
+                <td class="text-right text-blue-500 font-bold " >{{ formatCurrency( record.net_salary ) }}</td>
+                <td class="text-left" >{{ record.officer.category != undefined && record.officer.category != null ? record.officer.category.name : '' }}</td>
                 <td class="relative w-16" >
                   <table-actions-form v-bind:model="model" v-bind:record="record" :onClose="closeActions" />
                 </td>
@@ -207,10 +295,43 @@
             </tbody>
             <tfoot>
               <tr class="bg-gray-200" >
-                <th colspan="39" class="text-right" >សរុប</th>
-                <!-- <th class="text-right" >{{ $toKhmer( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.officer.salary ) , 0 ) ) }}</th> -->
-                <th class="text-center font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.basic_salary ) , 0 ) ) }}</th>
-                <th colspan="1"></th>
+                <th colspan="12" class="text-right" >សរុប</th>
+                <th colspan="3" ></th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.regular_pay ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.attendance_bonus_pay ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( getAdjustment(record, 'special_attn_bonus') ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.trip_pay ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.ot_pay ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( ( record.weekend_pay || 0 ) + ( record.holiday_pay || 0 ) ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.dinner_pay ) , 0 ) ) }}</th>
+                <th colspan="3" ></th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.maternity_pay ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.weekend_pay ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.holiday_pay ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.reward_pay ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.bonus_daycare ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.al_pay ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.senority ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.recall_newwork_senority ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.newwork_senority ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( ( record.adjustment_increment || 0 ) + ( record.adjustment_deduction || 0 ) ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.gross_salary ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.taxable_salary ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( ( record.taxable_salary || 0 ) * ( record.exchange_rate || 0 ) ) , 0 ) ) }}</th>
+                <th colspan="2" ></th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.tax_base_reduction ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.taxable_salary_reduced ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( ( record.withholding_tax || 0 ) * ( record.exchange_rate || 0 ) ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.withholding_tax ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.nssf ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.borrow ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( getAdjustment(record, 'basic_salary_middle_of_month') ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( ( record.nssf || 0 ) * ( record.exchange_rate || 0 ) ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.nssf ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.mistake ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.utility ) , 0 ) ) }}</th>
+                <th class="text-right font-bold " >{{ formatCurrency( table.records.matched.reduce( ( sum , record ) => sum + parseFloat( record.net_salary ) , 0 ) ) }}</th>
+                <th colspan="2" ></th>
               </tr>
             </tfoot>
           </table>
@@ -373,6 +494,28 @@ export default {
 
     const payrollId = ref( route.params.id )
     console.log( payrollId.value )
+    const totalDaysPerMonth = ref( 26 )
+    const reportPeriodLabel = computed(() => {
+      const first = table.records.matched != undefined && table.records.matched.length > 0 ? table.records.matched[0] : null
+      if( first != null && first.date != undefined && first.date != null && first.date != '' ){
+        return dateFormat( new Date( first.date ) , 'mmmm yyyy' )
+      }
+      return ''
+    })
+    const reportExchangeRate = computed(() => {
+      const first = table.records.matched != undefined && table.records.matched.length > 0 ? table.records.matched[0] : null
+      if( first != null && first.exchange_rate != undefined && first.exchange_rate != null ){
+        return first.exchange_rate
+      }
+      return 0
+    })
+    function getAdjustment(record, policyCode){
+      if( record.monthlyAdjustments != undefined && Array.isArray( record.monthlyAdjustments ) && record.monthlyAdjustments.length > 0 ){
+        const found = record.monthlyAdjustments.find( adj => adj.salaryPolicy != null && adj.salaryPolicy.code == policyCode )
+        return found != undefined ? parseFloat( found.adjustment_amount || 0 ) : 0
+      }
+      return 0
+    }
     const officerids = ref( 
       route.params.ids != undefined && route.params.ids.trim().length > 0 ? route.params.ids.split(',') : null
     )
@@ -462,6 +605,9 @@ export default {
       }).then(res => {
         table.records.all = table.records.matched = res.data.records
         table.pagination = res.data.pagination
+        if( res.data.total_days_per_month != undefined ){
+          totalDaysPerMonth.value = res.data.total_days_per_month
+        }
         if( table.records.matched.length > 0 ){
           salaries.value = table.records.matched[0].salaries
         }
@@ -678,6 +824,10 @@ export default {
       table ,
       ocmLogoUrl ,
       salaries,
+      totalDaysPerMonth ,
+      reportPeriodLabel ,
+      reportExchangeRate ,
+      getAdjustment ,
       /**
        * Table
        */

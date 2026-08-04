@@ -3,7 +3,7 @@
     <!-- Start transaction of the apps -->
         <!-- Apps -->
         <Transition  name="slide-fade" >
-          <div v-if="true" class="fixed top-10 bottom-0 left-0 w-40 z-40 flex flex-wrap content-start bg-opacity-95 shadow-md">
+          <div v-if="true" class="fixed top-10 bottom-0 left-0 w-40 z-40 overflow-y-auto bg-opacity-95 shadow-md">
               <!-- Search -->
               <!-- <div class='absolute top-0 left-0 right-0 flex flex-wrap content-center w-2/5 py-4 m-auto md:w-2/5 xl:w-1/5 lg:w-1/5 ' >
                   <n-input 
@@ -21,7 +21,7 @@
               </div> -->
               <!-- End search -->
               <!-- Apps -->
-              <div class="sidebar bg-blue-800 ">
+              <div class="sidebar bg-blue-800">
                 <div v-for="(app, index) in matchedApps" :key="index" class="sidebar-item">
                   <div class='item-content ' @click="toggleAppFunc(app.url);$router.push(app.url)"  >
                     <div class="item-icon " v-html="app.svg" ></div>
@@ -396,7 +396,7 @@ export default {
 Parent Menu
  */
 .sidebar {
-  @apply flex flex-wrap;
+  @apply block;
 }
 .sidebar .sidebar-item {
   @apply relative bg-gray-50 w-full border-b border-gray-200 cursor-pointer  ;

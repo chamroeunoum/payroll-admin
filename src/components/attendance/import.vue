@@ -117,11 +117,20 @@
                 <td>{{ row[1] }}</td>
                 <td>{{ row[2] }}</td>
                 <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
-                <td>{{ row[5] }}</td>
-                <td>{{ row[6] }}</td>
-                <td>{{ row[7] }}</td>
-                <td>{{ row[8] }}</td>
+                <td><n-input v-model:value="row[4]" size="tiny" placeholder="HH:mm" maxlength="5" class="w-24" @input="v => row[4] = formatTime(v)" /></td>
+                <td><n-input v-model:value="row[5]" size="tiny" placeholder="HH:mm" maxlength="5" class="w-24" @input="v => row[5] = formatTime(v)" /></td>
+                <td><n-input v-model:value="row[6]" size="tiny" placeholder="HH:mm" maxlength="5" class="w-24" @input="v => row[6] = formatTime(v)" /></td>
+                <td><n-input v-model:value="row[7]" size="tiny" placeholder="HH:mm" maxlength="5" class="w-24" @input="v => row[7] = formatTime(v)" /></td>
+                <td>
+                  <n-select
+                    v-model:value="row[8]"
+                    :options="attendanceTypeOptions"
+                    placeholder="ជ្រើសរើស"
+                    size="tiny"
+                    style="min-width: 140px;"
+                    clearable
+                  />
+                </td>
                 <td>{{ row[9] }}</td>
                 <td v-if="activeTab == 'all'" class="text-center">
                   <n-tag v-if="row[11] == true" type="success" size="tiny">ក្នុងប្រព័ន្ធ</n-tag>
@@ -168,10 +177,21 @@ export default {
       title: "នាំចូលវត្តមានប្រចាំថ្ងៃ"
     })
 
-    const attendanceTypes = ref([
-      'AB' ,
-      'SK' , 'OL' , 'AL' , 'ML' , 'SP'
-    ]);
+    const attendanceTypeOptions = [
+      { label: 'PR - វត្តមាន (Present)', value: 'PR' },
+      { label: 'EA - វត្តមានមុនម៉ោង (Early)', value: 'EA' },
+      { label: 'LA - វត្តមានយឺត (Late)', value: 'LA' },
+      { label: 'AB - អវត្តមាន (Absent)', value: 'AB' },
+      { label: 'SK - ឈឺ (Sick)', value: 'SK' },
+      { label: 'OL - ធុរៈផ្ទាល់ខ្លួន (Personal)', value: 'OL' },
+      { label: 'AL - ប្រចាំឆ្នាំ (Annual Leave)', value: 'AL' },
+      { label: 'ML - មាតុភាព (Maternity)', value: 'ML' },
+      { label: 'SP - ច្បាប់សំរាក់ពិសេស (Special)', value: 'SP' },
+      { label: 'HL - ថ្ងៃឈប់សម្រាក់ (Holiday)', value: 'HL' },
+      { label: 'SU - ថ្ងៃអាទិត្យ (Sunday)', value: 'SU' },
+      { label: 'SA - ថ្ងៃសៅរ៍ (Saturday)', value: 'SA' },
+    ]
+    const attendanceTypes = computed(() => attendanceTypeOptions.map(o => o.value))
 
 
     const uploading = ref(false)
@@ -249,6 +269,16 @@ export default {
         row[5] = row[5] != undefined && row[5] != "" && row[5] instanceof Date && !isNaN(row[5]) ? dateFormat( new Date( row[5] ) , "HH:mm" ) : row[5]
         row[6] = row[6] != undefined && row[6] != "" && row[6] instanceof Date && !isNaN(row[6]) ? dateFormat( new Date( row[6] ) , "HH:mm" ) : row[6]
         row[7] = row[7]  != undefined && row[7] != "" && row[7] instanceof Date && !isNaN(row[7]) ? dateFormat( new Date( row[7] ) , "HH:mm" ) : row[7]
+
+        // Default attendance type: if any checkin/checkout exists → Present, otherwise → Absent
+        if( row[8] == undefined || row[8] == '' || row[8] == null ){
+          const hasTime = (row[4] != null && row[4] != '' && String(row[4]).trim() != '')
+            || (row[5] != null && row[5] != '' && String(row[5]).trim() != '')
+            || (row[6] != null && row[6] != '' && String(row[6]).trim() != '')
+            || (row[7] != null && row[7] != '' && String(row[7]).trim() != '')
+          row[8] = hasTime ? 'PR' : 'AB'
+        }
+
         row[10] = row[8] == undefined || row[8] == '' 
                 ? false
                 : ( 
@@ -287,6 +317,23 @@ export default {
       })
 
       
+    }
+
+    function formatTime(val){
+      if( val == null || val == undefined ) return ''
+      // Keep only digits
+      let digits = val.replace(/[^0-9]/g, '').slice(0, 4)
+      // Auto-insert colon after 2 digits
+      let result = ''
+      for( let i = 0; i < digits.length; i++ ){
+        if( i == 2 ) result += ':'
+        result += digits[i]
+      }
+      // Validate hours (00-23) and minutes (00-59)
+      const parts = result.split(':')
+      if( parts[0] && parts[0].length == 2 && parseInt(parts[0]) > 23 ) result = '23:' + (parts[1] || '')
+      if( parts[1] && parts[1].length == 2 && parseInt(parts[1]) > 59 ) result = (parts[0] || '') + ':59'
+      return result
     }
 
     function importExcelFile(){
@@ -372,6 +419,7 @@ export default {
        */
       model ,
       attendanceTypes ,
+      attendanceTypeOptions ,
       columns ,
       rows ,
       filteredRows ,
@@ -393,6 +441,7 @@ export default {
       handleExcelFile ,
       importExcelFile ,
       downloadTemplate ,
+      formatTime ,
       dateFormat  ,
       filterRecords ,
       registerAttendances ,
