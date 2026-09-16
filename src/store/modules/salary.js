@@ -43,6 +43,10 @@ const actions = {
   async generateSalaries ({ state, commit, rootState },params) {
     return await crud.create(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/generatesalaries",params)
   },
+  // One payroll's whole salary sheet, as an .xlsx blob.
+  async exportPayroll ({ state, commit, rootState },params) {
+    return await crud.download(import.meta.env.VITE_API_SERVER+"/payrolls/"+params.payrollId+"/export")
+  },
   async upload({ state, commit, rootState },formData) {    
     return await crud.upload(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/upload",formData)
   },

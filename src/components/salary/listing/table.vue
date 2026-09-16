@@ -79,6 +79,14 @@
             </template>
             នាំចេញទិន្នន័យ
           </n-tooltip> -->
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <n-button size="small" type="primary" class="mx-1 my-1" :loading="exporting" @click="exportPayroll" >
+                នាំចេញ Excel
+              </n-button>
+            </template>
+            នាំចេញបញ្ជីប្រាក់ខែជា Excel សម្រាប់ពិនិត្យឡើងវិញ
+          </n-tooltip>
         </div>
       </div>
     </div>
@@ -516,6 +524,37 @@ export default {
       }
       return 0
     }
+    /**
+     * Export this payroll's salary sheet to .xlsx.
+     *
+     * The endpoint sits behind the same bearer token as every other call, so the
+     * blob has to be fetched through the axios helper and saved by hand —
+     * window.open() cannot carry the Authorization header.
+     */
+    const exporting = ref( false )
+    function exportPayroll(){
+      if( !( parseInt( payrollId.value ) > 0 ) ){
+        message.warning( 'សូមជ្រើសរើសប្រាក់ខែជាមុន' )
+        return
+      }
+      exporting.value = true
+      store.dispatch( 'salary/exportPayroll' , { payrollId: payrollId.value } ).then( res => {
+        const blob = new Blob( [ res.data ] , { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' } )
+        const url = window.URL.createObjectURL( blob )
+        const link = document.createElement( 'a' )
+        link.href = url
+        link.download = 'payroll_' + String( reportPeriodLabel.value || payrollId.value ).replace( /\s+/g , '_' ) + '_salaries.xlsx'
+        document.body.appendChild( link )
+        link.click()
+        document.body.removeChild( link )
+        window.URL.revokeObjectURL( url )
+        exporting.value = false
+        message.success( 'នាំចេញបានសម្រេច' )
+      }).catch( () => {
+        exporting.value = false
+        message.error( 'នាំចេញមិនបានសម្រេច' )
+      })
+    }
     const officerids = ref( 
       route.params.ids != undefined && route.params.ids.trim().length > 0 ? route.params.ids.split(',') : null
     )
@@ -828,6 +867,8 @@ export default {
       reportPeriodLabel ,
       reportExchangeRate ,
       getAdjustment ,
+      exporting ,
+      exportPayroll ,
       /**
        * Table
        */

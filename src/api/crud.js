@@ -30,6 +30,19 @@ export default {
       data: params
     })
   },
+  // Authenticated file download. The endpoint is protected by the same bearer
+  // token as every other call, so `window.open` cannot be used for it.
+  async download(url){
+    return await axios({
+      method: 'GET' ,
+      url: url ,
+      responseType: 'blob' ,
+      headers: {
+        'Authorization' : getAuthorization(),
+        'withCredentials': true
+      }
+    })
+  },
   async create(url,params){
     return await axios({
       method: 'POST' ,
@@ -71,7 +84,7 @@ export default {
           'Content-Type': 'multipart/form-data' ,
           // 'Access-Control-Allow-Origin' : '*' ,
           // 'Accept-Encoding' : 'gzip, deflate, br' ,
-          // 'Host' : 'http://127.0.0.1:8000' ,
+          // 'Host' : 'http://127.0.0.1:8888' ,
           // 'Accept' : '*/*' ,
           // 'Connection' : 'keep-alive'
           'withCredentials': true
