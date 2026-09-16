@@ -111,7 +111,7 @@
     <!-- Table of crud -->
     <div class="vcb-table-panel relative ">
       <Transition name="fade" >
-        <div v-if="Array.isArray( table.records.matched ) && table.records.matched.length > 0 " class="vcb-thumbnail mb-12" >
+        <div v-if="Array.isArray( table.records.matched ) && table.records.matched.length > 0 " class="vcb-table-wrap" >
           <table class="vcb-table" >
             <thead>
               <tr>
@@ -744,6 +744,22 @@ export default {
 
 </script>
 <style type="text/css" scoped >
+/**
+ * Wrapper of the table itself.
+ *
+ * It must stay a plain block, NOT the centred flex container the card grids use
+ * (.vcb-thumbnail). This table is ~2048px wide while the panel around it is
+ * narrower, and a centred flex item overflows such a container on BOTH sides -
+ * but an LTR scroll box can only scroll to the right, so the left overflow is
+ * clipped and unreachable. Measured before this fix: 480px of the table (the
+ * columns No., Code, Khmer name, English name, Sex, and part of Date of Birth)
+ * were hidden at a 1280px window and 670px at 900px, i.e. it got worse the
+ * smaller the screen was. A block wrapper keeps the table's left edge on the
+ * panel's left edge so the panel scrolls across the whole table.
+ */
+.vcb-table-wrap {
+  @apply block w-full mb-12;
+}
 .vcb-thumbnail {
   @apply flex flex-wrap justify-center;
 }
