@@ -3,7 +3,8 @@
     <!-- Start transaction of the apps -->
         <!-- Apps -->
         <Transition  name="slide-fade" >
-          <div v-if="true" class="fixed top-10 bottom-0 left-0 w-40 z-40 overflow-y-auto bg-opacity-95 shadow-md">
+          <div v-if="true" class="fixed top-10 bottom-0 left-0 z-40 bg-opacity-95 shadow-md"
+          :class="railCollapsed ? 'w-12 overflow-visible' : 'w-40 overflow-y-auto'">
               <!-- Search -->
               <!-- <div class='absolute top-0 left-0 right-0 flex flex-wrap content-center w-2/5 py-4 m-auto md:w-2/5 xl:w-1/5 lg:w-1/5 ' >
                   <n-input 
@@ -21,27 +22,39 @@
               </div> -->
               <!-- End search -->
               <!-- Apps -->
-              <div class="sidebar bg-blue-800">
-                <div v-for="(app, index) in matchedApps" :key="index" class="sidebar-item">
-                  <div class='item-content ' @click="toggleAppFunc(app.url);$router.push(app.url)"  >
+              <div class="sidebar bg-blue-800" :class="{ 'sidebar-collapsed' : railCollapsed }">
+                <div v-for="(app, index) in matchedApps" :key="index" class="sidebar-item" :style="{ color: app.color }">
+                  <div class='item-content ' :class="{ 'item-content-active' : isActive( app.url ) }" @click="onItemClick( app )"  >
                     <div class="item-icon " v-html="app.svg" ></div>
                     <div class="item-label font-btb text-xs " v-html="app.name" ></div>
-                    <svg class="absolute right-2 h-4 w-2 mt-1  text-gray-500 " 
-                    v-if="app.children != undefined && app.children.length > 0"
+                    <svg class="item-caret " :class="{ 'item-caret-open' : isMenuOpen( app ) }"
+                    v-if="hasChildren( app )"
                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M7.38 21.01c.49.49 1.28.49 1.77 0l8.31-8.31a.996.996 0 0 0 0-1.41L9.15 2.98c-.49-.49-1.28-.49-1.77 0s-.49 1.28 0 1.77L14.62 12l-7.25 7.25c-.48.48-.48 1.28.01 1.76z" fill="currentColor"></path></svg>
                   </div>
                   <!-- children -->
-                  <div class="sidebar-children" >
-                    <div class="sidebar-children-item" 
-                      v-for="(childApp , cIndex ) in app.children" :key="cIndex" >
-                      <div class='child-item-content ' @click="toggleAppFunc(app.url);$router.push(childApp.url)"  >
-                        <div class="child-item-icon " v-html="childApp.svg" ></div>
-                        <div class="child-item-label font-btb text-xs " v-html="childApp.name" ></div>
+                  <Transition name="accordion" >
+                    <div class="sidebar-children" v-show="isMenuOpen( app )" >
+                      <div v-if="railCollapsed && hasChildren( app )" class="sidebar-children-header" v-html="app.name" ></div>
+                      <div class="sidebar-children-item" 
+                        v-for="(childApp , cIndex ) in app.children" :key="cIndex" >
+                        <div class='child-item-content ' :class="{ 'child-item-content-active' : isActive( childApp.url ) }" @click="onChildClick( childApp )"  >
+                          <div class="child-item-icon " v-html="childApp.svg" ></div>
+                          <div class="child-item-label font-btb text-xs " v-html="childApp.name" ></div>
+                        </div>
                       </div>
                     </div>
+                  </Transition>
+                </div>
+                <div @click="toggleRail()" class="sidebar-item" style="color: #64748b" :title="railCollapsed ? 'ពង្រីកម៉ឺនុយ' : 'បង្រួមម៉ឺនុយ'">
+                  <div class='item-content ' >
+                    <div class="item-icon " >
+                      <svg v-if="railCollapsed" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></g></svg>
+                      <svg v-else xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M9 4v16"></path><path d="M15 10l-2 2l2 2"></path></g></svg>
+                    </div>
+                    <div class="item-label font-btb text-xs " v-html="railCollapsed ? 'ពង្រីកម៉ឺនុយ' : 'បង្រួមម៉ឺនុយ'"></div>
                   </div>
                 </div>
-                <div @click="logout()" class="sidebar-item">
+                <div @click="logout()" class="sidebar-item" style="color: #dc2626">
                   <div class='item-content ' >
                     <div class="item-icon " >
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M10.5 2.5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0v-6zM13.743 4a.5.5 0 1 0-.499.867a6.5 6.5 0 1 1-6.494.004a.5.5 0 1 0-.5-.866A7.5 7.5 0 1 0 13.743 4z" fill="currentColor"></path></g></svg>
@@ -88,11 +101,34 @@
 </template>
 
 <script>
-import { reactive, ref , computed, onMounted } from 'vue'
+import { reactive, ref , computed, onMounted , watch } from 'vue'
 import { isAuth, authLogout , isAdmin , getUser } from '../../plugins/authentication'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import { useDialog , useMessage } from 'naive-ui'
+
+/**
+ * Open / closed state of the sidebar submenus.
+ *
+ * This lives at module scope on purpose instead of inside setup(). Every page
+ * component renders its own <Topmenu type="sidebar">, so the Sidebar is
+ * destroyed and re-created on each navigation. Component-local state would be
+ * reset by the very click that opens a submenu, because that click also
+ * navigates.
+ */
+const openMenus = ref( {} )
+
+/**
+ * Icon-rail mode: the sidebar shrinks to icons only and the page content shifts
+ * left to match. Module scope for the same re-mount reason as openMenus, and
+ * persisted so the choice survives a reload.
+ */
+const RAIL_STORAGE_KEY = 'sidebar_rail_collapsed'
+function readStoredRailMode(){
+  try { return localStorage.getItem( RAIL_STORAGE_KEY ) === '1' } catch( error ){ return false }
+}
+const railCollapsed = ref( readStoredRailMode() )
+
 export default {  
   components: {
   } ,
@@ -113,6 +149,7 @@ export default {
           icon: 'SpeedometerOutline' ,
           svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M326.1 231.9l-47.5 75.5a31 31 0 0 1-7 7a30.11 30.11 0 0 1-35-49l75.5-47.5a10.23 10.23 0 0 1 11.7 0a10.06 10.06 0 0 1 2.3 14z" fill="currentColor"></path><path d="M256 64C132.3 64 32 164.2 32 287.9a223.18 223.18 0 0 0 56.3 148.5c1.1 1.2 2.1 2.4 3.2 3.5a25.19 25.19 0 0 0 37.1-.1a173.13 173.13 0 0 1 254.8 0a25.19 25.19 0 0 0 37.1.1l3.2-3.5A223.18 223.18 0 0 0 480 287.9C480 164.2 379.7 64 256 64z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M256 128v32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M416 288h-32"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M128 288H96"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M165.49 197.49l-22.63-22.63"></path><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M346.51 197.49l22.63-22.63"></path></svg>' ,
           name: 'សង្ខេបព័ត៌មាន',
+          color: '#4f46e5',
           roles: [
             1, // Super
             2, // Administrator
@@ -124,10 +161,33 @@ export default {
         icon: 'CoPresentOutlined' ,
         svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><path d="M16 8h14v2H16z" fill="currentColor"></path><path d="M6 10.59L3.41 8L2 9.41l4 4l8-8L12.59 4L6 10.59z" fill="currentColor"></path><path d="M16 22h14v2H16z" fill="currentColor"></path><path d="M6 24.59L3.41 22L2 23.41l4 4l8-8L12.59 18L6 24.59z" fill="currentColor"></path></svg>' ,
         name: 'វត្តមាន',
+        color: '#059669',
         roles: [
           1, // Super
           2, // Administrator
           // 3, // backend
+        ]
+        , children: [
+          {
+            url: '/leaverequest' ,
+            icon: 'DocumentText24Regular' ,
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"></path><rect x="9" y="3" width="6" height="4" rx="1"></rect><path d="M9 13l2 2l4-4"></path></g></svg>' ,
+            name: 'សំណើរឈប់សម្រាក',
+            roles: [
+              1, // Super
+              2, // Administrator
+            ]
+          },
+          {
+            url: '/attendanceadjustment' ,
+            icon: 'EditNote24Regular' ,
+            svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512"><path d="M384 224v184a40 40 0 0 1-40 40H104a40 40 0 0 1-40-40V168a40 40 0 0 1 40-40h167.48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M459.94 53.25a16.06 16.06 0 0 0-23.22-.56L424.35 65a8 8 0 0 0 0 11.31l11.34 11.32a8 8 0 0 0 11.34 0l12.06-12c6.1-6.09 6.12-16.02.85-22.38z" fill="currentColor"/><path d="M399 93.09L340.44 152l-12.19-36.69A16 16 0 0 0 295 115.27l-79.95 80.28 16.38 32 31.63 16.18 80-80.35a16 16 0 0 0 0-22.61L387 102.7a8 8 0 0 0 0-11.31l-11.07-11.06a8 8 0 0 0-11.32 0l-78.19 78.77" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>' ,
+            name: 'ការកែតម្រូវវត្តមាន',
+            roles: [
+              1, // Super
+              2, // Administrator
+            ]
+          },
         ]
       },
       {
@@ -135,6 +195,7 @@ export default {
         icon: 'ContactCard32Regular' ,
         svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32"><g fill="none"><path d="M18 13a1 1 0 0 1 1-1h6a1 1 0 0 1 0 2h-6a1 1 0 0 1-1-1zm1 4a1 1 0 1 0 0 2h6a1 1 0 0 0 0-2h-6zm-6-4a2 2 0 1 1-4 0a2 2 0 0 1 4 0zm-6 4.5A1.5 1.5 0 0 1 8.5 16h5a1.5 1.5 0 0 1 1.5 1.5s0 3.5-4 3.5s-4-3.5-4-3.5zM2 7.25A3.25 3.25 0 0 1 5.25 4h21.5A3.25 3.25 0 0 1 30 7.25v17.5A3.25 3.25 0 0 1 26.75 28H5.25A3.25 3.25 0 0 1 2 24.75V7.25zM5.25 6C4.56 6 4 6.56 4 7.25v17.5c0 .69.56 1.25 1.25 1.25h21.5c.69 0 1.25-.56 1.25-1.25V7.25C28 6.56 27.44 6 26.75 6H5.25z" fill="currentColor"></path></g></svg>' ,
         name: 'បុគ្គលិក',
+        color: '#0284c7',
         roles: [
           1, // Super
           2, // Administrator
@@ -146,6 +207,7 @@ export default {
         icon: 'Organization20Regular' ,
         svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none"><path d="M10.5 7a3 3 0 1 0 0 6a3 3 0 0 0 0-6zM9 10a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0zM2 6.25A2.25 2.25 0 0 1 4.25 4h12.5A2.25 2.25 0 0 1 19 6.25V11h-1.5V8.5h-.75a2.25 2.25 0 0 1-2.25-2.25V5.5h-8v.75A2.25 2.25 0 0 1 4.25 8.5H3.5v3h.75a2.25 2.25 0 0 1 2.25 2.25v.75H14V16H4.25A2.25 2.25 0 0 1 2 13.75v-7.5zm2.25-.75a.75.75 0 0 0-.75.75V7h.75A.75.75 0 0 0 5 6.25V5.5h-.75zM17.5 7v-.75a.75.75 0 0 0-.75-.75H16v.75c0 .414.336.75.75.75h.75zm-14 6.75c0 .414.336.75.75.75H5v-.75a.75.75 0 0 0-.75-.75H3.5v.75zm.901 3.75H14V19H7c-1.11 0-2.08-.603-2.599-1.5zM22 11V9c0-1.11-.603-2.08-1.5-2.599V11H22zm-5.5 1a1.5 1.5 0 0 0-1.5 1.5v8a1.5 1.5 0 0 0 1.5 1.5h5a1.5 1.5 0 0 0 1.5-1.5v-8a1.5 1.5 0 0 0-1.5-1.5h-5zm.5 4.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm-3 2h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm-3 2h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zm3 0h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1 0-1zM16.5 14a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-1z" fill="currentColor"></path></g></svg>' ,
         name: 'គោលការណ៍ប្រាក់ខែ',
+        color: '#d97706',
         roles: [
           1, // Super
           2, // Administrator
@@ -157,6 +219,7 @@ export default {
         icon: 'MoneyHand20Regular' ,
         svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M4.5 2A1.5 1.5 0 0 0 3 3.5v13A1.5 1.5 0 0 0 4.5 18h7a1.5 1.5 0 0 0 1.5-1.5V15a.5.5 0 0 0-.5-.5c-.413 0-.677-.102-.856-.236c-.183-.137-.322-.342-.424-.623c-.214-.588-.22-1.367-.22-2.141a.5.5 0 0 0-.147-.354l-.286-.287l-1.213-1.213c-.467-.467-.604-.78-.63-.955c-.02-.14.022-.234.122-.33c.214-.205.367-.344.54-.386c.103-.026.338-.044.76.378l3 3a.5.5 0 0 0 .708-.707L13 9.793V6.707l2.56 2.56a1.5 1.5 0 0 1 .44 1.061V17.5a.5.5 0 0 0 1 0v-7.172a2.5 2.5 0 0 0-.732-1.767L13 5.293V3.5A1.5 1.5 0 0 0 11.5 2h-7zM12 5.5v3.293l-1.146-1.147c-.579-.578-1.154-.777-1.705-.643a1.517 1.517 0 0 0-.313.115A3.001 3.001 0 0 0 5 10a3 3 0 0 0 5.007 2.23c.017.578.075 1.21.273 1.753c.148.407.384.796.764 1.08l.006.006A1.5 1.5 0 0 0 10 16.5v.5H6v-.5A1.5 1.5 0 0 0 4.5 15H4V5h.5A1.5 1.5 0 0 0 6 3.5V3h4v.5A1.5 1.5 0 0 0 11.5 5h.5v.5zm0 11v.009a.5.5 0 0 1-.5.491H11v-.5a.5.5 0 0 1 .5-.5h.5v.5zM6 10a2 2 0 0 1 1.874-1.996c-.124.23-.187.51-.139.833c.071.482.378.983.911 1.516l.907.907A2 2 0 0 1 6 10zM5 3v.5a.5.5 0 0 1-.5.5H4v-.5a.5.5 0 0 1 .5-.5H5zM4 16h.5a.5.5 0 0 1 .5.5v.5h-.5a.5.5 0 0 1-.5-.5V16zm8-12h-.5a.5.5 0 0 1-.5-.5V3h.5a.5.5 0 0 1 .5.5V4z" fill="currentColor"></path></g></svg>' ,
         name: 'បញ្ជីប្រាក់បៀវដ្ត',
+        color: '#7c3aed',
         roles: [
           1, // Super
           2, // Administrator
@@ -168,6 +231,7 @@ export default {
           icon: 'Settings20Regular' ,
           svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M1.91 7.383a8.491 8.491 0 0 1 1.78-3.08a.5.5 0 0 1 .54-.135l1.918.686a1 1 0 0 0 1.32-.762l.366-2.006a.5.5 0 0 1 .388-.4a8.532 8.532 0 0 1 3.555 0a.5.5 0 0 1 .387.4l.367 2.006a1 1 0 0 0 1.32.762l1.918-.686a.5.5 0 0 1 .54.136a8.491 8.491 0 0 1 1.78 3.079a.5.5 0 0 1-.152.535l-1.555 1.32a1 1 0 0 0 0 1.524l1.555 1.32a.5.5 0 0 1 .152.535a8.491 8.491 0 0 1-1.78 3.08a.5.5 0 0 1-.54.135l-1.918-.686a1 1 0 0 0-1.32.762l-.367 2.007a.5.5 0 0 1-.387.399a8.53 8.53 0 0 1-3.555 0a.5.5 0 0 1-.388-.4l-.365-2.006a1 1 0 0 0-1.32-.762l-1.919.686a.5.5 0 0 1-.54-.136a8.49 8.49 0 0 1-1.78-3.079a.5.5 0 0 1 .153-.535l1.554-1.32a1 1 0 0 0 0-1.524l-1.554-1.32a.5.5 0 0 1-.153-.535zm1.061-.006l1.294 1.098a2 2 0 0 1 0 3.05L2.97 12.623c.292.782.714 1.51 1.245 2.152l1.596-.57a2 2 0 0 1 2.64 1.525l.305 1.668a7.556 7.556 0 0 0 2.485 0l.305-1.67a1.998 1.998 0 0 1 2.64-1.524l1.597.571a7.492 7.492 0 0 0 1.245-2.152l-1.294-1.098a1.998 1.998 0 0 1 0-3.05l1.294-1.098a7.491 7.491 0 0 0-1.245-2.152l-1.596.57a2 2 0 0 1-2.64-1.524l-.306-1.669a7.555 7.555 0 0 0-2.485 0l-.304 1.669a2 2 0 0 1-2.641 1.525l-1.596-.571a7.491 7.491 0 0 0-1.245 2.152zM7.5 10a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0zm1 0a1.5 1.5 0 1 0 3 0a1.5 1.5 0 0 0-3 0z" fill="currentColor"></path></g></svg>' ,
           name: 'ការកំណត់',
+          color: '#0d9488',
           roles: [
             1, // Super
             2, // Administrator
@@ -251,17 +315,17 @@ export default {
                 3, // backend
               ]
             },
-            // {
-            //   url: '/Attendancepolicy' ,
-            //   icon: 'Door' ,
-            //   svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 12v.01"></path><path d="M3 21h18"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></g></svg>' ,
-            //   name: 'គោលការណ៍វត្តមាន',
-            //   roles: [
-            //     1, // Super
-            //     2, // Administrator
-            //     3, // backend
-            //   ]
-            // },
+            {
+              url: '/attendancepolicy' ,
+              icon: 'Door' ,
+              svg: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 12v.01"></path><path d="M3 21h18"></path><path d="M6 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"></path></g></svg>' ,
+              name: 'គោលការណ៍វត្តមាន',
+              roles: [
+                1, // Super
+                2, // Administrator
+                3, // backend
+              ]
+            },
           ]
       },
     ])
@@ -297,6 +361,57 @@ export default {
       // if( url == route.path ) props.close()
       toggleApps.value = !toggleApps.value
       props.close()
+    }
+
+    /**
+     * Sidebar menu items that own a submenu expand / collapse on click
+     */
+    function hasChildren( app ){
+      return app != undefined && app != null && Array.isArray( app.children ) && app.children.length > 0
+    }
+    function isMenuOpen( app ){
+      return hasChildren( app ) && openMenus.value[ app.url ] === true
+    }
+    function toggleMenu( app ){
+      openMenus.value = { ...openMenus.value , [ app.url ] : !openMenus.value[ app.url ] }
+    }
+    function isActive( url ){
+      if( url == undefined || url == null || url == '' ) return false
+      return route.path === url || ( url !== '/' && route.path.indexOf( url + '/' ) === 0 )
+    }
+    function onItemClick( app ){
+      if( hasChildren( app ) ) toggleMenu( app )
+      props.close()
+      if( app.url != undefined && app.url != null ) router.push( app.url )
+    }
+    function onChildClick( childApp ){
+      props.close()
+      if( childApp.url != undefined && childApp.url != null ) router.push( childApp.url )
+    }
+    /**
+     * Keep the submenu that owns the current route open on load / navigation
+     */
+    function syncOpenWithRoute(){
+      matchedApps.value.forEach( app => {
+        if( hasChildren( app ) && app.children.some( child => isActive( child.url ) ) ){
+          openMenus.value = { ...openMenus.value , [ app.url ] : true }
+        }
+      })
+    }
+    /**
+     * Collapse the sidebar into an icon-only rail, or restore it.
+     * Collapsing closes any open group because the rail has no room for an
+     * inline panel - in rail mode submenus become flyouts instead. Expanding
+     * again re-opens the group that owns the current route.
+     */
+    function toggleRail(){
+      railCollapsed.value = !railCollapsed.value
+      try { localStorage.setItem( RAIL_STORAGE_KEY , railCollapsed.value ? '1' : '0' ) } catch( error ){}
+      if( railCollapsed.value ){
+        openMenus.value = {}
+      }else{
+        syncOpenWithRoute()
+      }
     }
 
     function logoutConfirmation(){
@@ -346,6 +461,15 @@ export default {
     }
 
     filterApps()
+    syncOpenWithRoute()
+    watch( () => route.path , syncOpenWithRoute )
+    /**
+     * Mirror the rail mode onto <body>. The page shells that carry the content
+     * offset sit outside this component, so they cannot read the ref directly.
+     */
+    watch( railCollapsed , ( collapsed ) => {
+      document.body.classList.toggle( 'sidebar-rail-collapsed' , collapsed )
+    } , { immediate: true } )
 
     return {
       logout ,
@@ -357,7 +481,17 @@ export default {
       filterApps ,
       toggleAppFunc ,
       logoutConfirmation ,
-      isAdminAccount 
+      isAdminAccount ,
+      hasChildren ,
+      isMenuOpen ,
+      toggleMenu ,
+      isActive ,
+      onItemClick ,
+      onChildClick ,
+      syncOpenWithRoute ,
+      openMenus ,
+      railCollapsed ,
+      toggleRail
     }
   }
 }
@@ -399,33 +533,63 @@ Parent Menu
   @apply block;
 }
 .sidebar .sidebar-item {
-  @apply relative bg-gray-50 w-full border-b border-gray-200 cursor-pointer  ;
+  @apply relative bg-gray-50 w-full cursor-pointer  ;
 }
-.sidebar .sidebar-item:hover {
-  @apply border-b  border-blue-500 bg-blue-50 duration-300;
+.sidebar .item-content {
+  @apply border-b border-gray-200 duration-300 ;
 }
-.sidebar .sidebar-item:hover .sidebar-children {
-  display: block;
-  @apply transform-gpu duration-300;
+.sidebar .item-content:hover {
+  @apply border-b border-blue-500 bg-blue-50 duration-300 ;
 }
-.sidebar .sidebar-item:hover .item-icon , .sidebar .sidebar-item:hover .item-label {
-  @apply text-blue-600 duration-300 ;
+.sidebar .item-content:hover .item-icon , .sidebar .item-content:hover .item-label {
+  @apply duration-300 ;
 }
 .item-content {
   @apply w-full flex h-10 p-2 ;
 }
+/* Icons and labels carry no colour of their own - they inherit the per-item
+   colour set inline on .sidebar-item, so each menu entry has its own hue. */
 .item-icon {
-  @apply text-gray-600 w-5 flex-none h-5 ;
+  @apply w-5 flex-none h-5 ;
 }
 .item-label {
-  @apply h-6 text-left text-gray-900 flex-grow leading-6 pl-2  ;
+  @apply h-6 text-left flex-grow leading-6 pl-2  ;
+}
+.item-caret {
+  @apply absolute right-2 h-4 w-2 mt-1 transition-transform duration-200 ease-out ;
+}
+.item-caret-open {
+  transform: rotate( 90deg );
+}
+.item-content-active {
+  @apply bg-blue-50 ;
+}
+/**
+Icon-rail mode: icons only, submenus fly out to the right
+ */
+.sidebar.sidebar-collapsed .item-label,
+.sidebar.sidebar-collapsed .item-caret {
+  display: none;
+}
+.sidebar.sidebar-collapsed .item-content {
+  @apply justify-center ;
+}
+.sidebar.sidebar-collapsed .sidebar-children {
+  @apply absolute left-12 top-0 w-40 bg-white shadow-lg border border-gray-200 rounded-sm ;
+}
+.sidebar-children-header {
+  @apply block px-3 py-2 text-xs text-left ;
+  font-family: btb-regular;
+  /* tinted with the group's own colour */
+  background-color: #f3f4f6;
+  background-color: color-mix( in srgb , currentColor 14% , white );
+  border-bottom: 1px solid color-mix( in srgb , currentColor 30% , white );
 }
 /**
 Child
 */
 .sidebar-children {
-  display: none;
-  @apply absolute left-40 top-0 w-40 bg-gray-50 shadow-sm;
+  @apply w-full bg-gray-100 overflow-hidden ;
 }
 .sidebar-children-item {
   @apply border-b border-gray-200 cursor-pointer ;
@@ -436,14 +600,36 @@ Child
 
 .child-item-content {
   @apply w-full flex h-10 border-gray-200 p-2 ;
+  padding-left: 1.5rem;
+}
+.child-item-content-active {
+  @apply bg-blue-100 ;
 }
 .child-item-content:hover .child-item-icon , .child-item-content:hover .child-item-label {
-  @apply text-blue-600 duration-300 ;
+  @apply duration-300 ;
 }
 .child-item-icon {
-  @apply text-gray-600 w-5 flex-none h-5 ;
+  @apply w-5 flex-none h-5 ;
 }
 .child-item-label {
-  @apply h-6 text-left text-gray-900 flex-grow leading-6 pl-2  ;
+  @apply h-6 text-left flex-grow leading-6 pl-2  ;
+}
+/**
+  Expand / collapse transition for the toggled submenus
+ */
+.accordion-enter-active,
+.accordion-leave-active {
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+  overflow: hidden;
+}
+.accordion-enter-from,
+.accordion-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+.accordion-enter-to,
+.accordion-leave-from {
+  max-height: 40rem;
+  opacity: 1;
 }
 </style>

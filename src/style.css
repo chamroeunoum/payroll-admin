@@ -396,3 +396,14 @@ BI Dashboard Cards
 @apply inline-flex items-center justify-center min-w-[18px] h-[18px] px-1
 	rounded-full bg-blue-200 text-blue-800 text-[10px] font-bold;
 }
+
+/**
+Sidebar icon-rail mode.
+Every page shell positions its content with Tailwind's left-40 (10rem) so it
+clears the 10rem sidebar. When the sidebar collapses to a 3rem rail we shift
+them by overriding that one utility under a body class, rather than editing
+all 17 page components. Specificity (0,2,1) beats Tailwind's .left-40 (0,1,0).
+*/
+body.sidebar-rail-collapsed .left-40 {
+left: 3rem;
+}
