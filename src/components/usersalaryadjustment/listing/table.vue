@@ -59,6 +59,33 @@
           </n-tooltip> -->
           <n-tooltip trigger="hover">
             <template #trigger>
+              <n-button
+                class="mx-1"
+                size="small"
+                type="warning"
+                :loading="downloadingTemplate"
+                @click="downloadTemplate()"
+              >
+                ទាញយកគំរូ Excel
+              </n-button>
+            </template>
+            ទាញយកគំរូ Excel សម្រាប់ខែដែលកំពុងបង្ហាញ ដើម្បីបំពេញតម្លៃ ហើយនាំចូលវិញ
+          </n-tooltip>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <n-button
+                class="mx-1"
+                size="small"
+                type="success"
+                @click="showImportModal()"
+              >
+                នាំចូល Excel
+              </n-button>
+            </template>
+            នាំចូលគោលការប្រែប្រួលប្រាក់ខែរបស់បុគ្គលិកច្រើននាក់ក្នុងពេលតែមួយ ចូលខែដែលបានជ្រើសរើស
+          </n-tooltip>
+          <n-tooltip trigger="hover">
+            <template #trigger>
               <n-date-picker v-model:value="timestamp" type="month" clearable @update:value="filterRecords(false)" />
             </template>
             ត្រឡប់ទៅ ការកំណត់
@@ -208,6 +235,8 @@
     <!-- Form create account -->
     <create-form v-bind:model="model" v-bind:show="createModal.show" :onClose="closeCreateModal"/>
     <create-non-officer-form v-bind:model="model" v-bind:show="createNonOfficerModal.show" :onClose="closeCreateNonOfficerModal"/>
+    <!-- Import the adjustments of many staff from one Excel file -->
+    <import-form v-bind:model="model" :date="dateFormat( new Date( timestamp ) , 'yyyy-mm' )" v-bind:show="importModal.show" :onClose="closeImportModal"/>
     <!-- Filter panel of crud -->
     <Transition name="slide-fade" >
       <div v-if="filter" class="vcb-filters-panel">
@@ -242,6 +271,7 @@ import dateFormat from 'dateformat'
  */
 import CreateForm from './../widgets/create.vue'
 import CreateNonOfficerForm from './../widgets/createnonofficer.vue'
+import ImportForm from './../widgets/import.vue'
 import TableActionsForm from './actions/table-action.vue'
 export default {
   watch: {
@@ -255,6 +285,7 @@ export default {
      */
     CreateForm ,
     CreateNonOfficerForm ,
+    ImportForm ,
     TableActionsForm
   },
   setup(){
@@ -445,6 +476,50 @@ export default {
 
     function closeActions( actionStatus ){
       if( parseInt( actionStatus ) > 0 ) getRecords()
+    }
+
+    /**
+     * Import panel of the page: the same month the table is showing is offered
+     * as the target of the file, and the table is refreshed once something was
+     * actually written.
+     */
+    var importModal = reactive({show:false})
+    function showImportModal(){
+      importModal.show = true
+    }
+
+    function closeImportModal( actionStatus ){
+      importModal.show = false
+      if( parseInt( actionStatus ) > 0 ) getRecords()
+    }
+
+    /**
+     * The spreadsheet the import expects, pre-filled with the values stored for
+     * the month on screen. Fetched through the axios helper because the endpoint
+     * sits behind the same bearer token as every other call -- window.open()
+     * cannot carry the Authorization header.
+     */
+    const downloadingTemplate = ref( false )
+    function downloadTemplate(){
+      const period = dateFormat( new Date( timestamp.value ) , 'yyyy-mm' )
+      downloadingTemplate.value = true
+      store.dispatch( 'usersalaryadjustment/template' , { date: period } ).then( res => {
+        const blob = new Blob( [ res.data ] , { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' } )
+        const url = window.URL.createObjectURL( blob )
+        const link = document.createElement( 'a' )
+        link.href = url
+        link.download = 'salary_adjustments_' + period + '.xlsx'
+        document.body.appendChild( link )
+        link.click()
+        document.body.removeChild( link )
+        window.URL.revokeObjectURL( url )
+        downloadingTemplate.value = false
+        message.success( 'ទាញយកគំរូបានសម្រេច' )
+      }).catch( err => {
+        downloadingTemplate.value = false
+        message.error( 'ទាញយកគំរូមិនបានសម្រេច' )
+        console.log( err )
+      })
     }
     
     /**
@@ -638,6 +713,14 @@ export default {
       showCreateNonOfficerModal ,
       closeCreateNonOfficerModal ,
       closeActions ,
+      /**
+       * Import / template
+       */
+      importModal ,
+      showImportModal ,
+      closeImportModal ,
+      downloadTemplate ,
+      downloadingTemplate ,
       /**
        * Functions
        */

@@ -44,9 +44,23 @@ const actions = {
   async update ({ state, commit, rootState },params) {
     return await crud.update(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/update",params)
   },
+  /**
+   * Bulk import of the monthly adjustments of many staff, into one month.
+   * `params` = { date: 'YYYY-MM' , rows: [ { code , values: { policy: amount } } ] }
+   */
+  async import ({ state, commit, rootState },params) {
+    return await crud.create(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/import",params)
+  },
+  /**
+   * The spreadsheet this page imports, pre-filled with the values stored for
+   * `params.date` (YYYY-MM).
+   */
+  async template ({ state, commit, rootState },params) {
+    return await crud.download(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/template?date="+encodeURIComponent( params.date ))
+  },
   async activate({state, commit, rootState}, params){
     return await crud.update(import.meta.env.VITE_API_SERVER+"/"+state.model.name+"/activate",params)
-  },
+  }
 }
 
 // mutations
