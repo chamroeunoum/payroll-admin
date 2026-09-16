@@ -17,7 +17,17 @@ public_html/hot
 .DS_Store
 storage/*.key
 .env
+# Vite layers .env.local over .env for BOTH dev and `vite build`. If it is
+# present at build time it ships a bundle pointing at the local API, so it must
+# never be committed. See .env for the commented local option.
+.env.local
 dist
+
+# e2e test artifacts
+cypress/screenshots/
+cypress/videos/
+test-results/
+playwright-report/
 Homestead.yaml
 Homestead.json
 /.vagrant
