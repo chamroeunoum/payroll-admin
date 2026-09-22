@@ -118,7 +118,7 @@
                 <th class="text-right" >ប្រាក់បៀវត្សដុល</th>
                 <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ(ដុល្លារ)</th>
                 <th class="text-right" >ប្រាក់បៀវត្សជាប់ពន្ធ(រៀល)</th>
-                <th class="text-right" >ប្រាក់កាត់ទុករបបសន្តិសុខសង្គម</th>
+                <th class="text-right" >ប្រាក់កាត់ទុកភាគទានសន្តិសុខសង្គម</th>
                 <th class="text-right" >ប្រាក់បានខ្ចី</th>
                 <th class="text-right" >ប្រាក់កាត់លើកំហុស</th>
                 <th class="text-right" >ប្រាក់ប្រើប្រាស់ទឹកភ្លើង</th>

@@ -16,7 +16,7 @@
         </n-tooltip>
         <n-tooltip trigger="hover">
           <template #trigger>
-            <svg @click="setAttendanceType('SL')" class="action text-red-700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M7.32 10.56L8.38 9.5L7.32 8.44l1.06-1.06L10.5 9.5l-2.12 2.12l-1.06-1.06zM4.5 9c.03 0 .05.01.08.01A8.002 8.002 0 0 1 12 4c2.19 0 4.16.88 5.61 2.3c.15-.6.45-1.29.81-1.96A9.965 9.965 0 0 0 11.99 2c-4.88 0-8.94 3.51-9.81 8.14C2.74 9.44 3.59 9 4.5 9zM21 10.5c-.42 0-.82-.09-1.19-.22c.12.55.19 1.13.19 1.72c0 4.42-3.58 8-8 8c-3.36 0-6.23-2.07-7.42-5.01c-.03 0-.05.01-.08.01c-.52 0-1.04-.14-1.5-.4c-.32-.18-.59-.42-.82-.7c.89 4.61 4.93 8.1 9.8 8.1C17.52 22 22 17.52 22 12c0-.55-.06-1.09-.14-1.62a3.5 3.5 0 0 1-.86.12zM21 3s-2 2.9-2 4s.9 2 2 2s2-.9 2-2s-2-4-2-4zm-5.38 4.38L13.5 9.5l2.12 2.12l1.06-1.06l-1.06-1.06l1.06-1.06l-1.06-1.06zM8.56 17c.69-1.19 1.97-2 3.44-2s2.75.81 3.44 2h1.68c-.8-2.05-2.79-3.5-5.12-3.5c-.87 0-1.7.2-2.43.57L5.99 12c0-.52-.26-1.02-.74-1.29c-.72-.41-1.63-.17-2.05.55c-.41.72-.17 1.63.55 2.05c.48.28 1.05.25 1.49 0l2.97 1.72c-.57.53-1.03 1.21-1.33 1.97h1.68z" fill="currentColor"></path></svg>
+            <svg @click="setAttendanceType('SK')" class="action text-red-700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M7.32 10.56L8.38 9.5L7.32 8.44l1.06-1.06L10.5 9.5l-2.12 2.12l-1.06-1.06zM4.5 9c.03 0 .05.01.08.01A8.002 8.002 0 0 1 12 4c2.19 0 4.16.88 5.61 2.3c.15-.6.45-1.29.81-1.96A9.965 9.965 0 0 0 11.99 2c-4.88 0-8.94 3.51-9.81 8.14C2.74 9.44 3.59 9 4.5 9zM21 10.5c-.42 0-.82-.09-1.19-.22c.12.55.19 1.13.19 1.72c0 4.42-3.58 8-8 8c-3.36 0-6.23-2.07-7.42-5.01c-.03 0-.05.01-.08.01c-.52 0-1.04-.14-1.5-.4c-.32-.18-.59-.42-.82-.7c.89 4.61 4.93 8.1 9.8 8.1C17.52 22 22 17.52 22 12c0-.55-.06-1.09-.14-1.62a3.5 3.5 0 0 1-.86.12zM21 3s-2 2.9-2 4s.9 2 2 2s2-.9 2-2s-2-4-2-4zm-5.38 4.38L13.5 9.5l2.12 2.12l1.06-1.06l-1.06-1.06l1.06-1.06l-1.06-1.06zM8.56 17c.69-1.19 1.97-2 3.44-2s2.75.81 3.44 2h1.68c-.8-2.05-2.79-3.5-5.12-3.5c-.87 0-1.7.2-2.43.57L5.99 12c0-.52-.26-1.02-.74-1.29c-.72-.41-1.63-.17-2.05.55c-.41.72-.17 1.63.55 2.05c.48.28 1.05.25 1.49 0l2.97 1.72c-.57.53-1.03 1.21-1.33 1.97h1.68z" fill="currentColor"></path></svg>
           </template>
           ច្បាប់ឈឺ
         </n-tooltip>
@@ -28,7 +28,13 @@
         </n-tooltip>
         <n-tooltip trigger="hover">
           <template #trigger>
-            <svg @click="setAttendanceType('A')" class="action text-red-700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M7.5 2a3.5 3.5 0 1 1 0 7a3.5 3.5 0 0 1 0-7zm0 1a2.5 2.5 0 1 0 0 5a2.5 2.5 0 0 0 0-5zm7 6a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5zM13 6.5a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0zm-1.695 3.523A2.025 2.025 0 0 0 11 10H4a2 2 0 0 0-2 2v1.5C2 15.554 4.088 17 7.5 17c.732 0 1.404-.067 2.006-.192a5.46 5.46 0 0 1-.336-.947A9.35 9.35 0 0 1 7.5 16C4.579 16 3 14.907 3 13.5V12a1 1 0 0 1 1-1h6.257c.305-.37.657-.698 1.048-.977zM10 14.5a4.5 4.5 0 1 0 9 0a4.5 4.5 0 0 0-9 0zm2.404 2.803l4.9-4.9a3.5 3.5 0 0 1-4.9 4.9zm-.707-.707a3.5 3.5 0 0 1 4.9-4.9l-4.9 4.9z" fill="currentColor"></path></g></svg>
+            <svg @click="setAttendanceType('SP')" class="action text-red-700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24"><path d="M12 2l2.9 6.26l6.6.6l-5 4.4l1.5 6.5L12 16.9L5.5 19.8l1.5-6.5l-5-4.4l6.6-.6z" fill="currentColor"></path></svg>
+          </template>
+          ច្បាប់ឈប់ពិសេស
+        </n-tooltip>
+        <n-tooltip trigger="hover">
+          <template #trigger>
+            <svg @click="setAttendanceType('AB')" class="action text-red-700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 20 20"><g fill="none"><path d="M7.5 2a3.5 3.5 0 1 1 0 7a3.5 3.5 0 0 1 0-7zm0 1a2.5 2.5 0 1 0 0 5a2.5 2.5 0 0 0 0-5zm7 6a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5zM13 6.5a1.5 1.5 0 1 1 3 0a1.5 1.5 0 0 1-3 0zm-1.695 3.523A2.025 2.025 0 0 0 11 10H4a2 2 0 0 0-2 2v1.5C2 15.554 4.088 17 7.5 17c.732 0 1.404-.067 2.006-.192a5.46 5.46 0 0 1-.336-.947A9.35 9.35 0 0 1 7.5 16C4.579 16 3 14.907 3 13.5V12a1 1 0 0 1 1-1h6.257c.305-.37.657-.698 1.048-.977zM10 14.5a4.5 4.5 0 1 0 9 0a4.5 4.5 0 0 0-9 0zm2.404 2.803l4.9-4.9a3.5 3.5 0 0 1-4.9 4.9zm-.707-.707a3.5 3.5 0 0 1 4.9-4.9l-4.9 4.9z" fill="currentColor"></path></g></svg>
           </template>
           អវត្តមាន
         </n-tooltip>
@@ -203,12 +209,44 @@ export default {
     }
 
     function setAttendanceType(attnType){
-      if( attnType == 'P' ){
-
+      /**
+       * `attendance_calculation.attendance` is the current day's attendance row
+       * for this officer (lowercase — that is what OfficerController::attendances
+       * returns). It is null when the officer has no record for that date.
+       */
+      var attendance = props.record != null && props.record.attendance_calculation != null
+        ? props.record.attendance_calculation.attendance
+        : null
+      if( attendance == null || attendance.id == undefined ){
+        notify.warning({
+          title: 'វត្តមាន' ,
+          description: 'មិនមានការចុះវត្តមានសម្រាប់ថ្ងៃនេះឡើយ។' ,
+          duration: 3000
+        })
+        return false
       }
-      store.dispatch( 'Attendance/setType' ,{ id:  props.record.attendance_calculation.Attendance.id , type : attnType }).then( res => {
-        closeActions(1)
+      // Namespace must match the Vuex module key ('attendance', lowercase).
+      store.dispatch( 'attendance/setType' ,{ id: attendance.id , type : attnType }).then( res => {
+        if( res.data.ok == true ){
+          notify.success({
+            title: 'កែប្រែវត្តមាន' ,
+            description: 'កំណត់ប្រភេទវត្តមានទៅ ' + attnType + ' រួចរាល់' ,
+            duration: 3000
+          })
+          closeActions(1)
+        }else{
+          notify.error({
+            title: 'កែប្រែវត្តមាន' ,
+            description: res.data.message != undefined ? res.data.message : 'មានបញ្ហាក្នុងការកែប្រែ។' ,
+            duration: 3000
+          })
+        }
       }).catch( err => {
+        notify.error({
+          title: 'កែប្រែវត្តមាន' ,
+          description: 'មានបញ្ហាក្នុងការកែប្រែ។' ,
+          duration: 3000
+        })
         console.log( err )
       })
     }

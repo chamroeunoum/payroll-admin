@@ -185,7 +185,7 @@
                   <td colspan="2" class="text-red-700">{{ previewSalary?.basic_salary_middle_of_month }}</td>
                 </tr>
                 <tr>
-                  <td>ប្រាក់កាត់ទុករបបសន្តិសុខសង្គម(សោធនិវត្ស)<br/>Amount withhold on NSSF 2%</td>
+                  <td>ប្រាក់កាត់ទុកភាគទានសន្តិសុខសង្គម<br/>Amount withhold on NSSF {{ nssfPercentage }}%</td>
                   <td colspan="2" class="text-red-700">{{ previewSalary?.nssf }}</td>
                 </tr>
                 <tr>
@@ -418,6 +418,7 @@ export default {
     }
 
     const previewSalary = ref(null)
+    const nssfPercentage = computed( () => store.state.generalsetting.settingsByKey['nssf_withhold_tax'] ?? '' )
     function getPreviewSalary(){
       store.dispatch('officer/previewSalary',{
         officer_id : props.record.id ,
@@ -505,6 +506,7 @@ export default {
       positions , 
       userCountesies ,
       previewSalary ,
+      nssfPercentage ,
       /**
        * Functions
        */

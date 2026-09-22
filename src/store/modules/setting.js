@@ -32,7 +32,8 @@ const state = () => ({
     start: 1 , 
     end: 1 
   },
-  people: []
+  people: [] ,
+  settingsByKey: {}
 })
 // getters
 const getters = {
@@ -57,6 +58,12 @@ const getters = {
   people (state, getters, rootState) {
     return state.people
   },
+  settingsByKey (state) {
+    return state.settingsByKey
+  },
+  valueOf (state) {
+    return ( key ) => state.settingsByKey[ key ]
+  },
 }
 
 // actions
@@ -78,6 +85,21 @@ const actions = {
   },
   async update ({ state, commit, rootState },params) {
     return await crud.update(state.server+"/"+state.model.module+'/update',params)
+  },
+  /**
+   * Load every general setting once and cache it by key, so views that need a
+   * setting value (e.g. the NSSF percentage on payslips) can read it without
+   * their own request. Values are cached as-is (strings from the API).
+   */
+  async loadAll ({ state, commit }) {
+    const res = await crud.list(
+      state.server+"/"+state.model.module + "?" + new URLSearchParams({ search: '', perPage: 500, page: 1 }).toString()
+    )
+    const records = res.data && Array.isArray( res.data.records ) ? res.data.records : []
+    const byKey = {}
+    records.forEach( ( r ) => { byKey[ r.key ] = r.value } )
+    commit( 'setSettingsByKey' , byKey )
+    return byKey
   }
 }
 
@@ -156,6 +178,9 @@ const mutations = {
   },
   setPeople (state, records) {
     state.people = records
+  },
+  setSettingsByKey (state, byKey) {
+    state.settingsByKey = byKey
   },
 }
 

@@ -149,7 +149,7 @@
                   <td colspan="2"></td>
                 </tr>
                 <tr>
-                  <td>ប្រាក់កាត់ទុករបបសន្តិសុខសង្គម(សោធនិវត្ស)<br/>Amount withhold on NSSF 2%</td>
+                  <td>ប្រាក់កាត់ទុកភាគទានសន្តិសុខសង្គម<br/>Amount withhold on NSSF {{ nssfPercentage }}%</td>
                   <td colspan="2">{{ record.nssf }}</td>
                 </tr>
                 <tr>
@@ -264,6 +264,7 @@ export default {
   },
   setup(props){
     var store = useStore()
+    const nssfPercentage = computed( () => store.state.generalsetting.settingsByKey['nssf_withhold_tax'] ?? '' )
     const message = useMessage()
     const notify = useNotification()
 
@@ -383,6 +384,7 @@ export default {
       selectedPositions ,
       positions , 
       userCountesies ,
+      nssfPercentage ,
       /**
        * Functions
        */

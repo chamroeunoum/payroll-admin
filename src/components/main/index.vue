@@ -27,6 +27,12 @@ export default {
     },
     computed: {},
     mounted() {
+      // Load general settings once for the whole authenticated app, so views
+      // like payslips can read the NSSF rate without their own request.
+      const byKey = this.$store.state.generalsetting.settingsByKey
+      if( byKey == undefined || Object.keys( byKey ).length === 0 ){
+        this.$store.dispatch('generalsetting/loadAll')
+      }
     },
     methods: {},
 }

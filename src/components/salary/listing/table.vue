@@ -151,7 +151,7 @@
                 <th class="text-right" >មូលដ្ឋានគិតពន្ធលើប្រាក់បៀវត្ស</th>
                 <th class="text-right" >ប្រាក់កាត់ទុកលើប្រាក់បៀវត្ស (រៀល)</th>
                 <th class="text-right" >ប្រាក់កាត់ទុកលើប្រាក់បៀវត្ស (ដុល្លារ)</th>
-                <th class="text-right" >កាត់ទុករបបសន្តិសុខសង្គម ២%</th>
+                <th class="text-right" >កាត់ទុកភាគទានសន្តិសុខសង្គម {{ $toKhmer( nssfPercentage ) }}%</th>
                 <th class="text-right" >ចំនួនប្រាក់បានខ្ចី</th>
                 <th class="text-right" >ប្រាក់គោលសុទ្ធបើកពាក់កណ្តាលខែ</th>
                 <th class="text-right" >សេវាសុខភាព (រៀល)</th>
@@ -208,7 +208,7 @@
                 <th class="text-right" >Basic salary to calculate tax</th>
                 <th class="text-right" >Withhold Tax IN RIEL</th>
                 <th class="text-right" >Withhold Tax IN USD</th>
-                <th class="text-right" >Amount Withhold on NSSF 2%</th>
+                <th class="text-right" >Amount Withhold on NSSF {{ nssfPercentage }}%</th>
                 <th class="text-right" >Cash advance</th>
                 <th class="text-right" >Take Basic salary middle of month</th>
                 <th class="text-right" >NSSF-Health care (Riel)</th>
@@ -495,6 +495,7 @@ export default {
   },
   setup(){
     const store = useStore()
+    const nssfPercentage = computed( () => store.state.generalsetting.settingsByKey['nssf_withhold_tax'] ?? '' )
     const route = useRoute()
     const dialog = useDialog()
     const message = useMessage()
@@ -866,6 +867,7 @@ export default {
       totalDaysPerMonth ,
       reportPeriodLabel ,
       reportExchangeRate ,
+      nssfPercentage ,
       getAdjustment ,
       exporting ,
       exportPayroll ,

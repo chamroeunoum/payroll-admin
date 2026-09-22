@@ -104,7 +104,9 @@ export default {
       'marriage': 'រៀបការ',
       'funeral': 'បុណ្យសព',
       'annual': 'ប្រចាំឆ្នាំ',
-      'personal': 'ផ្ទាល់ខ្លួន'
+      'personal': 'ផ្ទាល់ខ្លួន',
+      'special': 'ការឈប់ពិសេស',
+      'others': 'ការឈប់ផ្សេង'
     }
 
     var model = reactive({
