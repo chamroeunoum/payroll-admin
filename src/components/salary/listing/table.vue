@@ -92,6 +92,11 @@
     </div>
     <!-- Table of crud -->
     <div class="vcb-table-panel relative ">
+      <!-- Officers with no attendance this month: they get no salary at all -->
+      <div v-if="noAttendanceOfficers.length > 0" class="w-full my-2 p-3 rounded border border-red-300 bg-red-50 text-left" >
+        <div class="font-bold text-red-700" >{{ $toKhmer( noAttendanceOfficers.length ) }} នាក់ គ្មានវត្តមានក្នុងខែនេះ ដូច្នេះគ្មានប្រាក់ខែ (0) ឡើយ</div>
+        <div class="text-xs text-red-600 leading-5 mt-1" >{{ noAttendanceOfficers.map( o => o.code + ( o.name ? ' - ' + o.name : '' ) ).join(' , ') }}</div>
+      </div>
       <Transition name="fade" >
         <div v-if="Array.isArray( table.records.matched ) && table.records.matched.length > 0 " class="vcb-thumbnail mb-12" >
           <!-- Report header like Excel -->
@@ -518,6 +523,11 @@ export default {
       }
       return 0
     })
+    /**
+     * Officers in this payroll who have no attendance for the period. They get
+     * no salary at all, so the sheet says so instead of silently omitting them.
+     */
+    const noAttendanceOfficers = ref([])
     function getAdjustment(record, policyCode){
       if( record.monthlyAdjustments != undefined && Array.isArray( record.monthlyAdjustments ) && record.monthlyAdjustments.length > 0 ){
         const found = record.monthlyAdjustments.find( adj => adj.salaryPolicy != null && adj.salaryPolicy.code == policyCode )
@@ -645,6 +655,7 @@ export default {
       }).then(res => {
         table.records.all = table.records.matched = res.data.records
         table.pagination = res.data.pagination
+        noAttendanceOfficers.value = Array.isArray( res.data.no_attendance_officers ) ? res.data.no_attendance_officers : []
         if( res.data.total_days_per_month != undefined ){
           totalDaysPerMonth.value = res.data.total_days_per_month
         }
@@ -867,6 +878,7 @@ export default {
       totalDaysPerMonth ,
       reportPeriodLabel ,
       reportExchangeRate ,
+      noAttendanceOfficers ,
       nssfPercentage ,
       getAdjustment ,
       exporting ,

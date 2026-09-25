@@ -281,8 +281,8 @@
                         >
                           <n-radio-group v-model:value="record.attn_mode_ignore" :disabled=" record.is_working != 1 " >
                             <n-space>
-                              <n-radio :value="0" >មិនររាប់វត្តមានបុគ្គលិក</n-radio>
-                              <n-radio :value="1" >រាប់វត្តមានបុគ្គលិក</n-radio>
+                              <n-radio :value="0" >រាប់វត្តមានបុគ្គលិក</n-radio>
+                              <n-radio :value="1" >មិនរាប់វត្តមានបុគ្គលិក</n-radio>
                             </n-space>
                           </n-radio-group>
                         </n-form-item>

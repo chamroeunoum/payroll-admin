@@ -132,7 +132,14 @@
                 <td class="text-center w-40 " >{{ record.code }}</td>
                 <td class="text-center w-40 " >{{ dateFormat( new Date( record.date ) , 'dd-mm-yyyy' ) }}</td>
                 <td class="text-center w-40 " >{{ dateFormat( new Date( record.period_start ) , 'dd-mm-yyyy' ) }}</td>
-                <td class="text-center w-40 " >{{ dateFormat( new Date( record.period_end ) , 'dd-mm-yyyy' ) }}</td>
+                <td class="text-center w-40 " >
+                  {{ dateFormat( new Date( record.period_end ) , 'dd-mm-yyyy' ) }}
+                  <div v-if="Array.isArray( record.no_attendance_officers ) && record.no_attendance_officers.length > 0"
+                       class="text-vcb-xs text-red-600 leading-5 mt-1"
+                       :title="record.no_attendance_officers.map( o => o.code + ( o.name ? ' ' + o.name : '' ) ).join(' , ')" >
+                    គ្មានវត្តមាន {{ $toKhmer( record.no_attendance_officers.length ) }} នាក់ → គ្មានប្រាក់ខែ
+                  </div>
+                </td>
                 <td class="text-center text-green-700" >{{ formatCurrency( record.basic_salary ) }}</td>
                 <td class="text-center text-blue-600" >{{ record.total_worked_days }}</td>
                 <td class="text-center text-red-500" >{{ record.total_absent_days }}</td>

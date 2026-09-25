@@ -146,7 +146,7 @@
                 </tr>
                 <tr>
                   <td>ចំនួនប្រាក់គោលសុទ្ធបើកលើកទី១ពាក់កណ្ដាលខែ<br/>Take basic salary middle of month (50%)</td>
-                  <td colspan="2"></td>
+                  <td colspan="2">{{ getAdjustment('basic_salary_middle_of_month') }}</td>
                 </tr>
                 <tr>
                   <td>ប្រាក់កាត់ទុកភាគទានសន្តិសុខសង្គម<br/>Amount withhold on NSSF {{ nssfPercentage }}%</td>
@@ -265,6 +265,16 @@ export default {
   setup(props){
     var store = useStore()
     const nssfPercentage = computed( () => store.state.generalsetting.settingsByKey['nssf_withhold_tax'] ?? '' )
+    /**
+     * One of the officer's monthly adjustments. They are stored by officer +
+     * policy + month (see Salary::monthlyAdjustmentsForPeriod), not by salary
+     * row, and the listing attaches them to each record.
+     */
+    function getAdjustment(policyCode){
+      const rows = props.record != null && Array.isArray( props.record.monthlyAdjustments ) ? props.record.monthlyAdjustments : []
+      const found = rows.find( adj => adj.salaryPolicy != null && adj.salaryPolicy.code == policyCode )
+      return found != undefined ? parseFloat( found.adjustment_amount || 0 ) : 0
+    }
     const message = useMessage()
     const notify = useNotification()
 
@@ -385,6 +395,7 @@ export default {
       positions , 
       userCountesies ,
       nssfPercentage ,
+      getAdjustment ,
       /**
        * Functions
        */

@@ -45,7 +45,10 @@
             កាលបរិច្ឆែទគណាបៀវត្ស
           </n-tooltip>
           <n-button @click="generateAllSalaries" type="primary" class="ml-2" :loading="generatingAll">
-            គណនាប្រាក់បៀវត្សទាំងអស់
+            {{ generatingAll && generateProgress > 0 ? `គណនាប្រាក់បៀវត្ស ${generateProgress}%` : 'គណនាប្រាក់បៀវត្សទាំងអស់' }}
+          </n-button>
+          <n-button @click="openProgressPanel" class="ml-2">
+            ស្ថានភាពគណនាប្រាក់បៀវត្ស
           </n-button>
           <!-- <n-tooltip trigger="hover">
             <template #trigger>
@@ -324,10 +327,163 @@
         </div>
       </div>
     </Transition>
+
+    <!-- ------------------------------------------------------------------
+         Salary generation progress.
+
+         Generation runs on the queue worker, so this panel walks the user
+         through: (1) the queue, (2) the detail of each job, (3) the related
+         information, (4) what happens on success / what to do on error.
+         ------------------------------------------------------------------ -->
+    <n-drawer v-model:show="progressPanel" :width="640" placement="right" :trap-focus="false">
+      <n-drawer-content closable :native-scrollbar="false">
+        <template #header>
+          <span class="cw-title">ស្ថានភាពគណនាប្រាក់បៀវត្ស</span>
+        </template>
+
+        <!-- 1. Queue -->
+        <div class="cw-section">
+          <div class="cw-head">
+            <span>១. ជួរការងារ ({{ runs.length }})</span>
+            <span class="flex items-center">
+              <n-tag :type="workerAlive ? 'success' : 'error'" size="small" :bordered="false" class="mr-2">
+                {{ workerAlive ? 'ម៉ាស៊ីនគណនាដំណើរការ' : 'ម៉ាស៊ីនគណនាមិនដំណើរការ' }}
+              </n-tag>
+              <n-button size="tiny" :loading="runsLoading" @click="refreshRuns">ធ្វើឱ្យទាន់សម័យ</n-button>
+            </span>
+          </div>
+
+          <div class="cw-runs">
+            <div v-for="run in runs" :key="run.run_id"
+                 class="cw-run" :class="{ 'cw-run-active': run.run_id === selectedRunId }"
+                 @click="selectRun( run.run_id )">
+              <n-progress type="circle" :percentage="run.percent || 0" :width="40" :stroke-width="6"
+                          :status="run.status === 'failed' ? 'error' : ( run.status === 'done' ? 'success' : 'default' )" />
+              <div class="cw-run-body">
+                <div class="flex items-center">
+                  <n-tag :type="statusType( run.status )" size="tiny" :bordered="false">{{ statusLabel( run.status ) }}</n-tag>
+                  <span class="cw-run-code">{{ ( run.run_id || '' ).substring( 0, 8 ) }}</span>
+                </div>
+                <div class="cw-run-meta">{{ run.period_start }} → {{ run.period_end }} · {{ modeLabel( run.mode ) }}</div>
+                <div class="cw-run-meta">{{ run.started_at || run.queued_at || '-' }}<template v-if="run.finished_at"> · ចំណាយ {{ formatElapsed( run.elapsed_seconds ) }}</template></div>
+              </div>
+            </div>
+            <n-empty v-if="runs.length === 0 && ! runsLoading" size="small" description="មិនមានការងារក្នុងជួរទេ" class="py-4" />
+          </div>
+          <div class="cw-run-meta mt-1">ការងាររង់ចាំក្នុងជួរ៖ {{ queueInfo.pending }} · ការងារបរាជ័យ៖ {{ queueInfo.failed }}</div>
+        </div>
+
+        <template v-if="selectedRun">
+          <!-- 2. Detail of the selected job -->
+          <div class="cw-section">
+            <div class="cw-head">
+              <span>២. ព័ត៌មានលម្អិតនៃការងារ</span>
+              <n-tag :type="statusType( selectedStatus )" size="small" :bordered="false">{{ statusLabel( selectedStatus ) }}</n-tag>
+            </div>
+
+            <n-timeline class="mb-3">
+              <n-timeline-item v-for="step in runSteps" :key="step.index"
+                               :title="step.title" :content="step.description" :status="step.status" size="small" />
+            </n-timeline>
+
+            <n-progress type="line" :percentage="selectedRun.percent || 0"
+                        :status="selectedIsFailed ? 'error' : ( selectedIsDone ? 'success' : 'default' )"
+                        :indicator-placement="'inside'" />
+            <div v-if="selectedStatus === 'running' && selectedRun.current_officer_code" class="cw-run-meta mt-1">
+              កំពុងគណនា៖ {{ selectedRun.current_officer_code }}
+            </div>
+
+            <div class="cw-counters mt-3">
+              <div class="cw-counter"><div class="cw-counter-value">{{ selectedRun.total || 0 }}</div><div class="cw-counter-label">សរុប</div></div>
+              <div class="cw-counter"><div class="cw-counter-value">{{ selectedRun.processed || 0 }}</div><div class="cw-counter-label">ដំណើរការ</div></div>
+              <div class="cw-counter"><div class="cw-counter-value text-green-600">{{ selectedRun.succeeded || 0 }}</div><div class="cw-counter-label">បានបង្កើត</div></div>
+              <div class="cw-counter"><div class="cw-counter-value text-gray-500">{{ selectedRun.skipped || 0 }}</div><div class="cw-counter-label">រំលង</div></div>
+              <div class="cw-counter"><div class="cw-counter-value text-red-600">{{ selectedRun.failed || 0 }}</div><div class="cw-counter-label">បរាជ័យ</div></div>
+            </div>
+
+            <div class="cw-info mt-3">
+              <div class="cw-info-label">ចាប់ផ្ដើម</div><div class="cw-info-value">{{ selectedRun.started_at || selectedRun.queued_at || '-' }}</div>
+              <div class="cw-info-label">ធ្វើបច្ចុប្បន្នភាព</div><div class="cw-info-value">{{ selectedRun.updated_at || '-' }}</div>
+              <div class="cw-info-label">បញ្ចប់</div><div class="cw-info-value">{{ selectedRun.finished_at || '-' }}</div>
+              <div class="cw-info-label">រយៈពេល</div><div class="cw-info-value">{{ formatElapsed( selectedRun.elapsed_seconds ) }}</div>
+              <div class="cw-info-label">អ្នកចាប់ផ្ដើម</div><div class="cw-info-value">{{ selectedRun.started_by_name || '-' }}</div>
+              <div class="cw-info-label">Run ID</div><div class="cw-info-value">{{ selectedRun.run_id }}</div>
+            </div>
+
+            <div v-if="failureList.length > 0" class="mt-3">
+              <div class="cw-head"><span>បុគ្គលិកដែលគណនាមិនបាន ({{ selectedRun.failed }})</span></div>
+              <div class="cw-failures">
+                <div v-for="( failure, index ) in failureList" :key="index" class="cw-failure">
+                  <b>{{ failure.code || '-' }}</b> · {{ failure.reason || '-' }}
+                </div>
+              </div>
+              <div v-if="selectedRun.failed > failureList.length" class="cw-run-meta mt-1">
+                បង្ហាញតែ {{ failureList.length }} ក្នុងចំណោម {{ selectedRun.failed }}។ សូមមើល log សម្រាប់ព័ត៌មានពេញលេញ។
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Related information -->
+          <div class="cw-section">
+            <div class="cw-head"><span>៣. ព័ត៌មានពាក់ព័ន្ធ</span></div>
+            <div class="cw-info">
+              <template v-for="field in relatedFields" :key="field.label">
+                <div class="cw-info-label">{{ field.label }}</div>
+                <div class="cw-info-value">{{ field.value }}</div>
+              </template>
+            </div>
+          </div>
+
+          <!-- 4. Outcome and what to do next -->
+          <div class="cw-section">
+            <div class="cw-head"><span>៤. អ្វីដែលកើតឡើង និងអ្វីដែលត្រូវធ្វើ</span></div>
+
+            <n-alert v-if="! workerAlive && ! selectedIsDone && ! selectedIsFailed" type="warning" :bordered="false" class="mb-2">
+              <b>ម៉ាស៊ីនគណនាផ្ទៃខាងក្រោយមិនដំណើរការ។</b>
+              ការងារនឹងនៅរង់ចាំក្នុងជួររហូតដល់ម៉ាស៊ីនគណនាដំណើរការឡើងវិញ។ សូមទាក់ទងអ្នកគ្រប់គ្រងប្រព័ន្ធដើម្បីចាប់ផ្ដើមសេវា `oandm-queue`។
+            </n-alert>
+
+            <n-alert v-if="selectedStatus === 'queued' || selectedStatus === 'running'" type="info" :bordered="false">
+              <b>កំពុងដំណើរការ។</b>
+              លោកអ្នកអាចបិទទំព័រនេះបាន ព្រោះការគណនាដំណើរការនៅផ្ទៃខាងក្រោយ ហើយនឹងបន្តទោះបិទកម្មវិធីរុករក។
+              លទ្ធផលនឹងបង្ហាញនៅពេលរួចរាល់។
+            </n-alert>
+
+            <n-alert v-if="selectedIsDone" type="success" :bordered="false">
+              <b>គណនាប្រាក់ខែរួចរាល់។</b>
+              បានបង្កើត {{ selectedRun.succeeded || 0 }} នាក់ · រំលង {{ selectedRun.skipped || 0 }} នាក់ · បរាជ័យ {{ selectedRun.failed || 0 }} នាក់។
+              ប្រាក់បៀវត្សត្រូវបានបូកសរុបរួចរាល់។ សូមពិនិត្យតារាងខាងក្រោយ រួចបន្តទៅជំហានបន្ទាប់។
+              <div v-if="( selectedRun.failed || 0 ) > 0" class="mt-1">
+                មានបុគ្គលិក {{ selectedRun.failed }} នាក់ដែលគណនាមិនបាន។ សូមពិនិត្យបញ្ជីខាងលើ កែទិន្នន័យ រួចគណនាឡើងវិញ។
+              </div>
+            </n-alert>
+
+            <div v-if="selectedIsFailed">
+              <n-alert type="error" :bordered="false">
+                <b>ការគណនាបរាជ័យ។</b>
+                {{ selectedRun.error || selectedRun.message || 'មានបញ្ហាមិនស្គាល់' }}
+              </n-alert>
+              <div class="cw-help">
+                <div class="cw-help-title">អ្វីដែលលោកអ្នកអាចធ្វើ៖</div>
+                <ol class="cw-help-list">
+                  <li>ពិនិត្យបញ្ជីបរាជ័យខាងលើ ដើម្បីដឹងមូលហេតុ។</li>
+                  <li>បើជាបញ្ហាទិន្នន័យបុគ្គលិក សូមកែទិន្នន័យនោះជាមុន។</li>
+                  <li>ចុច «ព្យាយាមម្ដងទៀត» ដើម្បីគណនាឡើងវិញ។ ការគណនាមិនបង្កើតប្រាក់ខែស្ទួនទេ។</li>
+                  <li>បើនៅតែបរាជ័យ សូមទាក់ទងអ្នកគ្រប់គ្រងប្រព័ន្ធ ដោយផ្ដល់ Run ID ខាងលើ។</li>
+                </ol>
+                <n-button type="primary" size="small" class="mt-2" @click="retryRun">ព្យាយាមម្ដងទៀត</n-button>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <n-empty v-if="! selectedRun && ! runsLoading" size="small" description="សូមជ្រើសរើសការងារមួយពីជួរខាងលើ" class="py-6" />
+      </n-drawer-content>
+    </n-drawer>
   </div>
 </template>
 <script>
-import { reactive ,ref , computed } from 'vue'
+import { reactive ,ref , computed , watch , onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 import QrcodeVue from 'qrcode.vue'
@@ -365,6 +521,7 @@ export default {
     const salaryType = ref(0)
     const salaryDate = ref( Date.now() )
     const generatingAll = ref(false)
+    const generateProgress = ref(0)
     const peopleIds = ref( 
       route.params.ids != undefined && route.params.ids.trim().length > 0 ? route.params.ids.split(',') : null
     )
@@ -537,29 +694,29 @@ export default {
 
     function generateAllSalaries(){
       generatingAll.value = true
+      generateProgress.value = 0
       const modeMap = ['full', 'mid', 'end']
-      store.dispatch('payroll/generateSalaries',{
-        date: dateFormat( new Date( salaryDate.value ) , 'dd-mm-yyyy' ),
-        mode: modeMap[ salaryType.value ] || 'full'
-      }).then( res => {
-        generatingAll.value = false
-        if( res.data.ok ){
-          notify.success({
-            title: 'គណនាប្រាក់បៀវត្ស',
-            description: res.data.message || 'គណនាប្រាក់បៀវត្សទាំងអស់រួចរាល់',
-            duration: 3000
-          })
-          getRecords()
-        }else{
-          notify.error({
-            title: 'គណនាប្រាក់បៀវត្ស',
-            description: res.data.message || 'មានបញ្ហាក្នុងពេលគណនាប្រាក់បៀវត្ស',
-            duration: 5000
-          })
+      const date = dateFormat( new Date( salaryDate.value ) , 'dd-mm-yyyy' )
+      const mode = modeMap[ salaryType.value ] || 'full'
+
+      // Salary generation runs on the queue worker, not inside this request, so it
+      // is not bounded by PHP max_execution_time / the nginx gateway timeout and it
+      // keeps running even if this tab is closed. The API returns a run id and the
+      // client polls its progress.
+      store.dispatch('payroll/generateSalaries',{ date: date, mode: mode }).then( res => {
+        if( ! res.data.ok ){
+          throw new Error( res.data.message || 'មានបញ្ហាក្នុងការចាប់ផ្ដើមគណនាប្រាក់បៀវត្ស' )
         }
+        const runId = res.data.run_id
+        if( res.data.progress ) generateProgress.value = res.data.progress.percent || 0
+        // Show the queue and the live steps for the run that just started.
+        progressPanel.value = true
+        refreshRuns()
+        pollGenerateStatus( runId, res.data.worker_alive, 0 )
       }).catch( err => {
         generatingAll.value = false
-        const msg = err.response?.data?.message || err.message || 'មានបញ្ហាក្នុងពេលគណនាប្រាក់បៀវត្ស'
+        generateProgress.value = 0
+        const msg = err.response?.data?.message || err.message || 'មានបញ្ហាក្នុងការចាប់ផ្ដើមគណនាប្រាក់បៀវត្ស'
         notify.error({
           title: 'គណនាប្រាក់បៀវត្ស',
           description: msg,
@@ -567,7 +724,82 @@ export default {
         })
       })
     }
-    
+
+    // Poll the queued run until it finishes. `workerAlive` is the worker heartbeat
+    // reported by the API; if the job stays 'queued' while no worker is alive we
+    // warn instead of spinning forever.
+    function pollGenerateStatus( runId, workerAlive, ticks ){
+      const maxTicks = 300         // ~10 minutes at 2s per poll
+      const maxQueuedTicks = 10    // ~20s still 'queued' -> worker likely not running
+
+      store.dispatch('payroll/generateSalariesStatus', runId ).then( res => {
+        const progress = res.data.progress || {}
+        const alive = res.data.worker_alive != undefined ? res.data.worker_alive : workerAlive
+        generateProgress.value = progress.percent || 0
+
+        if( progress.status === 'done' ){
+          generatingAll.value = false
+          generateProgress.value = 100
+          notify.success({
+            title: 'គណនាប្រាក់បៀវត្ស',
+            description: progress.message || 'គណនាប្រាក់បៀវត្សទាំងអស់រួចរាល់',
+            duration: 3000
+          })
+          getRecords()
+          return
+        }
+
+        if( progress.status === 'failed' ){
+          generatingAll.value = false
+          generateProgress.value = 0
+          notify.error({
+            title: 'គណនាប្រាក់បៀវត្ស',
+            description: progress.error || progress.message || 'មានបញ្ហាក្នុងពេលគណនាប្រាក់បៀវត្ស',
+            duration: 5000
+          })
+          return
+        }
+
+        if( ticks >= maxTicks ){
+          generatingAll.value = false
+          generateProgress.value = 0
+          notify.error({
+            title: 'គណនាប្រាក់បៀវត្ស',
+            description: 'ការគណនាចំណាយពេលយូរពេក។ សូមពិនិត្យលទ្ធផលម្ដងទៀតក្រោយ។',
+            duration: 6000
+          })
+          return
+        }
+
+        // Job never left the queue and the worker is not checking in.
+        if( progress.status === 'queued' && alive === false && ticks >= maxQueuedTicks ){
+          generatingAll.value = false
+          generateProgress.value = 0
+          notify.error({
+            title: 'គណនាប្រាក់បៀវត្ស',
+            description: 'ម៉ាស៊ីនគណនាផ្ទៃខាងក្រោយ (queue worker) មិនដំណើរការ។ សូមទាក់ទងអ្នកគ្រប់គ្រងប្រព័ន្ធ។',
+            duration: 8000
+          })
+          return
+        }
+
+        setTimeout( () => pollGenerateStatus( runId, alive, ticks + 1 ), 2000 )
+      }).catch( () => {
+        // Transient poll error: retry a few times before giving up.
+        if( ticks >= maxQueuedTicks ){
+          generatingAll.value = false
+          generateProgress.value = 0
+          notify.error({
+            title: 'គណនាប្រាក់បៀវត្ស',
+            description: 'មិនអាចតាមដានស្ថានភាពការគណនាបានទេ។ សូមព្យាយាមម្ដងទៀត។',
+            duration: 6000
+          })
+          return
+        }
+        setTimeout( () => pollGenerateStatus( runId, workerAlive, ticks + 1 ), 2000 )
+      })
+    }
+
     /**
      * Load positions
      */
@@ -660,6 +892,195 @@ export default {
     getCountesies()
 
 
+    /* ------------------------------------------------------------------
+     * Salary generation progress panel.
+     *
+     * Generation runs on the queue worker, so this panel answers the four
+     * questions the user has: (1) which jobs are queued, (2) what each job is
+     * doing right now, (3) the related information, (4) what happened on
+     * success and what to do on failure.
+     * ------------------------------------------------------------------ */
+    const progressPanel = ref(false)
+    const runs = ref([])
+    const runsLoading = ref(false)
+    const selectedRunId = ref(null)
+    const runDetail = ref(null)
+    const runRelated = ref(null)
+    const queueInfo = ref({ pending: 0, failed: 0 })
+    const workerAlive = ref(true)
+
+    // The stages the backend writes into the run state, in order.
+    const STAGE_ORDER = ['queued', 'processing', 'finalizing', 'done']
+
+    // The run shown in the detail section: the polled state when the API still
+    // has it, otherwise the summary kept in the queue list.
+    const selectedRun = computed( () => {
+      if( runDetail.value && runDetail.value.run_id === selectedRunId.value ) return runDetail.value
+      return runs.value.find( run => run.run_id === selectedRunId.value ) || null
+    })
+
+    const selectedStatus = computed( () => ( selectedRun.value || {} ).status || 'queued' )
+    const selectedIsDone = computed( () => selectedStatus.value === 'done' )
+    const selectedIsFailed = computed( () => selectedStatus.value === 'failed' )
+    const failureList = computed( () => ( selectedRun.value || {} ).failures || [] )
+
+    // Steps derived from the stage the backend actually reached, so the timeline
+    // never shows progress the job has not made.
+    const runSteps = computed( () => {
+      const run = selectedRun.value || {}
+      const failed = run.status === 'failed'
+      const at = failed
+        ? Math.max( STAGE_ORDER.indexOf( run.failed_at_stage || 'processing' ), 0 )
+        : ( run.status === 'done' ? STAGE_ORDER.length : Math.max( STAGE_ORDER.indexOf( run.stage || 'queued' ), 0 ) )
+
+      const labels = [
+        { title: 'ដាក់ក្នុងជួររង់ចាំ', description: 'ការងារត្រូវបានចុះបញ្ជី រង់ចាំម៉ាស៊ីនគណនាមកដំណើរការ' },
+        { title: 'គណនាប្រាក់ខែបុគ្គលិក', description: 'គណនាប្រាក់ខែម្នាក់ៗ តាមទិន្នន័យវត្តមានរបស់ខែ' },
+        { title: 'បូកសរុបប្រាក់បៀវត្ស', description: 'បូកសរុបតម្លៃសរុបរបស់បញ្ជីប្រាក់បៀវត្ស' },
+        { title: 'រួចរាល់', description: 'ប្រាក់ខែត្រូវបានរក្សាទុកក្នុងប្រព័ន្ធ' }
+      ]
+
+      return labels.map( ( label, index ) => {
+        let status = 'wait'
+        if( failed && index === at ) status = 'error'
+        else if( index < at ) status = 'finish'
+        else if( index === at ) status = 'process'
+        return { ...label, index, status }
+      })
+    })
+
+    // Related information: the snapshot taken when the run started, the live queue
+    // counters, and the payroll totals once the run finished.
+    const relatedFields = computed( () => {
+      const info = runRelated.value || {}
+      const run = selectedRun.value || {}
+      const fields = [
+        { label: 'លេខបញ្ជីប្រាក់បៀវត្ស', value: run.payroll_id },
+        { label: 'រយៈពេល', value: run.period_start ? `${run.period_start} → ${run.period_end}` : null },
+        { label: 'ប្រភេទគណនា', value: run.mode ? modeLabel( run.mode ) : null },
+        { label: 'បុគ្គលិកត្រូវគណនា', value: info.eligible_officers },
+        { label: 'ថ្ងៃមានវត្តមាន', value: info.attendance_days },
+        { label: 'កំណត់ត្រាវត្តមាន', value: info.attendance_records },
+        { label: 'ការងាររង់ចាំក្នុងជួរ', value: info.queue_pending },
+        { label: 'ការងារបរាជ័យក្នុងជួរ', value: info.queue_failed },
+        { label: 'ម៉ាស៊ីនគណនាផ្ទៃខាងក្រោយ', value: info.worker_alive === true ? 'ដំណើរការ' : 'មិនដំណើរការ' }
+      ]
+
+      if( info.payroll_summary ){
+        fields.push({ label: 'ប្រាក់ខែដែលបានបង្កើត', value: info.payroll_summary.salaries })
+        fields.push({ label: 'ទឹកប្រាក់សុទ្ធសរុប', value: formatMoney( info.payroll_summary.net_total ) })
+      }
+
+      return fields.filter( field => field.value !== null && field.value !== undefined && field.value !== '' )
+    })
+
+    function statusLabel( status ){
+      return { queued: 'រង់ចាំ', running: 'កំពុងដំណើរការ', done: 'រួចរាល់', failed: 'បរាជ័យ' }[ status ] || status || '-'
+    }
+
+    function statusType( status ){
+      return { queued: 'warning', running: 'info', done: 'success', failed: 'error' }[ status ] || 'default'
+    }
+
+    function modeLabel( mode ){
+      return { full: 'ពេញខែ', mid: 'ដើមខែ', end: 'ចុងខែ' }[ mode ] || mode
+    }
+
+    function formatElapsed( seconds ){
+      const total = parseInt( seconds || 0 )
+      if( ! total || total <= 0 ) return '-'
+      const minutes = Math.floor( total / 60 )
+      const rest = total % 60
+      return minutes > 0 ? `${minutes} នាទី ${rest} វិនាទី` : `${rest} វិនាទី`
+    }
+
+    function formatMoney( amount ){
+      const value = Number( amount || 0 )
+      return value.toLocaleString( 'en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 } )
+    }
+
+    function openProgressPanel(){
+      progressPanel.value = true
+      refreshRuns()
+    }
+
+    function refreshRuns(){
+      runsLoading.value = true
+      return store.dispatch('payroll/generateSalariesRuns').then( res => {
+        runs.value = res.data.runs || []
+        queueInfo.value = res.data.queue || { pending: 0, failed: 0 }
+        workerAlive.value = res.data.worker_alive === true
+
+        const stillListed = runs.value.some( run => run.run_id === selectedRunId.value )
+        if( ! stillListed ){
+          // Follow the newest run when the previously selected one rolled off.
+          selectRun( runs.value.length > 0 ? runs.value[0].run_id : null )
+        } else {
+          // Otherwise keep the selected run's detail fresh.
+          loadRunDetail( selectedRunId.value )
+        }
+      }).catch( () => {
+        notify.error({
+          title: 'ជួរការងារ',
+          description: 'មិនអាចទាញយកស្ថានភាពជួរការងារបានទេ។ សូមព្យាយាមម្ដងទៀត។',
+          duration: 4000
+        })
+      }).finally( () => { runsLoading.value = false })
+    }
+
+    function selectRun( runId ){
+      selectedRunId.value = runId
+      runDetail.value = null
+      runRelated.value = null
+      if( ! runId ) return
+      loadRunDetail( runId )
+    }
+
+    function loadRunDetail( runId ){
+      store.dispatch('payroll/generateSalariesStatus', runId ).then( res => {
+        if( res.data.ok ){
+          runDetail.value = res.data.progress
+          runRelated.value = res.data.related
+          if( res.data.worker_alive != undefined ) workerAlive.value = res.data.worker_alive
+        }
+      }).catch( () => {
+        // The detailed state is kept for 6 hours. After that the summary in the
+        // list is still accurate, so this is not worth interrupting the user.
+        runDetail.value = null
+        runRelated.value = null
+      })
+    }
+
+    // Re-run the same period the selected job used.
+    function retryRun(){
+      const run = selectedRun.value
+      if( ! run ) return
+      salaryType.value = typeof run.mode_index === 'number' ? run.mode_index : 0
+      if( run.date ) salaryDate.value = new Date( run.date ).getTime()
+      generateAllSalaries()
+    }
+
+    let panelTimer = null
+
+    function startPanelPolling(){
+      stopPanelPolling()
+      panelTimer = setInterval( () => {
+        if( ! progressPanel.value ){ stopPanelPolling(); return }
+        const run = selectedRun.value || {}
+        // Stop polling a run that already reached a terminal state; the Refresh
+        // button is still there for a manual reload.
+        if( run.status === 'done' || run.status === 'failed' ) return
+        refreshRuns()
+      }, 3000 )
+    }
+
+    function stopPanelPolling(){
+      if( panelTimer ){ clearInterval( panelTimer ); panelTimer = null }
+    }
+
+    watch( progressPanel, ( isOpen ) => { if( isOpen ) startPanelPolling(); else stopPanelPolling() } )
+    onUnmounted( stopPanelPolling )
+
     return {
       /**
        * Variables
@@ -670,6 +1091,7 @@ export default {
       salaryDate ,
       salaryType ,
       generatingAll ,
+      generateProgress ,
       /**
        * Table
        */
@@ -714,7 +1136,31 @@ export default {
       optionOrganizations ,
       selectedOrganizations ,
       getKhmer ,
-      dateFormat
+      dateFormat ,
+      /**
+       * Salary generation progress panel
+       */
+      progressPanel ,
+      runs ,
+      runsLoading ,
+      selectedRunId ,
+      selectedRun ,
+      selectedStatus ,
+      selectedIsDone ,
+      selectedIsFailed ,
+      failureList ,
+      runSteps ,
+      relatedFields ,
+      queueInfo ,
+      workerAlive ,
+      openProgressPanel ,
+      refreshRuns ,
+      selectRun ,
+      retryRun ,
+      statusLabel ,
+      statusType ,
+      modeLabel ,
+      formatElapsed
     }
   }
 }
@@ -753,5 +1199,87 @@ export default {
 }
 .vcb-table tr td {
   @apply p-2 relative border-b border-gray-200;
+}
+
+/* --- Salary generation progress panel --- */
+.cw-title {
+  @apply font-bold;
+}
+.cw-section {
+  @apply mb-6 pb-5 border-b border-gray-100;
+}
+.cw-section:last-child {
+  @apply mb-0 pb-0 border-b-0;
+}
+.cw-head {
+  @apply flex items-center justify-between mb-2 font-bold text-sm;
+}
+.cw-runs {
+  @apply border border-gray-200 rounded max-h-64 overflow-auto;
+}
+.cw-run {
+  @apply flex items-center p-2 cursor-pointer transition-colors duration-200 border-t border-gray-100;
+}
+.cw-run:first-child {
+  @apply border-t-0;
+}
+.cw-run:hover {
+  @apply bg-gray-50;
+}
+.cw-run-active {
+  @apply bg-blue-50;
+}
+.cw-run-body {
+  @apply ml-3 flex-grow;
+  min-width: 0;
+}
+.cw-run-code {
+  @apply text-xs text-gray-500 ml-2;
+  font-family: monospace;
+}
+.cw-run-meta {
+  @apply text-xs text-gray-500 truncate;
+}
+.cw-counters {
+  @apply grid gap-2 text-center;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.cw-counter {
+  @apply border border-gray-200 rounded py-2 px-1;
+}
+.cw-counter-value {
+  @apply text-lg font-bold leading-tight;
+}
+.cw-counter-label {
+  @apply text-xs text-gray-500;
+}
+.cw-info {
+  @apply grid gap-x-4 gap-y-1 text-sm;
+  grid-template-columns: 160px 1fr;
+}
+.cw-info-label {
+  @apply text-gray-500;
+}
+.cw-info-value {
+  @apply font-medium;
+  word-break: break-all;
+}
+.cw-failures {
+  @apply max-h-40 overflow-auto;
+}
+.cw-failure {
+  @apply text-xs pl-2 py-1 mb-1 border-l-2 border-red-300;
+}
+.cw-help {
+  @apply mt-3 p-3 rounded bg-gray-50 text-sm;
+}
+.cw-help-title {
+  @apply font-bold mb-1;
+}
+.cw-help-list {
+  @apply list-decimal ml-5;
+}
+.cw-help-list li {
+  @apply mb-1;
 }
 </style>

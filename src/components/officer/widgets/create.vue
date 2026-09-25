@@ -232,7 +232,53 @@ export default {
     /**
      * Variables
      */    
+    const officerCodes = ref([])
+
+    function normalizeCode( value ){
+      return value == null ? '' : value.toString().trim()
+    }
+
+    function isDuplicateCode( value , exclude ){
+      const code = normalizeCode( value )
+      if( code == '' ) return false
+      const excludeCode = normalizeCode( exclude )
+      return officerCodes.value.some( c => {
+        const existing = normalizeCode( c )
+        return existing != '' && existing == code && existing != excludeCode
+      })
+    }
+
+    function validateCode( exclude ){
+      const code = normalizeCode( props.record.code )
+      if( code == '' ){
+        notify.warning({
+          title: 'ពិនិត្យព័ត៌មាន' ,
+          description: 'សូមបញ្ចូលអត្តលេខ' ,
+          duration: 2000
+        })
+        return false
+      }
+      if( isDuplicateCode( code , exclude ) ){
+        notify.warning({
+          title: 'ពិនិត្យព័ត៌មាន' ,
+          description: 'អត្តលេខនេះមានក្នុងប្រព័ន្ធរួចហើយ' ,
+          duration: 2000
+        })
+        return false
+      }
+      return true
+    }
+
     var rules = {
+        code: {
+          trigger: [ 'blur' , 'input' ],
+          validator( rule , value ){
+            const code = normalizeCode( value )
+            if( code == '' ) return new Error( 'សូមបញ្ចូលអត្តលេខ' )
+            if( isDuplicateCode( code , null ) ) return new Error( 'អត្តលេខនេះមានក្នុងប្រព័ន្ធរួចហើយ' )
+            return true
+          }
+        },
         firstname: {
           required: true,
           message: 'សូមបញ្ចូល នាម ជាភាសារខ្មែរ',
@@ -281,6 +327,9 @@ export default {
     }
 
     function create(){
+      if( ! validateCode( null ) ){
+        return false
+      }
       if( 
         props.record.people.lastname == "" || 
         props.record.people.firstname == "" ||
@@ -394,12 +443,27 @@ export default {
           })
         }
       }).catch( err => {
-        message.error( err )
+        const data = err != null && err.response != null ? err.response.data : null
+        let description = 'មានបញ្ហាក្នុងពេលរក្សារទុកព័ត៌មាន។'
+        if( data != null && data.errors != null ){
+          const first = Object.values( data.errors )[0]
+          if( first != null ) description = Array.isArray( first ) ? first[0] : first
+        }else if( data != null && data.message != null ){
+          description = data.message
+        }
+        notify.error({
+          title: 'រក្សារទុកព័ត៌មាន' ,
+          description: description ,
+          duration: 3000
+        })
       })
       clearRecord( 0 )
     }
   
     function initial(){
+      store.dispatch( 'officer/getCodes' ).then( res => {
+        officerCodes.value = res != null && res.data != null && Array.isArray( res.data.codes ) ? res.data.codes : []
+      }).catch( () => {} )
       // selectedOrganizations.value = [463]
       // selectedOrganizations.value = Array.isArray( props.record.organizations ) ? props.record.organizations.map( o => o.id ) : []
       // selectedPositions.value = Array.isArray( props.record.positions ) ? props.record.positions.map( o => o.id ) : []

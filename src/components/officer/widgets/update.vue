@@ -111,7 +111,7 @@
                       ref="formRef"
                     >
                       <n-form-item label="អត្តលេខ" path="code" class="w-6/12 p-1" >
-                        <n-input v-model:value="record.code" disabled placeholder="អត្តលេខ" />
+                        <n-input v-model:value="record.code" placeholder="អត្តលេខ" />
                       </n-form-item>
                       <n-form-item label="ថ្ងៃខែឆ្នាំចូលធ្វើការ" path="officer_dob" class="w-6/12 p-1" >
                         <n-date-picker v-model:value="officer_dob" type="date" format="dd-MM-yyyy" placeholder="ថ្ងៃ ខែ ឆ្នាំ កំណើត" class="w-full" />
@@ -281,8 +281,8 @@
                         >
                           <n-radio-group v-model:value="record.attn_mode_ignore" :disabled=" record.is_working != 1 " >
                             <n-space>
-                              <n-radio :value="0" >មិនររាប់វត្តមានបុគ្គលិក</n-radio>
-                              <n-radio :value="1" >រាប់វត្តមានបុគ្គលិក</n-radio>
+                              <n-radio :value="0" >រាប់វត្តមានបុគ្គលិក</n-radio>
+                              <n-radio :value="1" >មិនរាប់វត្តមានបុគ្គលិក</n-radio>
                             </n-space>
                           </n-radio-group>
                         </n-form-item>
@@ -449,7 +449,54 @@ export default {
     /**
      * Variables
      */    
+    const officerCodes = ref([])
+    const originalCode = ref(null)
+
+    function normalizeCode( value ){
+      return value == null ? '' : value.toString().trim()
+    }
+
+    function isDuplicateCode( value , exclude ){
+      const code = normalizeCode( value )
+      if( code == '' ) return false
+      const excludeCode = normalizeCode( exclude )
+      return officerCodes.value.some( c => {
+        const existing = normalizeCode( c )
+        return existing != '' && existing == code && existing != excludeCode
+      })
+    }
+
+    function validateCode( exclude ){
+      const code = normalizeCode( props.record.code )
+      if( code == '' ){
+        notify.warning({
+          title: 'ពិនិត្យព័ត៌មាន' ,
+          description: 'សូមបញ្ចូលអត្តលេខ' ,
+          duration: 2000
+        })
+        return false
+      }
+      if( isDuplicateCode( code , exclude ) ){
+        notify.warning({
+          title: 'ពិនិត្យព័ត៌មាន' ,
+          description: 'អត្តលេខនេះមានក្នុងប្រព័ន្ធរួចហើយ' ,
+          duration: 2000
+        })
+        return false
+      }
+      return true
+    }
+
     var rules = {
+        code: {
+          trigger: [ 'blur' , 'input' ],
+          validator( rule , value ){
+            const code = normalizeCode( value )
+            if( code == '' ) return new Error( 'សូមបញ្ចូលអត្តលេខ' )
+            if( isDuplicateCode( code , originalCode.value ) ) return new Error( 'អត្តលេខនេះមានក្នុងប្រព័ន្ធរួចហើយ' )
+            return true
+          }
+        },
         firstname: {
           required: true,
           message: 'សូមបញ្ចូលឈ្មោះ',
@@ -473,6 +520,9 @@ export default {
     }
 
     function update(){
+      if( ! validateCode( originalCode.value ) ){
+        return false
+      }
       if( props.model === undefined || props.model.name == "" ){
         notify.warning({
           title: 'ពិនិត្យព័ត៌មាន' ,
@@ -568,7 +618,19 @@ export default {
           })
         }
       }).catch( err => {
-        message.error( err )
+        const data = err != null && err.response != null ? err.response.data : null
+        let description = 'មានបញ្ហាក្នុងពេលរក្សារទុកព័ត៌មាន។'
+        if( data != null && data.errors != null ){
+          const first = Object.values( data.errors )[0]
+          if( first != null ) description = Array.isArray( first ) ? first[0] : first
+        }else if( data != null && data.message != null ){
+          description = data.message
+        }
+        notify.error({
+          title: 'រក្សារទុកព័ត៌មាន' ,
+          description: description ,
+          duration: 3000
+        })
       })
       clearRecord( 0 )
     }
@@ -608,6 +670,10 @@ export default {
     }
   
     function initial(){
+      originalCode.value = props.record.code
+      store.dispatch( 'officer/getCodes' ).then( res => {
+        officerCodes.value = res != null && res.data != null && Array.isArray( res.data.codes ) ? res.data.codes : []
+      }).catch( () => {} )
       selectedOrganization.value = props.record.organization != null && props.record.organization != undefined ? props.record.organization.id : null
       selectedPosition.value = props.record.position != null && props.record.position != undefined ? props.record.position.id : null
       selectedCategory.value = props.record.category_id != null && props.record.category_id != undefined ? props.record.category_id : null
